@@ -1,0 +1,51 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Python env / cache
+.venv/
+.venv_*/
+.venv_tflite/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Logs / temp
+logs/
+*.log
+*.psd
+
+# Node (if used)
+node_modules/
+build/
+
+# Project-generated data / artifacts
+captured/
+dataset_wlx_gray64/
+dataset_wlx_grey64/
+dataset_digits_gray64/
+dataset/**/*.png
+settings.txt
+
+# Downloaded datasets
+Sign-Language-Digits-Dataset/
+
+# Dataset folders
+dataset/alexdjulin/
+dataset/drgfreeman/
+dataset/sanikamal/
+dataset/test/
+dataset/train/
+dataset/validation/
+
+# Model artifacts
+models/versions/
+*.h5
+
+# Local archives
+matlab.zip
