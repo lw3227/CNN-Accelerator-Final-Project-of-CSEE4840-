@@ -1,0 +1,13 @@
+Reading pref.tcl
+
+# 2024.2
+
+# do vf/scripts/runtb_system_e2e_behav.tcl
+# ** Error: couldn't read file "/mtitcl/vsim/runtb_system_e2e_common.tcl": no such file or directory
+# Error in macro ./vf/scripts/runtb_system_e2e_behav.tcl line 6
+# couldn't read file "/mtitcl/vsim/runtb_system_e2e_common.tcl": no such file or directory
+#     while executing
+# "source [file join [file dirname [info script]] runtb_system_e2e_common.tcl]"
+#  quit -f
+Support of the MGLS_LICENSE_FILE and LM_LICENSE_FILE licensing environment variables will be discontinued starting with the 2025.1 release. Please update to using the SALT_LICENSE_SERVER variable.
+Please contact Siemens EDA Customer Support (https://support.sw.siemens.com/) for assistance.

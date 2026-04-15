@@ -1,0 +1,397 @@
+Reading pref.tcl
+
+# 2024.2
+
+# do vf/scripts/runtb_system_e2e.tcl
+# /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1
+# /user/stud/fall25/lw3227/vcd
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# Model Technology ModelSim DE vmap 2024.2 Lib Mapping Utility 2024.05 May 20 2024
+# vmap work work 
+# Modifying modelsim.ini
+# 0
+# 1
+INFO: using gate-level SRAM macro models + tb_system_e2e_gate.
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:56 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/SRAM_macro/sram_A/sram_A.v 
+# -- Skipping module sram_A
+# 
+# Top level modules:
+# 	sram_A
+# End time: 18:17:56 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:56 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/SRAM_macro/sram_B/sram_B.v 
+# -- Skipping module sram_B
+# 
+# Top level modules:
+# 	sram_B
+# End time: 18:17:56 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/TB/tb_system_e2e_gate.v
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:56 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/Addr_Gen.v 
+# -- Skipping module Addr_Gen
+# 
+# Top level modules:
+# 	Addr_Gen
+# End time: 18:17:57 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:57 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/sram_A_controller.v 
+# -- Skipping module sram_A_controller
+# 
+# Top level modules:
+# 	sram_A_controller
+# End time: 18:17:57 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:57 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/sram_B_controller.v 
+# -- Skipping module sram_B_controller
+# 
+# Top level modules:
+# 	sram_B_controller
+# End time: 18:17:57 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:57 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/sram_A_wrapper.v 
+# -- Skipping module sram_A_wrapper
+# 
+# Top level modules:
+# 	sram_A_wrapper
+# End time: 18:17:57 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:57 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/sram_B_wrapper.v 
+# -- Skipping module sram_B_wrapper
+# 
+# Top level modules:
+# 	sram_B_wrapper
+# End time: 18:17:57 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:57 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/top_sram_A.v 
+# -- Skipping module top_sram_A
+# 
+# Top level modules:
+# 	top_sram_A
+# End time: 18:17:57 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:57 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/top_sram_B.v 
+# -- Skipping module top_sram_B
+# 
+# Top level modules:
+# 	top_sram_B
+# End time: 18:17:58 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:58 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/Line_Buffer.v 
+# -- Skipping module Line_Buffer
+# 
+# Top level modules:
+# 	Line_Buffer
+# End time: 18:17:58 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:58 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/input_row_aligner.v 
+# -- Skipping module input_row_aligner
+# 
+# Top level modules:
+# 	input_row_aligner
+# End time: 18:17:58 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:58 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/sa_skew_feeder.v 
+# -- Skipping module sa_skew_feeder
+# 
+# Top level modules:
+# 	sa_skew_feeder
+# End time: 18:17:58 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:58 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/Conv_Buffer.v 
+# -- Skipping module Conv_Buffer
+# 
+# Top level modules:
+# 	Conv_Buffer
+# End time: 18:17:58 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:58 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/systolic_array_top.v 
+# -- Skipping module systolic_array_top
+# -- Skipping module single_PE
+# 
+# Top level modules:
+# 	systolic_array_top
+# End time: 18:17:58 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:58 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/weight_buffer.v 
+# -- Skipping module ring_shift_reg
+# -- Skipping module weight_buffer
+# 
+# Top level modules:
+# 	weight_buffer
+# End time: 18:17:58 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:58 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/conv_engine_ctrl.v 
+# -- Skipping module conv_engine_ctrl
+# 
+# Top level modules:
+# 	conv_engine_ctrl
+# End time: 18:17:58 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:58 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/conv_top.v 
+# -- Skipping module conv_top
+# 
+# Top level modules:
+# 	conv_top
+# End time: 18:17:59 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:59 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/integration/quant_param_loader.v 
+# -- Skipping module quant_param_loader
+# 
+# Top level modules:
+# 	quant_param_loader
+# End time: 18:17:59 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:59 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/integration/conv_quant_adapter.v 
+# -- Skipping module conv_quant_adapter
+# 
+# Top level modules:
+# 	conv_quant_adapter
+# End time: 18:17:59 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:59 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/integration/quant_pool_adapter.v 
+# -- Skipping module quant_pool_adapter
+# 
+# Top level modules:
+# 	quant_pool_adapter
+# End time: 18:17:59 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:59 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/quant/Quantization_PE.v 
+# -- Skipping module Quantization_PE
+# 
+# Top level modules:
+# 	Quantization_PE
+# End time: 18:17:59 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:59 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/quant/Quantization_Top.v 
+# -- Skipping module Quantization_Top
+# 
+# Top level modules:
+# 	Quantization_Top
+# End time: 18:17:59 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:59 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/pool/pool_core.v 
+# -- Skipping module pool_core_lane
+# -- Skipping module pool_core
+# 
+# Top level modules:
+# 	pool_core
+# End time: 18:17:59 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:17:59 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/pool/pool_stream_top.v 
+# -- Skipping module pool_stream_top
+# 
+# Top level modules:
+# 	pool_stream_top
+# End time: 18:18:00 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:00 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/conv_quant_pool.v 
+# -- Skipping module conv_quant_pool
+# 
+# Top level modules:
+# 	conv_quant_pool
+# End time: 18:18:00 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:00 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fsm/top_fsm.v 
+# -- Skipping module top_fsm
+# 
+# Top level modules:
+# 	top_fsm
+# End time: 18:18:00 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:00 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fsm/layer_runner_fsm.v 
+# -- Skipping module layer_runner_fsm
+# 
+# Top level modules:
+# 	layer_runner_fsm
+# End time: 18:18:00 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:00 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fsm/wt_prepad_inserter.v 
+# -- Skipping module wt_prepad_inserter
+# 
+# Top level modules:
+# 	wt_prepad_inserter
+# End time: 18:18:00 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:00 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fsm/conv_data_adapter.v 
+# -- Skipping module conv_data_adapter
+# 
+# Top level modules:
+# 	conv_data_adapter
+# End time: 18:18:00 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:00 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fc/mac.v 
+# -- Skipping module mac
+# 
+# Top level modules:
+# 	mac
+# End time: 18:18:01 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:01 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fc/fc_bias_loader.v 
+# -- Skipping module fc_bias_loader
+# 
+# Top level modules:
+# 	fc_bias_loader
+# End time: 18:18:01 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:01 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fc/FC.v 
+# -- Skipping module FC
+# 
+# Top level modules:
+# 	FC
+# End time: 18:18:01 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:01 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fc/fc_data_adapter.v 
+# -- Skipping module fc_data_adapter
+# 
+# Top level modules:
+# 	fc_data_adapter
+# End time: 18:18:01 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:01 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/system_top.v 
+# -- Skipping module system_top
+# 
+# Top level modules:
+# 	system_top
+# End time: 18:18:01 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:18:01 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/TB/tb_system_e2e_gate.v 
+# -- Skipping module tb_system_e2e_gate
+# 
+# Top level modules:
+# 	tb_system_e2e_gate
+# End time: 18:18:01 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -t ps work.tb_system_e2e_gate +PROJ_DIR=/courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1
+# vsim -t ps work.tb_system_e2e_gate +PROJ_DIR=/courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1 +NO_VCD
+# vsim -t ps work.tb_system_e2e_gate "+PROJ_DIR=/courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1" "+NO_VCD" 
+# Start time: 18:18:01 on Apr 14,2026
+# //  ModelSim DE 2024.2 May 20 2024 Linux 4.18.0-553.117.1.el8_10.x86_64
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading work.tb_system_e2e_gate
+# Loading work.system_top
+# Loading work.top_fsm
+# Loading work.layer_runner_fsm
+# Loading work.top_sram_A
+# Loading work.Addr_Gen
+# Loading work.sram_A_wrapper
+# Loading work.sram_A
+# Loading work.sram_A_controller
+# Loading work.top_sram_B
+# Loading work.sram_B_wrapper
+# Loading work.sram_B
+# Loading work.sram_B_controller
+# Loading work.wt_prepad_inserter
+# Loading work.conv_data_adapter
+# Loading work.conv_quant_pool
+# Loading work.conv_top
+# Loading work.input_row_aligner
+# Loading work.Line_Buffer
+# Loading work.weight_buffer
+# Loading work.ring_shift_reg
+# Loading work.Conv_Buffer
+# Loading work.sa_skew_feeder
+# Loading work.conv_engine_ctrl
+# Loading work.systolic_array_top
+# Loading work.conv_quant_adapter
+# Loading work.quant_param_loader
+# Loading work.Quantization_Top
+# Loading work.Quantization_PE
+# Loading work.quant_pool_adapter
+# Loading work.pool_stream_top
+# Loading work.pool_core
+# Loading work.pool_core_lane
+# Loading work.fc_data_adapter
+# Loading work.FC
+# Loading work.fc_bias_loader
+# Loading work.mac
+# Loading work.single_PE
+# ** Error: (vsim-3043) Unresolved reference to 'tb_system_e2e'.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_system_e2e_gate File: /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/TB/tb_system_e2e_gate.v Line: 627
+# Error loading design
+Error loading design
+# End time: 18:18:02 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 1, Warnings: 0
+Support of the MGLS_LICENSE_FILE and LM_LICENSE_FILE licensing environment variables will be discontinued starting with the 2025.1 release. Please update to using the SALT_LICENSE_SERVER variable.
+Please contact Siemens EDA Customer Support (https://support.sw.siemens.com/) for assistance.

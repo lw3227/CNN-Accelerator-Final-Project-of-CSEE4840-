@@ -1,0 +1,25 @@
+case=scissors
+image_file=scissors_200_v1_test_1644.png
+conv1_input=tb_conv1_in_i8_64x64x1.txt
+conv1_weight=tb_conv1_w_i8_3x3x4.txt
+conv1_output=tb_conv1_out_i32_62x62x4.txt
+conv2_input=tb_conv2_in_i8_31x31x4.txt
+conv2_weight=tb_conv2_w_i8_3x3x4x8.txt
+conv2_output=tb_conv2_out_i32_29x29x8.txt
+conv3_input=tb_conv3_in_i8_14x14x8.txt
+conv3_weight=tb_conv3_w_i8_3x3x8x8.txt
+conv3_output=tb_conv3_out_i32_12x12x8.txt
+input_zero_point=-128
+conv1_output_zero_point=-128
+conv2_output_zero_point=-128
+conv3_output_zero_point=-128
+conv_rule=layer input keeps full upstream tensor values; current-layer conv MAC uses x_zp=0,w_zp=0,bias=0
+conv1_input_shape=64x64
+conv2_input_shape=31x31x4
+conv3_input_shape=14x14x8
+conv1_output_shape=62x62x4
+conv2_output_shape=29x29x8
+conv3_output_shape=12x12x8
+conv1_output_range=[-34633,28671]
+conv2_output_range=[-146910,6829]
+conv3_output_range=[-52944,270664]

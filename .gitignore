@@ -1,0 +1,43 @@
+# Local backups
+backup_before_*/
+
+# ModelSim / Questa generated files
+modelsim.ini
+transcript
+vsim.wlf
+wlft*
+etch*
+work/
+work_*/
+sim_*_work/
+
+
+# Wave dumps
+*.vcd
+*.wlf
+
+# MATLAB generated logs and autosaves
+matlab/logs/
+matlab/__pycache__/
+__pycache__/
+*.asv
+
+# Local run artifacts
+run_logs/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+
+# Nested repo managed separately
+
+# Innovus PnR artifacts at project root
+innovus.cmd
+innovus.log
+innovus.logv
+oaScan.log
+
+# Local Codex / debug leftovers
+.claude/
+.codex
+vish_stacktrace.vstf

@@ -1,0 +1,7 @@
+# This must include the Cadence basic libraries (analogLib, basic, etc), the PDK library, and all standard cell libraries in Opan-Access format
+SOFTINCLUDE $CDSHOME/share/cdssetup/cds.lib
+DEFINE tsmcN65 			$PDK_PATH/Base_PDK/PDK_CRN65GP_v1.0c_official_IC61_20101010/tsmcN65
+DEFINE tcbn65gplus_oatech 	$PDK_DIGITAL/Back_End/cdk_oa/tcbn65gplus_oatech
+DEFINE tcbn65gplus_oalib 	$PDK_DIGITAL/Back_End/cdk_oa/tcbn65gplus_oalib
+DEFINE tcbn65gplus 		$PDK_DIGITAL/Back_End/cdk_oa/tcbn65gplus
+DEFINE sram_macros_oa 		../../input/SRAM_macro/oa/sram_macros_oa

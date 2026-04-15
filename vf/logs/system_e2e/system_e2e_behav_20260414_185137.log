@@ -1,0 +1,1618 @@
+Reading pref.tcl
+
+# 2024.2
+
+# do vf/scripts/runtb_system_e2e.tcl
+# /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1
+# /user/stud/fall25/lw3227/vcd
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# Model Technology ModelSim DE vmap 2024.2 Lib Mapping Utility 2024.05 May 20 2024
+# vmap work work 
+# Modifying modelsim.ini
+# 0
+INFO: using behavioral SRAM + tb_system_e2e.
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:39 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/TB/sram_behav.v 
+# -- Compiling module sram_A
+# -- Compiling module sram_B
+# 
+# Top level modules:
+# 	sram_A
+# 	sram_B
+# End time: 18:51:39 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/TB/tb_system_e2e.v
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:39 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/Addr_Gen.v 
+# -- Skipping module Addr_Gen
+# 
+# Top level modules:
+# 	Addr_Gen
+# End time: 18:51:40 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:40 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/sram_A_controller.v 
+# -- Skipping module sram_A_controller
+# 
+# Top level modules:
+# 	sram_A_controller
+# End time: 18:51:40 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:40 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/sram_B_controller.v 
+# -- Skipping module sram_B_controller
+# 
+# Top level modules:
+# 	sram_B_controller
+# End time: 18:51:40 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:40 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/sram_A_wrapper.v 
+# -- Skipping module sram_A_wrapper
+# 
+# Top level modules:
+# 	sram_A_wrapper
+# End time: 18:51:40 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:40 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/sram_B_wrapper.v 
+# -- Skipping module sram_B_wrapper
+# 
+# Top level modules:
+# 	sram_B_wrapper
+# End time: 18:51:40 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:40 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/top_sram_A.v 
+# -- Skipping module top_sram_A
+# 
+# Top level modules:
+# 	top_sram_A
+# End time: 18:51:40 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:40 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/SRAM/top_sram_B.v 
+# -- Skipping module top_sram_B
+# 
+# Top level modules:
+# 	top_sram_B
+# End time: 18:51:40 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:40 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/Line_Buffer.v 
+# -- Skipping module Line_Buffer
+# 
+# Top level modules:
+# 	Line_Buffer
+# End time: 18:51:41 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:41 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/input_row_aligner.v 
+# -- Skipping module input_row_aligner
+# 
+# Top level modules:
+# 	input_row_aligner
+# End time: 18:51:41 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:41 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/sa_skew_feeder.v 
+# -- Skipping module sa_skew_feeder
+# 
+# Top level modules:
+# 	sa_skew_feeder
+# End time: 18:51:41 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:41 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/Conv_Buffer.v 
+# -- Skipping module Conv_Buffer
+# 
+# Top level modules:
+# 	Conv_Buffer
+# End time: 18:51:41 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:41 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/systolic_array_top.v 
+# -- Skipping module systolic_array_top
+# -- Skipping module single_PE
+# 
+# Top level modules:
+# 	systolic_array_top
+# End time: 18:51:41 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:41 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/weight_buffer.v 
+# -- Skipping module ring_shift_reg
+# -- Skipping module weight_buffer
+# 
+# Top level modules:
+# 	weight_buffer
+# End time: 18:51:41 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:41 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/conv_engine_ctrl.v 
+# -- Skipping module conv_engine_ctrl
+# 
+# Top level modules:
+# 	conv_engine_ctrl
+# End time: 18:51:41 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:41 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/conv_top.v 
+# -- Skipping module conv_top
+# 
+# Top level modules:
+# 	conv_top
+# End time: 18:51:41 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:41 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/integration/quant_param_loader.v 
+# -- Skipping module quant_param_loader
+# 
+# Top level modules:
+# 	quant_param_loader
+# End time: 18:51:42 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:42 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/integration/conv_quant_adapter.v 
+# -- Skipping module conv_quant_adapter
+# 
+# Top level modules:
+# 	conv_quant_adapter
+# End time: 18:51:42 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:42 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/integration/quant_pool_adapter.v 
+# -- Skipping module quant_pool_adapter
+# 
+# Top level modules:
+# 	quant_pool_adapter
+# End time: 18:51:42 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:42 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/quant/Quantization_PE.v 
+# -- Skipping module Quantization_PE
+# 
+# Top level modules:
+# 	Quantization_PE
+# End time: 18:51:42 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:42 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/quant/Quantization_Top.v 
+# -- Skipping module Quantization_Top
+# 
+# Top level modules:
+# 	Quantization_Top
+# End time: 18:51:42 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:42 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/pool/pool_core.v 
+# -- Skipping module pool_core_lane
+# -- Skipping module pool_core
+# 
+# Top level modules:
+# 	pool_core
+# End time: 18:51:42 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:42 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/quant_pool/pool/pool_stream_top.v 
+# -- Skipping module pool_stream_top
+# 
+# Top level modules:
+# 	pool_stream_top
+# End time: 18:51:42 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:42 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/conv_core/conv_quant_pool.v 
+# -- Skipping module conv_quant_pool
+# 
+# Top level modules:
+# 	conv_quant_pool
+# End time: 18:51:43 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:43 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fsm/top_fsm.v 
+# -- Skipping module top_fsm
+# 
+# Top level modules:
+# 	top_fsm
+# End time: 18:51:43 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:43 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fsm/layer_runner_fsm.v 
+# -- Skipping module layer_runner_fsm
+# 
+# Top level modules:
+# 	layer_runner_fsm
+# End time: 18:51:43 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:43 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fsm/wt_prepad_inserter.v 
+# -- Skipping module wt_prepad_inserter
+# 
+# Top level modules:
+# 	wt_prepad_inserter
+# End time: 18:51:43 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:43 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fsm/conv_data_adapter.v 
+# -- Skipping module conv_data_adapter
+# 
+# Top level modules:
+# 	conv_data_adapter
+# End time: 18:51:43 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:43 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fc/mac.v 
+# -- Skipping module mac
+# 
+# Top level modules:
+# 	mac
+# End time: 18:51:43 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:43 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fc/fc_bias_loader.v 
+# -- Skipping module fc_bias_loader
+# 
+# Top level modules:
+# 	fc_bias_loader
+# End time: 18:51:43 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:43 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fc/FC.v 
+# -- Skipping module FC
+# 
+# Top level modules:
+# 	FC
+# End time: 18:51:44 on Apr 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:44 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/fc/fc_data_adapter.v 
+# -- Skipping module fc_data_adapter
+# 
+# Top level modules:
+# 	fc_data_adapter
+# End time: 18:51:44 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:44 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/RTL/system_top.v 
+# -- Skipping module system_top
+# 
+# Top level modules:
+# 	system_top
+# End time: 18:51:44 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 18:51:44 on Apr 14,2026
+# vlog "+acc" -incr /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/TB/tb_system_e2e.v 
+# -- Skipping module tb_system_e2e
+# 
+# Top level modules:
+# 	tb_system_e2e
+# End time: 18:51:44 on Apr 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -t ps work.tb_system_e2e +PROJ_DIR=/courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1
+# vsim -t ps work.tb_system_e2e "+PROJ_DIR=/courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1" 
+# Start time: 18:51:44 on Apr 14,2026
+# //  ModelSim DE 2024.2 May 20 2024 Linux 4.18.0-553.117.1.el8_10.x86_64
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading work.tb_system_e2e
+# Loading work.system_top
+# Loading work.top_fsm
+# Loading work.layer_runner_fsm
+# Loading work.top_sram_A
+# Loading work.Addr_Gen
+# Loading work.sram_A_wrapper
+# Loading work.sram_A
+# Loading work.sram_A_controller
+# Loading work.top_sram_B
+# Loading work.sram_B_wrapper
+# Loading work.sram_B
+# Loading work.sram_B_controller
+# Loading work.wt_prepad_inserter
+# Loading work.conv_data_adapter
+# Loading work.conv_quant_pool
+# Loading work.conv_top
+# Loading work.input_row_aligner
+# Loading work.Line_Buffer
+# Loading work.weight_buffer
+# Loading work.ring_shift_reg
+# Loading work.Conv_Buffer
+# Loading work.sa_skew_feeder
+# Loading work.conv_engine_ctrl
+# Loading work.systolic_array_top
+# Loading work.conv_quant_adapter
+# Loading work.quant_param_loader
+# Loading work.Quantization_Top
+# Loading work.Quantization_PE
+# Loading work.quant_pool_adapter
+# Loading work.pool_stream_top
+# Loading work.pool_core
+# Loading work.pool_core_lane
+# Loading work.fc_data_adapter
+# Loading work.FC
+# Loading work.fc_bias_loader
+# Loading work.mac
+# Loading work.single_PE
+# INFO: loading cfg from /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/matlab/debug/sram_preload/paper
+# INFO: loading weight from /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/matlab/debug/sram_preload/paper
+# INFO: loading paper image
+# INFO: loading rock image
+# INFO: loading scissors image
+# INFO: all golden data loaded
+# DIAG: golden loaded (SA=15376, requant=15376, pool=3844)
+# 
+# === TEST: MODEL_LOAD ===
+# INFO: sending CFG segment (48 words)...
+# INFO: [95000] TopFSM state 0 -> 1
+# INFO: [105000] top_fsm sram_a_start (layer_sel=0, data_sel=0)
+# INFO: [105000] TopFSM state 1 -> 2
+# INFO: [115000] SRAM_A start (layer_sel=0, data_sel=0, pass_id=0, preload_mode=1)
+# DIAG_WR: [125000] SRAM_A FIRST write: data=0000054a addr=0
+# INFO: [595000] SRAM_A done
+# DIAG_WR: [595000] SRAM_A write txn done: 48 writes, addr_gen_counter=47, layer_sel=0 data_sel=0 pass_id=0
+# INFO: [615000] TopFSM state 2 -> 3
+# INFO: [625000] top_fsm sram_a_start (layer_sel=0, data_sel=1)
+# INFO: [625000] TopFSM state 3 -> 4
+# INFO: [635000] SRAM_A start (layer_sel=0, data_sel=1, pass_id=0, preload_mode=1)
+# INFO: sending WEIGHT segment (513 words)...
+# DIAG_WR: [655000] SRAM_A FIRST write: data=90279445 addr=48
+# INFO: [5775000] SRAM_A done
+# DIAG_WR: [5775000] SRAM_A write txn done: 513 writes, addr_gen_counter=512, layer_sel=0 data_sel=1 pass_id=0
+# INFO: [5795000] TopFSM state 4 -> 7
+# PASS: MODEL_LOAD complete, TopFSM in READY
+# CYCLE_SUMMARY[MODEL_LOAD]: cfg=52 wt=518 pixel=0 total=570
+# 
+# === TEST: PAPER INFERENCE ===
+# INFO: sending paper image for inference...
+# INFO: [5905000] TopFSM state 7 -> 8
+# DBG_FSM: [5915000] runner_start=1  top_state=8 runner_state=0 layer_sel=0 is_fc=0
+# INFO: [5925000] Runner state 0 -> 1 (layer=0 fc=0)
+# INFO: [5935000] Runner state 1 -> 2 (layer=0 fc=0)
+# INFO: [5945000] SRAM_A start (layer_sel=1, data_sel=0, pass_id=0, preload_mode=0)
+# INFO: [6045000] SRAM_A done
+# INFO: [6055000] Runner state 2 -> 3 (layer=0 fc=0)
+# INFO: [6065000] Runner state 3 -> 4 (layer=0 fc=0)
+# INFO: [6075000] SRAM_A start (layer_sel=1, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [6195000] SRAM_A done
+# INFO: [6205000] Runner state 4 -> 5 (layer=0 fc=0)
+# DIAG_WT: [6205000] wt_load_done! layer_sel=0 weights_loaded=1
+# INFO: [6215000] Runner state 5 -> 6 (layer=0 fc=0)
+# INFO: [6215000] SRAM_B start (layer_sel=1, data_sel=2, pass_id=0)
+# DBG_A: [6215000] cnt=0 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6215000] cnt=0 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [6215000] cnt=0 conv: in_valid=1 in_ready=1 pix_cnt=30 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [6215000] cnt=0 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [6225000] cnt=1 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6225000] cnt=1 adapter: up_valid=1 up_ready=1 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [6225000] cnt=1 conv: in_valid=1 in_ready=1 pix_cnt=31 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [6225000] cnt=1 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [6235000] cnt=2 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6235000] cnt=2 adapter: up_valid=1 up_ready=0 up_data=12121212 | dn_valid=1 dn_ready=1 dn_data=00000012 byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [6235000] cnt=2 conv: in_valid=1 in_ready=1 pix_cnt=32 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [6235000] cnt=2 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [6245000] cnt=3 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6245000] cnt=3 adapter: up_valid=1 up_ready=0 up_data=12121212 | dn_valid=1 dn_ready=1 dn_data=00000012 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [6245000] cnt=3 conv: in_valid=1 in_ready=1 pix_cnt=33 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [6245000] cnt=3 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [6255000] cnt=4 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6255000] cnt=4 adapter: up_valid=1 up_ready=0 up_data=12121212 | dn_valid=1 dn_ready=1 dn_data=00000012 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [6255000] cnt=4 conv: in_valid=1 in_ready=1 pix_cnt=34 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [6255000] cnt=4 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [6265000] cnt=5 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6265000] cnt=5 adapter: up_valid=1 up_ready=1 up_data=12121212 | dn_valid=1 dn_ready=1 dn_data=00000012 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [6265000] cnt=5 conv: in_valid=1 in_ready=1 pix_cnt=35 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6275000] cnt=6 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6275000] cnt=6 adapter: up_valid=1 up_ready=0 up_data=11121212 | dn_valid=1 dn_ready=1 dn_data=00000012 byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [6275000] cnt=6 conv: in_valid=1 in_ready=1 pix_cnt=36 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6285000] cnt=7 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6285000] cnt=7 adapter: up_valid=1 up_ready=0 up_data=11121212 | dn_valid=1 dn_ready=1 dn_data=00000012 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [6285000] cnt=7 conv: in_valid=1 in_ready=1 pix_cnt=37 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6295000] cnt=8 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6295000] cnt=8 adapter: up_valid=1 up_ready=0 up_data=11121212 | dn_valid=1 dn_ready=1 dn_data=00000012 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [6295000] cnt=8 conv: in_valid=1 in_ready=1 pix_cnt=38 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6305000] cnt=9 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6305000] cnt=9 adapter: up_valid=1 up_ready=1 up_data=11121212 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [6305000] cnt=9 conv: in_valid=1 in_ready=1 pix_cnt=39 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6315000] cnt=10 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6315000] cnt=10 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [6315000] cnt=10 conv: in_valid=1 in_ready=1 pix_cnt=40 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6325000] cnt=11 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6325000] cnt=11 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [6325000] cnt=11 conv: in_valid=1 in_ready=1 pix_cnt=41 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6335000] cnt=12 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6335000] cnt=12 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [6335000] cnt=12 conv: in_valid=1 in_ready=1 pix_cnt=42 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6345000] cnt=13 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6345000] cnt=13 adapter: up_valid=1 up_ready=1 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [6345000] cnt=13 conv: in_valid=1 in_ready=1 pix_cnt=43 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6355000] cnt=14 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6355000] cnt=14 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [6355000] cnt=14 conv: in_valid=1 in_ready=1 pix_cnt=44 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6365000] cnt=15 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6365000] cnt=15 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [6365000] cnt=15 conv: in_valid=1 in_ready=1 pix_cnt=45 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6375000] cnt=16 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6375000] cnt=16 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [6375000] cnt=16 conv: in_valid=1 in_ready=1 pix_cnt=46 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6385000] cnt=17 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6385000] cnt=17 adapter: up_valid=1 up_ready=1 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [6385000] cnt=17 conv: in_valid=1 in_ready=1 pix_cnt=47 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6395000] cnt=18 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6395000] cnt=18 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [6395000] cnt=18 conv: in_valid=1 in_ready=1 pix_cnt=48 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [6405000] cnt=19 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [6405000] cnt=19 adapter: up_valid=1 up_ready=0 up_data=11111111 | dn_valid=1 dn_ready=1 dn_data=00000011 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [6405000] cnt=19 conv: in_valid=1 in_ready=1 pix_cnt=49 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_G: [7195000] pix3[0]: row0=0000000000000010 row1=000000000000000f row2=000000000000000f
+# DBG_G: [7205000] pix3[1]: row0=0000000000000010 row1=000000000000000f row2=000000000000000f
+# DBG_G: [7215000] pix3[2]: row0=0000000000000010 row1=000000000000000f row2=000000000000000f
+# DBG_F: [7395000] wt_burst[0]: out0=69(1) out1=0(0) out2=0(0) out3=0(0) ov=0001
+# DBG_F: [7405000] wt_burst[1]: out0=29(1) out1=-108(1) out2=0(0) out3=0(0) ov=0011
+# DBG_F: [7415000] wt_burst[2]: out0=-24(1) out1=-66(1) out2=39(1) out3=0(0) ov=0111
+# DBG_F: [7425000] wt_burst[3]: out0=-30(1) out1=127(1) out2=66(1) out3=-112(1) ov=1111
+# DBG_F: [7435000] wt_burst[4]: out0=-11(1) out1=-67(1) out2=11(1) out3=-32(1) ov=1111
+# DBG_F: [7445000] wt_burst[5]: out0=84(1) out1=23(1) out2=12(1) out3=-13(1) ov=1111
+# DBG_F: [7455000] wt_burst[6]: out0=-58(1) out1=106(1) out2=68(1) out3=-102(1) ov=1111
+# DBG_F: [7465000] wt_burst[7]: out0=-127(1) out1=-7(1) out2=110(1) out3=122(1) ov=1111
+# DBG_F: [7475000] wt_burst[8]: out0=55(1) out1=126(1) out2=84(1) out3=69(1) ov=1111
+# DBG_F: [7485000] wt_burst[9]: out0=0(0) out1=42(1) out2=16(1) out3=-79(1) ov=1110
+# DBG_F: [7495000] wt_burst[10]: out0=0(0) out1=0(0) out2=127(1) out3=23(1) ov=1100
+# DBG_H: [7505000] FIRST SA out: col0=-121 col1=0 col2=0 col3=0 valid=0001
+# DBG_F: [7505000] wt_burst[11]: out0=0(0) out1=0(0) out2=0(0) out3=127(1) ov=1000
+# DBG_F: [7515000] wt_burst[12]: out0=0(0) out1=0(0) out2=0(0) out3=0(0) ov=0000
+# DIAG_SA: col0 FIRST ERR at idx=1: got=-37 exp=-78 [7515000]
+# DIAG_SA: col1 FIRST ERR at idx=0: got=2593 exp=-121 [7515000]
+# DBG_F: [7525000] wt_burst[13]: out0=0(0) out1=0(0) out2=0(0) out3=0(0) ov=0000
+# DIAG_SA: col2 FIRST ERR at idx=0: got=8111 exp=-121 [7525000]
+# DBG_F: [7535000] wt_burst[14]: out0=0(0) out1=0(0) out2=0(0) out3=0(0) ov=0000
+# DIAG_SA: col3 FIRST ERR at idx=0: got=-112 exp=-121 [7535000]
+# DIAG: BACKPRESSURE rise at 7535000 pix_cnt=162
+# DBG_F: [7545000] wt_burst[15]: out0=0(0) out1=0(0) out2=0(0) out3=0(0) ov=0000
+# DBG_I: [7565000] cut[0]: c1=-126 c2=-128 c3=-128 c4=-128  v=1000
+# DBG_I: [7575000] cut[1]: c1=-126 c2=-119 c3=-128 c4=-128  v=1100
+# DIAG_CUT: ch1 FIRST ERR at idx=0: got=-119 exp=-126 [7575000]
+# DBG_I: [7585000] cut[2]: c1=-126 c2=-119 c3=-25 c4=-128  v=1110
+# DIAG_CUT: ch2 FIRST ERR at idx=0: got=-25 exp=-126 [7585000]
+# DBG_I: [7595000] cut[3]: c1=-126 c2=-119 c3=-25 c4=-123  v=1111
+# DIAG_CUT: ch3 FIRST ERR at idx=0: got=-123 exp=-126 [7595000]
+# DBG_I: [7605000] cut[4]: c1=-126 c2=-119 c3=-25 c4=-123  v=1111
+# DIAG_CUT: ch0 FIRST ERR at idx=7: got=-125 exp=-126 [7635000]
+# DIAG: BACKPRESSURE rise at 7785000 pix_cnt=178
+# DIAG: BACKPRESSURE rise at 8005000 pix_cnt=192
+# DIAG: BACKPRESSURE rise at 8285000 pix_cnt=210
+# DIAG: BACKPRESSURE rise at 8485000 pix_cnt=226
+# DIAG: BACKPRESSURE rise at 8725000 pix_cnt=242
+# DIAG: BACKPRESSURE rise at 8945000 pix_cnt=256
+# DIAG: BACKPRESSURE rise at 9225000 pix_cnt=274
+# DBG_E: [9405000] pool_out[0]: data=8289e885 valid=1 ready=1 last=0
+# DIAG_POOL: FIRST ERR at word=0: got=8289e885 exp=82828283 [9405000]
+# DBG_E: [9415000] pool_out[1]: data=828ae885 valid=1 ready=1 last=0
+# DBG_E: [9425000] pool_out[2]: data=828ae985 valid=1 ready=1 last=0
+# DBG_E: [9435000] pool_out[3]: data=838ae985 valid=1 ready=1 last=0
+# DBG_E: [9445000] pool_out[4]: data=8389e985 valid=1 ready=1 last=0
+# DBG_E: [9455000] pool_out[5]: data=8389e885 valid=1 ready=1 last=0
+# DBG_E: [9465000] pool_out[6]: data=838ae885 valid=1 ready=1 last=0
+# DBG_E: [9475000] pool_out[7]: data=838ae985 valid=1 ready=1 last=0
+# DBG_E: [9485000] pool_out[8]: data=8289e885 valid=1 ready=1 last=0
+# DBG_E: [9495000] pool_out[9]: data=8389e885 valid=1 ready=1 last=0
+# DBG_A: [11215000] cnt=500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [11215000] cnt=500 adapter: up_valid=1 up_ready=0 up_data=14141313 | dn_valid=1 dn_ready=1 dn_data=00000013 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [11215000] cnt=500 conv: in_valid=1 in_ready=1 pix_cnt=409 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [16215000] cnt=1000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [16215000] cnt=1000 adapter: up_valid=1 up_ready=1 up_data=16161616 | dn_valid=1 dn_ready=1 dn_data=00000016 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [16215000] cnt=1000 conv: in_valid=1 in_ready=1 pix_cnt=751 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [21215000] cnt=1500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [21215000] cnt=1500 adapter: up_valid=1 up_ready=0 up_data=14141414 | dn_valid=1 dn_ready=0 dn_data=00000014 byte_en=0001 | hold_valid=1 byte_sel=0
+# DBG_C: [21215000] cnt=1500 conv: in_valid=1 in_ready=0 pix_cnt=1088 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [26215000] cnt=2000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [26215000] cnt=2000 adapter: up_valid=1 up_ready=0 up_data=190eddd9 | dn_valid=1 dn_ready=1 dn_data=000000dd byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [26215000] cnt=2000 conv: in_valid=1 in_ready=1 pix_cnt=1429 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [31215000] cnt=2500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [31215000] cnt=2500 adapter: up_valid=1 up_ready=1 up_data=1c0fe6e1 | dn_valid=1 dn_ready=1 dn_data=0000001c byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [31215000] cnt=2500 conv: in_valid=1 in_ready=1 pix_cnt=1771 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [36215000] cnt=3000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [36215000] cnt=3000 adapter: up_valid=1 up_ready=0 up_data=1b1b1b1b | dn_valid=1 dn_ready=0 dn_data=0000001b byte_en=0001 | hold_valid=1 byte_sel=0
+# DBG_C: [36215000] cnt=3000 conv: in_valid=1 in_ready=0 pix_cnt=2112 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [41215000] cnt=3500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [41215000] cnt=3500 adapter: up_valid=1 up_ready=0 up_data=ebeceae9 | dn_valid=1 dn_ready=0 dn_data=000000ec byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [41215000] cnt=3500 conv: in_valid=1 in_ready=0 pix_cnt=2450 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [46215000] cnt=4000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [46215000] cnt=4000 adapter: up_valid=1 up_ready=1 up_data=e3e2e5e9 | dn_valid=1 dn_ready=1 dn_data=000000e3 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [46215000] cnt=4000 conv: in_valid=1 in_ready=1 pix_cnt=2791 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [51215000] cnt=4500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [51215000] cnt=4500 adapter: up_valid=1 up_ready=0 up_data=2e2e2e2e | dn_valid=1 dn_ready=1 dn_data=0000002e byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [51215000] cnt=4500 conv: in_valid=1 in_ready=1 pix_cnt=3133 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [56215000] cnt=5000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [56215000] cnt=5000 adapter: up_valid=1 up_ready=0 up_data=eaeae9e7 | dn_valid=1 dn_ready=1 dn_data=000000e9 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [56215000] cnt=5000 conv: in_valid=1 in_ready=1 pix_cnt=3473 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [61215000] cnt=5500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [61215000] cnt=5500 adapter: up_valid=1 up_ready=1 up_data=efefefee | dn_valid=1 dn_ready=1 dn_data=000000ef byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [61215000] cnt=5500 conv: in_valid=1 in_ready=1 pix_cnt=3811 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# INFO: waiting for inference to complete...
+# DIAG_FRAME: [65345000] frame_done RISES pix_cnt=4096 layer=0
+# DIAG_FRAME: [65715000] frame_rearm layer=0 pix_cnt=4096
+# INFO: [66105000] SRAM_B done
+# DIAG_WRB: [66105000] SRAM_B write txn done: count=961 addr_counter=960 layer_sel=1 data_sel=2 pass_id=0
+# INFO: [66115000] Runner state 6 -> 7 (layer=0 fc=0)
+# DIAG_PFD: [66115000] pool_frame_done layer=0 pass=0 burst=0 emit_cnt=0
+# DIAG_SUMMARY: === L1 Diagnostic Results ===
+# DIAG_SUMMARY: SA  col0=3844 col1=3844 col2=3844 col3=3844  (expect ~3856 each)
+# DIAG_SUMMARY: SA  err0=3780 err1=3843 err2=3844 err3=3842
+# DIAG_SUMMARY: CUT cnt0=3844 cnt1=3844 cnt2=3844 cnt3=3844  (expect 3844 each)
+# DIAG_SUMMARY: CUT err0=2474 err1=3520 err2=3844 err3=3677
+# DIAG_SUMMARY: POOL cnt=961 err=961  (expect 961 words)
+# DIAG_SUMMARY: backpressure=1 pix_cnt=0 frame_done=0
+# INFO: [66125000] runner_done (layer_sel=0, pass_id=0, is_fc=0)
+# INFO: [66125000] Runner state 7 -> 0 (layer=0 fc=0)
+# DIAG_L1POOL[0]: 961 words checked, 0 errors
+# INFO: [66135000] TopFSM state 8 -> 9
+# DBG_FSM: [66145000] runner_start=1  top_state=9 runner_state=0 layer_sel=1 is_fc=0
+# INFO: [66155000] Runner state 0 -> 1 (layer=1 fc=0)
+# INFO: [66165000] Runner state 1 -> 2 (layer=1 fc=0)
+# INFO: [66175000] SRAM_A start (layer_sel=2, data_sel=0, pass_id=0, preload_mode=0)
+# INFO: [66275000] SRAM_A done
+# INFO: [66285000] Runner state 2 -> 3 (layer=1 fc=0)
+# INFO: [66295000] Runner state 3 -> 4 (layer=1 fc=0)
+# INFO: [66305000] SRAM_A start (layer_sel=2, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [66695000] SRAM_A done
+# INFO: [66705000] Runner state 4 -> 5 (layer=1 fc=0)
+# DIAG_WT: [66705000] wt_load_done! layer_sel=1 weights_loaded=1
+# INFO: [66715000] Runner state 5 -> 6 (layer=1 fc=0)
+# INFO: [66715000] SRAM_B start (layer_sel=2, data_sel=2, pass_id=0)
+# DIAG_ADAPTER: [66715000] L2 SRAM_B start: hold_valid=0 hold_reg=38383837 byte_sel=0 is_l1=0 dn_ready=1
+# INFO: [66725000] SRAM_A start (layer_sel=2, data_sel=2, pass_id=0, preload_mode=0)
+# DIAG_L2PIX: [66735000] pix[0]: data=85e88982 byte_en=1111
+# DIAG_L2PIX: [66745000] pix[1]: data=85e88a82 byte_en=1111
+# DIAG_L2PIX: [66755000] pix[2]: data=85e98a82 byte_en=1111
+# DIAG_L2PIX: [66765000] pix[3]: data=85e98a83 byte_en=1111
+# DIAG_L2PIX: [66775000] pix[4]: data=85e98983 byte_en=1111
+# DIAG_SA_L2: [67935000] SA col0=-11898 col1=0 col2=0 col3=0 valid=0001  (#0)
+# DIAG_SA_L2: [67945000] SA col0=-11963 col1=-59195 col2=0 col3=0 valid=0011  (#1)
+# DIAG_SA_L2: [67955000] SA col0=-11704 col1=-59283 col2=-140016 col3=0 valid=0111  (#2)
+# DIAG_SA_L2: [67965000] SA col0=-11304 col1=-58981 col2=-140057 col3=-9292 valid=1111  (#3)
+# DIAG_PLCUT: [67995000] P1 lane_cut[0]: c1=-128 c2=-128 c3=-128 c4=-128  drop=0 burst=0
+# DIAG_PLCUT: [68005000] P1 lane_cut[1]: c1=-128 c2=-128 c3=-128 c4=-128  drop=0 burst=0
+# DIAG_PLCUT: [68015000] P1 lane_cut[2]: c1=-128 c2=-128 c3=-127 c4=-128  drop=0 burst=0
+# DIAG_PLCUT: [68025000] P1 lane_cut[3]: c1=-128 c2=-127 c3=-127 c4=-124  drop=0 burst=0
+# DIAG_PLCUT: [68035000] P1 lane_cut[4]: c1=-128 c2=-126 c3=-128 c4=-124  drop=0 burst=0
+# DIAG_PLCUT: [68045000] P1 lane_cut[5]: c1=-128 c2=-127 c3=-127 c4=-124  drop=0 burst=0
+# DIAG_PLCUT: [68055000] P1 lane_cut[6]: c1=-128 c2=-127 c3=-127 c4=-124  drop=0 burst=0
+# DIAG_PLCUT: [68065000] P1 lane_cut[7]: c1=-128 c2=-127 c3=-128 c4=-125  drop=0 burst=0
+# DIAG_WR: [69655000] SRAM_A FIRST write: data=80818184 addr=561
+# INFO: [95385000] SRAM_B done
+# DIAG_FRAME: [95395000] frame_done RISES pix_cnt=961 layer=1
+# INFO: [95525000] SRAM_A done
+# DIAG_WR: [95525000] SRAM_A write txn done: 196 writes, addr_gen_counter=195, layer_sel=2 data_sel=2 pass_id=0
+# DIAG_PFD: [95535000] pool_frame_done layer=1 pass=0 burst=0 emit_cnt=0
+# DIAG_FRAME: [96305000] frame_rearm layer=1 pix_cnt=961
+# INFO: [96315000] Runner state 6 -> 7 (layer=1 fc=0)
+# INFO: [96325000] runner_done (layer_sel=1, pass_id=0, is_fc=0)
+# INFO: [96325000] Runner state 7 -> 0 (layer=1 fc=0)
+# INFO: [96335000] TopFSM state 9 -> 10
+# DBG_FSM: [96345000] runner_start=1  top_state=10 runner_state=0 layer_sel=1 is_fc=0
+# INFO: [96355000] Runner state 0 -> 1 (layer=1 fc=0)
+# INFO: [96365000] Runner state 1 -> 2 (layer=1 fc=0)
+# INFO: [96375000] SRAM_A start (layer_sel=2, data_sel=0, pass_id=1, preload_mode=0)
+# INFO: [96475000] SRAM_A done
+# INFO: [96485000] Runner state 2 -> 3 (layer=1 fc=0)
+# INFO: [96495000] Runner state 3 -> 4 (layer=1 fc=0)
+# INFO: [96505000] SRAM_A start (layer_sel=2, data_sel=1, pass_id=1, preload_mode=0)
+# DIAG_L2P1WT: [96515000] beat[0]=00000000 last=0
+# DIAG_L2P1WT: [96525000] beat[1]=00000000 last=0
+# DIAG_L2P1WT: [96535000] beat[2]=00000000 last=0
+# DIAG_L2P1WT: [96545000] beat[3]=f47f23f0 last=0
+# DIAG_L2P1WT: [96555000] beat[4]=def8fec9 last=0
+# DIAG_L2P1WT: [96565000] beat[5]=d3febef4 last=0
+# DIAG_L2P1WT: [96575000] beat[6]=dde23bf6 last=0
+# DIAG_L2P1WT: [96585000] beat[7]=76f66a3f last=0
+# DIAG_L2P1WT: [96675000] beat[0]=b31e39f0 last=0
+# DIAG_L2P1WT: [96685000] beat[1]=24fd0624 last=0
+# DIAG_L2P1WT: [96695000] beat[2]=b01e0de8 last=0
+# DIAG_L2P1WT: [96705000] beat[3]=4f13607f last=0
+# DIAG_L2P1WT: [96715000] beat[4]=1b210504 last=0
+# DIAG_L2P1WT: [96725000] beat[5]=dc24ceb2 last=0
+# DIAG_L2P1WT: [96735000] beat[6]=06292347 last=0
+# DIAG_L2P1WT: [96745000] beat[7]=542a511c last=0
+# DIAG_L2P1WT: [96835000] beat[0]=f912225d last=0
+# DIAG_L2P1WT: [96845000] beat[1]=c9de20d0 last=0
+# DIAG_L2P1WT: [96855000] beat[2]=e12c2d61 last=0
+# DIAG_L2P1WT: [96865000] beat[3]=7b13ee97 last=0
+# DIAG_L2P1WT: [96875000] beat[4]=faf90a0b last=0
+# DIAG_L2P1WT: [96885000] beat[5]=05fa33f5 last=0
+# INFO: [96895000] SRAM_A done
+# DIAG_L2P1WT: [96895000] beat[6]=3a1e2032 last=1
+# INFO: [96905000] Runner state 4 -> 5 (layer=1 fc=0)
+# DIAG_WT: [96905000] wt_load_done! layer_sel=1 weights_loaded=1
+# INFO: [96915000] Runner state 5 -> 6 (layer=1 fc=0)
+# INFO: [96915000] SRAM_B start (layer_sel=2, data_sel=2, pass_id=1)
+# DIAG_L2P1Q: [96915000] QPE bias/M/sh = (000097ab,638e7923,39) (0000c81e,5479f7b1,39) (00018c7f,6628e8e3,39) (0001085f,524fbd78,39)
+# DIAG_ADAPTER: [96915000] L2 SRAM_B start: hold_valid=0 hold_reg=8380b685 byte_sel=0 is_l1=0 dn_ready=1
+# INFO: [96925000] SRAM_A start (layer_sel=2, data_sel=2, pass_id=1, preload_mode=0)
+# DIAG_L2PIX: [96935000] pix[0]: data=85e88982 byte_en=1111
+# DIAG_L2PIX: [96945000] pix[1]: data=85e88a82 byte_en=1111
+# DIAG_L2PIX: [96955000] pix[2]: data=85e98a82 byte_en=1111
+# DIAG_L2PIX: [96965000] pix[3]: data=85e98a83 byte_en=1111
+# DIAG_L2PIX: [96975000] pix[4]: data=85e98983 byte_en=1111
+# DIAG_L2P1ALIGN: [97555000] first pix3 rows:
+#   row0=0000000085ea8a82
+#   row1=0000000085e88a82
+#   row2=0000000085e88982
+# DIAG_L2P1BANK: [97555000] first bank_wr: row=0 bank=0 data[127:0]=0000000085e88a820000000085ea8a82
+# DIAG_SA_L2: [98135000] SA col0=-50019 col1=0 col2=0 col3=0 valid=0001  (#0)
+# DIAG_SA_L2: [98145000] SA col0=-50207 col1=-53056 col2=0 col3=0 valid=0011  (#1)
+# DIAG_SA_L2: [98155000] SA col0=-50042 col1=-53055 col2=-93501 col3=0 valid=0111  (#2)
+# DIAG_SA_L2: [98165000] SA col0=-50164 col1=-53104 col2=-93413 col3=-72552 valid=1111  (#3)
+# DIAG_CUT_SYSTEM: [98195000] idx=0 c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_P1LANE: [98195000] FIRST P1 lane_cut: col=0 row=0 cnt1=0 cnt2=0 cnt3=0 drop=0 burst=0 emit=0 ready=0000
+# DIAG_CUT_SYSTEM: [98205000] idx=1 c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_CUT_SYSTEM: [98215000] idx=2 c1=-128 c2=-128 c3=-103 c4=-128
+# DIAG_CUT_SYSTEM: [98225000] idx=3 c1=-128 c2=-128 c3=-103 c4=-128
+# DIAG_CUT_SYSTEM: [98235000] idx=4 c1=-128 c2=-128 c3=-103 c4=-128
+# DIAG_CUT_SYSTEM: [98245000] idx=5 c1=-128 c2=-128 c3=-103 c4=-128
+# DIAG_CUT_SYSTEM: [98255000] idx=6 c1=-128 c2=-128 c3=-102 c4=-128
+# DIAG_CUT_SYSTEM: [98265000] idx=7 c1=-128 c2=-128 c3=-102 c4=-128
+# DIAG_WR: [99855000] SRAM_A FIRST write: data=80809a80 addr=561
+# DIAG_P1POOL: [99855000] pool_word[0]=80809a80  burst=0 emit_cnt=0
+# DIAG_P1POOL: [99865000] pool_word[1]=80809a80  burst=0 emit_cnt=1
+# DIAG_P1POOL: [99875000] pool_word[2]=80809a80  burst=0 emit_cnt=2
+# DIAG_P1POOL: [99885000] pool_word[3]=80809980  burst=0 emit_cnt=3
+# DIAG_P1POOL: [99895000] pool_word[4]=80809980  burst=0 emit_cnt=4
+# INFO: [125585000] SRAM_B done
+# DIAG_FRAME: [125595000] frame_done RISES pix_cnt=961 layer=1
+# INFO: [125725000] SRAM_A done
+# DIAG_WR: [125725000] SRAM_A write txn done: 196 writes, addr_gen_counter=195, layer_sel=2 data_sel=2 pass_id=1
+# DIAG_PFD: [125735000] pool_frame_done layer=1 pass=1 burst=0 emit_cnt=0
+# DIAG_FRAME: [126505000] frame_rearm layer=1 pix_cnt=961
+# INFO: [126515000] Runner state 6 -> 7 (layer=1 fc=0)
+# INFO: [126525000] runner_done (layer_sel=1, pass_id=1, is_fc=0)
+# INFO: [126525000] Runner state 7 -> 0 (layer=1 fc=0)
+# INFO: [126535000] TopFSM state 10 -> 11
+# DIAG_L2POOL[0]: total=0  pass0=0/196  pass1=0/196
+# DIAG_L2POOL[0]: pass0[0]: actual=80818184 exp=80818184
+# DIAG_L2POOL[0]: pass0[195]: actual=8080a080 exp=8080a080
+# DIAG_L2POOL[0]: pass1[0]: actual=82828085 exp=82828085
+# DIAG_L2POOL[0]: pass1[1]: actual=80809d80 exp=80809d80
+# DIAG_L3IN: SRAM_A L2 pool area at L3 start:
+#   [561]=80818184 [562]=80809a80 [563]=80828184 [564]=80809a80
+# DBG_FSM: [126545000] runner_start=1  top_state=11 runner_state=0 layer_sel=10 is_fc=0
+# INFO: [126555000] Runner state 0 -> 1 (layer=10 fc=0)
+# DIAG_DROP: [126555000] drop=1 any_cut=1 lane_reset=1
+# INFO: [126565000] Runner state 1 -> 2 (layer=10 fc=0)
+# INFO: [126575000] SRAM_A start (layer_sel=3, data_sel=0, pass_id=0, preload_mode=0)
+# DIAG_DROP: [126585000] drop=1 any_cut=0 lane_reset=0
+# DIAG_DROP: [126595000] drop=0 any_cut=0 lane_reset=1
+# INFO: [126675000] SRAM_A done
+# INFO: [126685000] Runner state 2 -> 3 (layer=10 fc=0)
+# INFO: [126695000] Runner state 3 -> 4 (layer=10 fc=0)
+# INFO: [126705000] SRAM_A start (layer_sel=3, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [127455000] SRAM_A done
+# INFO: [127465000] Runner state 4 -> 5 (layer=10 fc=0)
+# DIAG_WT: [127465000] wt_load_done! layer_sel=10 weights_loaded=1
+# INFO: [127475000] Runner state 5 -> 6 (layer=10 fc=0)
+# INFO: [127475000] SRAM_B start (layer_sel=3, data_sel=2, pass_id=0)
+# INFO: [127485000] SRAM_A start (layer_sel=3, data_sel=2, pass_id=0, preload_mode=0)
+# DIAG_L3PIX: [127505000] L3 pix[0]: data=84818180 byte_en=1111
+# DIAG_L3PIX: [127515000] L3 pix[1]: data=809a8080 byte_en=1111
+# DIAG_L3PIX: [127525000] L3 pix[2]: data=84818280 byte_en=1111
+# DIAG_L3PIX: [127535000] L3 pix[3]: data=809a8080 byte_en=1111
+# DIAG_L3BANK: [128075000] first bank_wr: row=0 bank=0 data[71:0]=80809a808085808080
+# DIAG_L3ALIGN: [128075000] first pix3 rows:
+#   row0=809a808085808080
+#   row1=809a808085808080
+#   row2=809a808084818180
+# DIAG_L3LAUNCH: [128365000] SA launch! state=2 weights_loaded=1 have_ready=0 bank=0 cur_k=72
+# DIAG_L3SA: [129105000] L3 P0 first SA (after stream): col0=977 col1=0 col2=0 col3=0
+# DIAG_L3CUT: [129165000] cut[0]: c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_L3P0LANE: [129165000] FIRST L3 lane_cut: col=0 row=0 cnt1=0 cnt2=0 cnt3=0 drop=0 burst=0 emit=0
+# DIAG_L3CUT: [129175000] cut[1]: c1=-128 c2=-127 c3=-128 c4=-128
+# DIAG_L3CUT: [129185000] cut[2]: c1=-128 c2=-124 c3=-128 c4=-128
+# DIAG_L3CUT: [129195000] cut[3]: c1=-128 c2=-128 c3=-128 c4=-125
+# DIAG_L3CUT: [129205000] cut[4]: c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_L3CUT: [129215000] cut[5]: c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_L3CUT: [129225000] cut[6]: c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_L3CUT: [129235000] cut[7]: c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_L3EMIT: [130155000] first emit: burst=0 cnt=0 data=80848083 ready=1
+# INFO: [136925000] SRAM_A done
+# DIAG_FRAME: [136935000] frame_done RISES pix_cnt=392 layer=10
+# DIAG_FRAME: [138365000] frame_rearm layer=10 pix_cnt=392
+# INFO: [138505000] SRAM_B done
+# DIAG_WRB: [138505000] SRAM_B write txn done: count=36 addr_counter=35 layer_sel=3 data_sel=2 pass_id=0
+# INFO: [138515000] Runner state 6 -> 7 (layer=10 fc=0)
+# DIAG_PFD: [138515000] pool_frame_done layer=10 pass=0 burst=0 emit_cnt=0
+# INFO: [138525000] runner_done (layer_sel=10, pass_id=0, is_fc=0)
+# INFO: [138525000] Runner state 7 -> 0 (layer=10 fc=0)
+# INFO: [138535000] TopFSM state 11 -> 12
+# DBG_FSM: [138545000] runner_start=1  top_state=12 runner_state=0 layer_sel=10 is_fc=0
+# INFO: [138555000] Runner state 0 -> 1 (layer=10 fc=0)
+# INFO: [138565000] Runner state 1 -> 2 (layer=10 fc=0)
+# INFO: [138575000] SRAM_A start (layer_sel=3, data_sel=0, pass_id=1, preload_mode=0)
+# INFO: [138675000] SRAM_A done
+# INFO: [138685000] Runner state 2 -> 3 (layer=10 fc=0)
+# INFO: [138695000] Runner state 3 -> 4 (layer=10 fc=0)
+# INFO: [138705000] SRAM_A start (layer_sel=3, data_sel=1, pass_id=1, preload_mode=0)
+# INFO: [139455000] SRAM_A done
+# INFO: [139465000] Runner state 4 -> 5 (layer=10 fc=0)
+# DIAG_WT: [139465000] wt_load_done! layer_sel=10 weights_loaded=1
+# INFO: [139475000] Runner state 5 -> 6 (layer=10 fc=0)
+# INFO: [139475000] SRAM_B start (layer_sel=3, data_sel=2, pass_id=1)
+# INFO: [139485000] SRAM_A start (layer_sel=3, data_sel=2, pass_id=1, preload_mode=0)
+# DIAG_L3P1SA: [141105000] first SA col0=221241 col1=0 col2=0 col3=0
+# DIAG_L3P1CUT: [141165000] first cut c1=-128 c2=-128 c3=-128 c4=-128 drop=0
+# DIAG_L3P1POOL: [142155000] word[0]=85808088 last=0 burst=0 emit_cnt=0
+# DIAG_L3P1POOL: [142165000] word[1]=8d80808c last=0 burst=0 emit_cnt=1
+# DIAG_L3P1POOL: [142175000] word[2]=92808090 last=0 burst=0 emit_cnt=2
+# DIAG_L3P1POOL: [142185000] word[3]=9080808a last=0 burst=0 emit_cnt=3
+# DIAG_L3P1POOL: [142195000] word[4]=80808089 last=0 burst=0 emit_cnt=4
+# DIAG_L3P1POOL: [142205000] word[5]=80808085 last=1 burst=0 emit_cnt=5
+# DIAG_L3P1POOL: [143815000] word[6]=808091a8 last=0 burst=1 emit_cnt=0
+# DIAG_L3P1POOL: [143825000] word[7]=80809493 last=0 burst=1 emit_cnt=1
+# INFO: [148925000] SRAM_A done
+# DIAG_FRAME: [148935000] frame_done RISES pix_cnt=392 layer=10
+# DIAG_FRAME: [150365000] frame_rearm layer=10 pix_cnt=392
+# DIAG_L3P1SUM: [150365000] before runner_done pool_words=30 sram_b_busy=1 txn_active=1 addr_counter=30
+# INFO: [150505000] SRAM_B done
+# DIAG_WRB: [150505000] SRAM_B write txn done: count=36 addr_counter=35 layer_sel=3 data_sel=2 pass_id=1
+# INFO: [150515000] Runner state 6 -> 7 (layer=10 fc=0)
+# DIAG_PFD: [150515000] pool_frame_done layer=10 pass=1 burst=0 emit_cnt=0
+# INFO: [150525000] runner_done (layer_sel=10, pass_id=1, is_fc=0)
+# INFO: [150525000] Runner state 7 -> 0 (layer=10 fc=0)
+# INFO: [150535000] TopFSM state 12 -> 13
+# DIAG_L3POOL[0]: 72 words checked (2 passes), 0 errors
+# DBG_FSM: [150545000] runner_start=1  top_state=13 runner_state=0 layer_sel=0 is_fc=1
+# INFO: [150555000] Runner state 0 -> 1 (layer=0 fc=1)
+# INFO: [150565000] Runner state 1 -> 2 (layer=0 fc=1)
+# INFO: [150575000] SRAM_A start (layer_sel=4, data_sel=0, pass_id=0, preload_mode=0)
+# DIAG_FC_CFG: [150595000] data=fffd807a last=0
+# DIAG_FC_CFG: [150605000] data=fffeceeb last=0
+# INFO: [150615000] SRAM_A done
+# DIAG_FC_CFG: [150615000] data=ffffe25e last=1
+# INFO: [150625000] Runner state 2 -> 5 (layer=0 fc=1)
+# INFO: [150635000] Runner state 5 -> 6 (layer=0 fc=1)
+# INFO: [150635000] SRAM_B start (layer_sel=4, data_sel=2, pass_id=0)
+# INFO: [150645000] SRAM_A start (layer_sel=4, data_sel=1, pass_id=0, preload_mode=0)
+# DIAG_FC_DATA:[150655000] idx=0 data=80848083 b3=-128 b2=-124 b1=-128 b0=-125
+# DIAG_FC_WT:  [150665000] idx=0 data=00ff3dd3 k0=0 k1=-1 k2=61
+# DIAG_FC_MUL: [150675000] idx=0 px=-128 k0=-45 k1=61 k2=-1 acc0=0 acc1=0 acc2=0
+# DIAG_FC_WT:  [150685000] idx=1 data=0048ceff k0=0 k1=72 k2=-50
+# DIAG_FC_MUL: [150695000] idx=1 px=-124 k0=-1 k1=-50 k2=72 acc0=-157958 acc1=-85909 acc2=-7458
+# DIAG_FC_WT:  [150705000] idx=2 data=00e3e318 k0=0 k1=-29 k2=-29
+# DIAG_FC_MUL: [150715000] idx=2 px=-128 k0=24 k1=-29 k2=-29 acc0=-157834 acc1=-79709 acc2=-16386
+# DIAG_FC_WT:  [150725000] idx=3 data=00e813fb k0=0 k1=-24 k2=19
+# DIAG_FC_MUL: [150735000] idx=3 px=-125 k0=-5 k1=19 k2=-24 acc0=-160906 acc1=-75997 acc2=-12674
+# DIAG_FC_WT:  [150745000] idx=4 data=00fd0512 k0=0 k1=-3 k2=5
+# DIAG_FC_DATA:[150745000] idx=1 data=85808088 b3=-123 b2=-128 b1=-128 b0=-120
+# DIAG_FC_MUL: [150755000] idx=4 px=-123 k0=18 k1=5 k2=-3 acc0=-160281 acc1=-78372 acc2=-9674
+# DIAG_FC_WT:  [150765000] idx=5 data=00f9f911 k0=0 k1=-7 k2=-7
+# DIAG_FC_MUL: [150775000] idx=5 px=-128 k0=17 k1=-7 k2=-7 acc0=-162495 acc1=-78987 acc2=-9305
+# DIAG_FC_WT:  [150785000] idx=6 data=0021a43d k0=0 k1=33 k2=-92
+# DIAG_FC_MUL: [150795000] idx=6 px=-128 k0=61 k1=-92 k2=33 acc0=-164671 acc1=-78091 acc2=-8409
+# DIAG_FC_WT:  [150805000] idx=7 data=000be200 k0=0 k1=11 k2=-30
+# DIAG_FC_MUL: [150815000] idx=7 px=-120 k0=0 k1=-30 k2=11 acc0=-172479 acc1=-66315 acc2=-12633
+# DIAG_FC_DATA:[150825000] idx=2 data=80808580 b3=-128 b2=-128 b1=-123 b0=-128
+# DIAG_FC_DATA:[150905000] idx=3 data=8d80808c b3=-115 b2=-128 b1=-128 b0=-116
+# DIAG_FC_DATA:[150985000] idx=4 data=80808080 b3=-128 b2=-128 b1=-128 b0=-128
+# DIAG_FC_DATA:[151065000] idx=5 data=92808090 b3=-110 b2=-128 b1=-128 b0=-112
+# DIAG_FC_DATA:[151145000] idx=6 data=80808085 b3=-128 b2=-128 b1=-128 b0=-123
+# DIAG_FC_DATA:[151225000] idx=7 data=9080808a b3=-112 b2=-128 b1=-128 b0=-118
+# INFO: [156345000] SRAM_B done
+# INFO: [156405000] SRAM_A done
+# INFO: [156435000] Runner state 6 -> 7 (layer=0 fc=1)
+# INFO: [156445000] runner_done (layer_sel=0, pass_id=0, is_fc=1)
+# INFO: [156445000] Runner state 7 -> 0 (layer=0 fc=1)
+# INFO: [156455000] TopFSM state 13 -> 14
+# DIAG_FC[0]: acc0=31584 (exp 31584)   OK
+# DIAG_FC[0]: acc1=-45626 (exp -45626)   OK
+# DIAG_FC[0]: acc2=-6364 (exp -6364)   OK
+# INFO: [156465000] TopFSM state 14 -> 7
+# DIAG_FC_SUM: wt_words=288 data_words=72 muls=288
+# INFO: inference done in 9113 cycles
+# INFO: predict_class=0 (expected 0=paper)
+# INFO: fc_acc0=31584, fc_acc1=-45626, fc_acc2=-6364
+# CYCLE_SUMMARY[paper]: preload_pixel=0 argmax=1 end_to_end=15056
+# CYCLE_SUMMARY[paper]: L1    total=6023 cfg=16 wt=15 data=5992
+# CYCLE_SUMMARY[paper]: L2_P0 total=3020 cfg=16 wt=42 data=2962
+# CYCLE_SUMMARY[paper]: L2_P1 total=3020 cfg=16 wt=42 data=2962
+# CYCLE_SUMMARY[paper]: L2    total=6040
+# CYCLE_SUMMARY[paper]: L3_P0 total=1200 cfg=16 wt=78 data=1106
+# CYCLE_SUMMARY[paper]: L3_P1 total=1200 cfg=16 wt=78 data=1106
+# CYCLE_SUMMARY[paper]: L3    total=2400
+# CYCLE_SUMMARY[paper]: FC    total=592 cfg=10 wt=0 data=582
+# CYCLE_SUMMARY[paper]: layers_total=15055
+# PASS: paper classified correctly
+# 
+# === TEST: ROCK INFERENCE ===
+# INFO: sending rock image for inference...
+# INFO: [156545000] TopFSM state 7 -> 8
+# DBG_FSM: [156555000] runner_start=1  top_state=8 runner_state=0 layer_sel=0 is_fc=0
+# INFO: [156565000] Runner state 0 -> 1 (layer=0 fc=0)
+# INFO: [156575000] Runner state 1 -> 2 (layer=0 fc=0)
+# INFO: [156585000] SRAM_A start (layer_sel=1, data_sel=0, pass_id=0, preload_mode=0)
+# INFO: [156685000] SRAM_A done
+# INFO: [156695000] Runner state 2 -> 3 (layer=0 fc=0)
+# INFO: [156705000] Runner state 3 -> 4 (layer=0 fc=0)
+# INFO: [156715000] SRAM_A start (layer_sel=1, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [156835000] SRAM_A done
+# INFO: [156845000] Runner state 4 -> 5 (layer=0 fc=0)
+# DIAG_WT: [156845000] wt_load_done! layer_sel=0 weights_loaded=1
+# INFO: [156855000] Runner state 5 -> 6 (layer=0 fc=0)
+# INFO: [156855000] SRAM_B start (layer_sel=1, data_sel=2, pass_id=0)
+# DBG_A: [156855000] cnt=0 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156855000] cnt=0 adapter: up_valid=1 up_ready=0 up_data=1f1f1f1e | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [156855000] cnt=0 conv: in_valid=1 in_ready=1 pix_cnt=30 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [156855000] cnt=0 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [156865000] cnt=1 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156865000] cnt=1 adapter: up_valid=1 up_ready=1 up_data=1f1f1f1e | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [156865000] cnt=1 conv: in_valid=1 in_ready=1 pix_cnt=31 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [156865000] cnt=1 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [156875000] cnt=2 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156875000] cnt=2 adapter: up_valid=1 up_ready=0 up_data=201f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [156875000] cnt=2 conv: in_valid=1 in_ready=1 pix_cnt=32 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [156875000] cnt=2 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [156885000] cnt=3 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156885000] cnt=3 adapter: up_valid=1 up_ready=0 up_data=201f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [156885000] cnt=3 conv: in_valid=1 in_ready=1 pix_cnt=33 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [156885000] cnt=3 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [156895000] cnt=4 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156895000] cnt=4 adapter: up_valid=1 up_ready=0 up_data=201f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [156895000] cnt=4 conv: in_valid=1 in_ready=1 pix_cnt=34 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [156895000] cnt=4 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [156905000] cnt=5 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156905000] cnt=5 adapter: up_valid=1 up_ready=1 up_data=201f1f1f | dn_valid=1 dn_ready=1 dn_data=00000020 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [156905000] cnt=5 conv: in_valid=1 in_ready=1 pix_cnt=35 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156915000] cnt=6 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156915000] cnt=6 adapter: up_valid=1 up_ready=0 up_data=1f1f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [156915000] cnt=6 conv: in_valid=1 in_ready=1 pix_cnt=36 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156925000] cnt=7 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156925000] cnt=7 adapter: up_valid=1 up_ready=0 up_data=1f1f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [156925000] cnt=7 conv: in_valid=1 in_ready=1 pix_cnt=37 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156935000] cnt=8 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156935000] cnt=8 adapter: up_valid=1 up_ready=0 up_data=1f1f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [156935000] cnt=8 conv: in_valid=1 in_ready=1 pix_cnt=38 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156945000] cnt=9 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156945000] cnt=9 adapter: up_valid=1 up_ready=1 up_data=1f1f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [156945000] cnt=9 conv: in_valid=1 in_ready=1 pix_cnt=39 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156955000] cnt=10 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156955000] cnt=10 adapter: up_valid=1 up_ready=0 up_data=2020201f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [156955000] cnt=10 conv: in_valid=1 in_ready=1 pix_cnt=40 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156965000] cnt=11 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156965000] cnt=11 adapter: up_valid=1 up_ready=0 up_data=2020201f | dn_valid=1 dn_ready=1 dn_data=00000020 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [156965000] cnt=11 conv: in_valid=1 in_ready=1 pix_cnt=41 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156975000] cnt=12 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156975000] cnt=12 adapter: up_valid=1 up_ready=0 up_data=2020201f | dn_valid=1 dn_ready=1 dn_data=00000020 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [156975000] cnt=12 conv: in_valid=1 in_ready=1 pix_cnt=42 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156985000] cnt=13 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156985000] cnt=13 adapter: up_valid=1 up_ready=1 up_data=2020201f | dn_valid=1 dn_ready=1 dn_data=00000020 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [156985000] cnt=13 conv: in_valid=1 in_ready=1 pix_cnt=43 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [156995000] cnt=14 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [156995000] cnt=14 adapter: up_valid=1 up_ready=0 up_data=1f202020 | dn_valid=1 dn_ready=1 dn_data=00000020 byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [156995000] cnt=14 conv: in_valid=1 in_ready=1 pix_cnt=44 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [157005000] cnt=15 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [157005000] cnt=15 adapter: up_valid=1 up_ready=0 up_data=1f202020 | dn_valid=1 dn_ready=1 dn_data=00000020 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [157005000] cnt=15 conv: in_valid=1 in_ready=1 pix_cnt=45 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [157015000] cnt=16 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [157015000] cnt=16 adapter: up_valid=1 up_ready=0 up_data=1f202020 | dn_valid=1 dn_ready=1 dn_data=00000020 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [157015000] cnt=16 conv: in_valid=1 in_ready=1 pix_cnt=46 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [157025000] cnt=17 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [157025000] cnt=17 adapter: up_valid=1 up_ready=1 up_data=1f202020 | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [157025000] cnt=17 conv: in_valid=1 in_ready=1 pix_cnt=47 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [157035000] cnt=18 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [157035000] cnt=18 adapter: up_valid=1 up_ready=0 up_data=1f1f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [157035000] cnt=18 conv: in_valid=1 in_ready=1 pix_cnt=48 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [157045000] cnt=19 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [157045000] cnt=19 adapter: up_valid=1 up_ready=0 up_data=1f1f1f1f | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [157045000] cnt=19 conv: in_valid=1 in_ready=1 pix_cnt=49 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_E: [160045000] pool_out[0]: data=828efe85 valid=1 ready=1 last=0
+# DBG_E: [160055000] pool_out[1]: data=828efe85 valid=1 ready=1 last=0
+# DBG_E: [160065000] pool_out[2]: data=828eff85 valid=1 ready=1 last=0
+# DBG_E: [160075000] pool_out[3]: data=828eff85 valid=1 ready=1 last=0
+# DBG_E: [160085000] pool_out[4]: data=828eff85 valid=1 ready=1 last=0
+# DBG_E: [160095000] pool_out[5]: data=828efe85 valid=1 ready=1 last=0
+# DBG_E: [160105000] pool_out[6]: data=828efe85 valid=1 ready=1 last=0
+# DBG_E: [160115000] pool_out[7]: data=828efe85 valid=1 ready=1 last=0
+# DBG_E: [160125000] pool_out[8]: data=828efe85 valid=1 ready=1 last=0
+# DBG_E: [160135000] pool_out[9]: data=828dfd85 valid=1 ready=1 last=0
+# DBG_A: [161855000] cnt=500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [161855000] cnt=500 adapter: up_valid=1 up_ready=0 up_data=22222222 | dn_valid=1 dn_ready=1 dn_data=00000022 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [161855000] cnt=500 conv: in_valid=1 in_ready=1 pix_cnt=409 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [166855000] cnt=1000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [166855000] cnt=1000 adapter: up_valid=1 up_ready=1 up_data=23232323 | dn_valid=1 dn_ready=1 dn_data=00000023 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [166855000] cnt=1000 conv: in_valid=1 in_ready=1 pix_cnt=751 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [171855000] cnt=1500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [171855000] cnt=1500 adapter: up_valid=1 up_ready=0 up_data=25252525 | dn_valid=1 dn_ready=0 dn_data=00000025 byte_en=0001 | hold_valid=1 byte_sel=0
+# DBG_C: [171855000] cnt=1500 conv: in_valid=1 in_ready=0 pix_cnt=1088 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [176855000] cnt=2000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [176855000] cnt=2000 adapter: up_valid=1 up_ready=0 up_data=ece9e5de | dn_valid=1 dn_ready=1 dn_data=000000e5 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [176855000] cnt=2000 conv: in_valid=1 in_ready=1 pix_cnt=1429 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [181855000] cnt=2500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [181855000] cnt=2500 adapter: up_valid=1 up_ready=1 up_data=2a2a2514 | dn_valid=1 dn_ready=1 dn_data=0000002a byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [181855000] cnt=2500 conv: in_valid=1 in_ready=1 pix_cnt=1771 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [186855000] cnt=3000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [186855000] cnt=3000 adapter: up_valid=1 up_ready=0 up_data=e8e8eaeb | dn_valid=1 dn_ready=0 dn_data=000000eb byte_en=0001 | hold_valid=1 byte_sel=0
+# DBG_C: [186855000] cnt=3000 conv: in_valid=1 in_ready=0 pix_cnt=2112 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [191855000] cnt=3500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [191855000] cnt=3500 adapter: up_valid=1 up_ready=0 up_data=c4c4c7e7 | dn_valid=1 dn_ready=0 dn_data=000000c4 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [191855000] cnt=3500 conv: in_valid=1 in_ready=0 pix_cnt=2450 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [196855000] cnt=4000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [196855000] cnt=4000 adapter: up_valid=1 up_ready=1 up_data=f1e8e1dd | dn_valid=1 dn_ready=1 dn_data=000000f1 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [196855000] cnt=4000 conv: in_valid=1 in_ready=1 pix_cnt=2791 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [201855000] cnt=4500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [201855000] cnt=4500 adapter: up_valid=1 up_ready=0 up_data=36363737 | dn_valid=1 dn_ready=1 dn_data=00000037 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [201855000] cnt=4500 conv: in_valid=1 in_ready=1 pix_cnt=3133 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [206855000] cnt=5000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [206855000] cnt=5000 adapter: up_valid=1 up_ready=0 up_data=040403ff | dn_valid=1 dn_ready=1 dn_data=00000003 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [206855000] cnt=5000 conv: in_valid=1 in_ready=1 pix_cnt=3473 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [211855000] cnt=5500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [211855000] cnt=5500 adapter: up_valid=1 up_ready=1 up_data=03040405 | dn_valid=1 dn_ready=1 dn_data=00000003 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [211855000] cnt=5500 conv: in_valid=1 in_ready=1 pix_cnt=3811 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DIAG_FRAME: [215985000] frame_done RISES pix_cnt=4096 layer=0
+# DIAG_FRAME: [216355000] frame_rearm layer=0 pix_cnt=4096
+# INFO: [216745000] SRAM_B done
+# DIAG_WRB: [216745000] SRAM_B write txn done: count=961 addr_counter=960 layer_sel=1 data_sel=2 pass_id=0
+# INFO: [216755000] Runner state 6 -> 7 (layer=0 fc=0)
+# DIAG_PFD: [216755000] pool_frame_done layer=0 pass=0 burst=0 emit_cnt=0
+# INFO: [216765000] runner_done (layer_sel=0, pass_id=0, is_fc=0)
+# INFO: [216765000] Runner state 7 -> 0 (layer=0 fc=0)
+# DIAG_L1POOL[1]: 961 words checked, 0 errors
+# INFO: [216775000] TopFSM state 8 -> 9
+# DBG_FSM: [216785000] runner_start=1  top_state=9 runner_state=0 layer_sel=1 is_fc=0
+# INFO: [216795000] Runner state 0 -> 1 (layer=1 fc=0)
+# INFO: [216805000] Runner state 1 -> 2 (layer=1 fc=0)
+# INFO: [216815000] SRAM_A start (layer_sel=2, data_sel=0, pass_id=0, preload_mode=0)
+# INFO: [216915000] SRAM_A done
+# INFO: [216925000] Runner state 2 -> 3 (layer=1 fc=0)
+# INFO: [216935000] Runner state 3 -> 4 (layer=1 fc=0)
+# INFO: [216945000] SRAM_A start (layer_sel=2, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [217335000] SRAM_A done
+# INFO: [217345000] Runner state 4 -> 5 (layer=1 fc=0)
+# DIAG_WT: [217345000] wt_load_done! layer_sel=1 weights_loaded=1
+# INFO: [217355000] Runner state 5 -> 6 (layer=1 fc=0)
+# INFO: [217355000] SRAM_B start (layer_sel=2, data_sel=2, pass_id=0)
+# DIAG_ADAPTER: [217355000] L2 SRAM_B start: hold_valid=0 hold_reg=3f3e3f30 byte_sel=0 is_l1=0 dn_ready=1
+# INFO: [217365000] SRAM_A start (layer_sel=2, data_sel=2, pass_id=0, preload_mode=0)
+# DIAG_L2PIX: [217375000] pix[0]: data=85fe8e82 byte_en=1111
+# DIAG_L2PIX: [217385000] pix[1]: data=85fe8e82 byte_en=1111
+# DIAG_L2PIX: [217395000] pix[2]: data=85ff8e82 byte_en=1111
+# DIAG_L2PIX: [217405000] pix[3]: data=85ff8e82 byte_en=1111
+# DIAG_L2PIX: [217415000] pix[4]: data=85ff8e82 byte_en=1111
+# DIAG_SA_L2: [218575000] SA col0=-12382 col1=0 col2=0 col3=0 valid=0001  (#0)
+# DIAG_SA_L2: [218585000] SA col0=-12406 col1=-59642 col2=0 col3=0 valid=0011  (#1)
+# DIAG_SA_L2: [218595000] SA col0=-12331 col1=-59639 col2=-140513 col3=0 valid=0111  (#2)
+# DIAG_SA_L2: [218605000] SA col0=-12283 col1=-59612 col2=-140556 col3=-7898 valid=1111  (#3)
+# DIAG_WR: [220295000] SRAM_A FIRST write: data=80808086 addr=561
+# INFO: [246025000] SRAM_B done
+# DIAG_FRAME: [246035000] frame_done RISES pix_cnt=961 layer=1
+# INFO: [246165000] SRAM_A done
+# DIAG_WR: [246165000] SRAM_A write txn done: 196 writes, addr_gen_counter=195, layer_sel=2 data_sel=2 pass_id=0
+# DIAG_PFD: [246175000] pool_frame_done layer=1 pass=0 burst=0 emit_cnt=0
+# DIAG_FRAME: [246945000] frame_rearm layer=1 pix_cnt=961
+# INFO: [246955000] Runner state 6 -> 7 (layer=1 fc=0)
+# INFO: [246965000] runner_done (layer_sel=1, pass_id=0, is_fc=0)
+# INFO: [246965000] Runner state 7 -> 0 (layer=1 fc=0)
+# INFO: [246975000] TopFSM state 9 -> 10
+# DBG_FSM: [246985000] runner_start=1  top_state=10 runner_state=0 layer_sel=1 is_fc=0
+# INFO: [246995000] Runner state 0 -> 1 (layer=1 fc=0)
+# INFO: [247005000] Runner state 1 -> 2 (layer=1 fc=0)
+# INFO: [247015000] SRAM_A start (layer_sel=2, data_sel=0, pass_id=1, preload_mode=0)
+# INFO: [247115000] SRAM_A done
+# INFO: [247125000] Runner state 2 -> 3 (layer=1 fc=0)
+# INFO: [247135000] Runner state 3 -> 4 (layer=1 fc=0)
+# INFO: [247145000] SRAM_A start (layer_sel=2, data_sel=1, pass_id=1, preload_mode=0)
+# DIAG_L2P1WT: [247155000] beat[0]=00000000 last=0
+# DIAG_L2P1WT: [247165000] beat[1]=00000000 last=0
+# DIAG_L2P1WT: [247175000] beat[2]=00000000 last=0
+# DIAG_L2P1WT: [247185000] beat[3]=f47f23f0 last=0
+# DIAG_L2P1WT: [247195000] beat[4]=def8fec9 last=0
+# DIAG_L2P1WT: [247205000] beat[5]=d3febef4 last=0
+# DIAG_L2P1WT: [247215000] beat[6]=dde23bf6 last=0
+# DIAG_L2P1WT: [247225000] beat[7]=76f66a3f last=0
+# DIAG_L2P1WT: [247315000] beat[0]=b31e39f0 last=0
+# DIAG_L2P1WT: [247325000] beat[1]=24fd0624 last=0
+# DIAG_L2P1WT: [247335000] beat[2]=b01e0de8 last=0
+# DIAG_L2P1WT: [247345000] beat[3]=4f13607f last=0
+# DIAG_L2P1WT: [247355000] beat[4]=1b210504 last=0
+# DIAG_L2P1WT: [247365000] beat[5]=dc24ceb2 last=0
+# DIAG_L2P1WT: [247375000] beat[6]=06292347 last=0
+# DIAG_L2P1WT: [247385000] beat[7]=542a511c last=0
+# DIAG_L2P1WT: [247475000] beat[0]=f912225d last=0
+# DIAG_L2P1WT: [247485000] beat[1]=c9de20d0 last=0
+# DIAG_L2P1WT: [247495000] beat[2]=e12c2d61 last=0
+# DIAG_L2P1WT: [247505000] beat[3]=7b13ee97 last=0
+# DIAG_L2P1WT: [247515000] beat[4]=faf90a0b last=0
+# DIAG_L2P1WT: [247525000] beat[5]=05fa33f5 last=0
+# INFO: [247535000] SRAM_A done
+# DIAG_L2P1WT: [247535000] beat[6]=3a1e2032 last=1
+# INFO: [247545000] Runner state 4 -> 5 (layer=1 fc=0)
+# DIAG_WT: [247545000] wt_load_done! layer_sel=1 weights_loaded=1
+# INFO: [247555000] Runner state 5 -> 6 (layer=1 fc=0)
+# INFO: [247555000] SRAM_B start (layer_sel=2, data_sel=2, pass_id=1)
+# DIAG_L2P1Q: [247555000] QPE bias/M/sh = (000097ab,638e7923,39) (0000c81e,5479f7b1,39) (00018c7f,6628e8e3,39) (0001085f,524fbd78,39)
+# DIAG_ADAPTER: [247555000] L2 SRAM_B start: hold_valid=0 hold_reg=838ae287 byte_sel=0 is_l1=0 dn_ready=1
+# INFO: [247565000] SRAM_A start (layer_sel=2, data_sel=2, pass_id=1, preload_mode=0)
+# DIAG_L2PIX: [247575000] pix[0]: data=85fe8e82 byte_en=1111
+# DIAG_L2PIX: [247585000] pix[1]: data=85fe8e82 byte_en=1111
+# DIAG_L2PIX: [247595000] pix[2]: data=85ff8e82 byte_en=1111
+# DIAG_L2PIX: [247605000] pix[3]: data=85ff8e82 byte_en=1111
+# DIAG_L2PIX: [247615000] pix[4]: data=85ff8e82 byte_en=1111
+# DIAG_SA_L2: [248775000] SA col0=-53197 col1=0 col2=0 col3=0 valid=0001  (#0)
+# DIAG_SA_L2: [248785000] SA col0=-53335 col1=-54729 col2=0 col3=0 valid=0011  (#1)
+# DIAG_SA_L2: [248795000] SA col0=-53284 col1=-54813 col2=-91630 col3=0 valid=0111  (#2)
+# DIAG_SA_L2: [248805000] SA col0=-53273 col1=-54769 col2=-91630 col3=-74732 valid=1111  (#3)
+# DIAG_CUT_SYSTEM: [248835000] idx=0 c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_CUT_SYSTEM: [248845000] idx=1 c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_CUT_SYSTEM: [248855000] idx=2 c1=-128 c2=-128 c3=-97 c4=-128
+# DIAG_CUT_SYSTEM: [248865000] idx=3 c1=-128 c2=-128 c3=-97 c4=-128
+# DIAG_CUT_SYSTEM: [248875000] idx=4 c1=-128 c2=-128 c3=-97 c4=-128
+# DIAG_CUT_SYSTEM: [248885000] idx=5 c1=-128 c2=-128 c3=-97 c4=-128
+# DIAG_CUT_SYSTEM: [248895000] idx=6 c1=-128 c2=-128 c3=-97 c4=-128
+# DIAG_CUT_SYSTEM: [248905000] idx=7 c1=-128 c2=-128 c3=-97 c4=-128
+# DIAG_WR: [250495000] SRAM_A FIRST write: data=80809f80 addr=561
+# INFO: [276225000] SRAM_B done
+# DIAG_FRAME: [276235000] frame_done RISES pix_cnt=961 layer=1
+# INFO: [276365000] SRAM_A done
+# DIAG_WR: [276365000] SRAM_A write txn done: 196 writes, addr_gen_counter=195, layer_sel=2 data_sel=2 pass_id=1
+# DIAG_PFD: [276375000] pool_frame_done layer=1 pass=1 burst=0 emit_cnt=0
+# DIAG_FRAME: [277145000] frame_rearm layer=1 pix_cnt=961
+# INFO: [277155000] Runner state 6 -> 7 (layer=1 fc=0)
+# INFO: [277165000] runner_done (layer_sel=1, pass_id=1, is_fc=0)
+# INFO: [277165000] Runner state 7 -> 0 (layer=1 fc=0)
+# INFO: [277175000] TopFSM state 10 -> 11
+# DIAG_L2POOL[1]: total=0  pass0=0/196  pass1=0/196
+# DIAG_L2POOL[1]: pass0[0]: actual=80808086 exp=80808086
+# DIAG_L2POOL[1]: pass0[195]: actual=8080a380 exp=8080a380
+# DIAG_L2POOL[1]: pass1[0]: actual=80809384 exp=80809384
+# DIAG_L2POOL[1]: pass1[1]: actual=80849b8d exp=80849b8d
+# DIAG_L3IN: SRAM_A L2 pool area at L3 start:
+#   [561]=80808086 [562]=80809f80 [563]=80808086 [564]=80809f80
+# DBG_FSM: [277185000] runner_start=1  top_state=11 runner_state=0 layer_sel=10 is_fc=0
+# INFO: [277195000] Runner state 0 -> 1 (layer=10 fc=0)
+# DIAG_DROP: [277195000] drop=1 any_cut=1 lane_reset=1
+# INFO: [277205000] Runner state 1 -> 2 (layer=10 fc=0)
+# INFO: [277215000] SRAM_A start (layer_sel=3, data_sel=0, pass_id=0, preload_mode=0)
+# DIAG_DROP: [277225000] drop=1 any_cut=0 lane_reset=0
+# DIAG_DROP: [277235000] drop=0 any_cut=0 lane_reset=1
+# INFO: [277315000] SRAM_A done
+# INFO: [277325000] Runner state 2 -> 3 (layer=10 fc=0)
+# INFO: [277335000] Runner state 3 -> 4 (layer=10 fc=0)
+# INFO: [277345000] SRAM_A start (layer_sel=3, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [278095000] SRAM_A done
+# INFO: [278105000] Runner state 4 -> 5 (layer=10 fc=0)
+# DIAG_WT: [278105000] wt_load_done! layer_sel=10 weights_loaded=1
+# INFO: [278115000] Runner state 5 -> 6 (layer=10 fc=0)
+# INFO: [278115000] SRAM_B start (layer_sel=3, data_sel=2, pass_id=0)
+# INFO: [278125000] SRAM_A start (layer_sel=3, data_sel=2, pass_id=0, preload_mode=0)
+# INFO: [287565000] SRAM_A done
+# DIAG_FRAME: [287575000] frame_done RISES pix_cnt=392 layer=10
+# DIAG_FRAME: [289005000] frame_rearm layer=10 pix_cnt=392
+# INFO: [289145000] SRAM_B done
+# DIAG_WRB: [289145000] SRAM_B write txn done: count=36 addr_counter=35 layer_sel=3 data_sel=2 pass_id=0
+# INFO: [289155000] Runner state 6 -> 7 (layer=10 fc=0)
+# DIAG_PFD: [289155000] pool_frame_done layer=10 pass=0 burst=0 emit_cnt=0
+# INFO: [289165000] runner_done (layer_sel=10, pass_id=0, is_fc=0)
+# INFO: [289165000] Runner state 7 -> 0 (layer=10 fc=0)
+# INFO: [289175000] TopFSM state 11 -> 12
+# DBG_FSM: [289185000] runner_start=1  top_state=12 runner_state=0 layer_sel=10 is_fc=0
+# INFO: [289195000] Runner state 0 -> 1 (layer=10 fc=0)
+# INFO: [289205000] Runner state 1 -> 2 (layer=10 fc=0)
+# INFO: [289215000] SRAM_A start (layer_sel=3, data_sel=0, pass_id=1, preload_mode=0)
+# INFO: [289315000] SRAM_A done
+# INFO: [289325000] Runner state 2 -> 3 (layer=10 fc=0)
+# INFO: [289335000] Runner state 3 -> 4 (layer=10 fc=0)
+# INFO: [289345000] SRAM_A start (layer_sel=3, data_sel=1, pass_id=1, preload_mode=0)
+# INFO: [290095000] SRAM_A done
+# INFO: [290105000] Runner state 4 -> 5 (layer=10 fc=0)
+# DIAG_WT: [290105000] wt_load_done! layer_sel=10 weights_loaded=1
+# INFO: [290115000] Runner state 5 -> 6 (layer=10 fc=0)
+# INFO: [290115000] SRAM_B start (layer_sel=3, data_sel=2, pass_id=1)
+# INFO: [290125000] SRAM_A start (layer_sel=3, data_sel=2, pass_id=1, preload_mode=0)
+# DIAG_L3P1SA: [291745000] first SA col0=222537 col1=0 col2=0 col3=0
+# DIAG_L3P1CUT: [291805000] first cut c1=-128 c2=-128 c3=-128 c4=-128 drop=0
+# DIAG_L3P1POOL: [292795000] word[0]=8b808087 last=0 burst=0 emit_cnt=0
+# DIAG_L3P1POOL: [292805000] word[1]=9a808088 last=0 burst=0 emit_cnt=1
+# DIAG_L3P1POOL: [292815000] word[2]=90808089 last=0 burst=0 emit_cnt=2
+# DIAG_L3P1POOL: [292825000] word[3]=93808087 last=0 burst=0 emit_cnt=3
+# DIAG_L3P1POOL: [292835000] word[4]=8080808a last=0 burst=0 emit_cnt=4
+# DIAG_L3P1POOL: [292845000] word[5]=80808085 last=1 burst=0 emit_cnt=5
+# DIAG_L3P1POOL: [294455000] word[6]=80808787 last=0 burst=1 emit_cnt=0
+# DIAG_L3P1POOL: [294465000] word[7]=8a808982 last=0 burst=1 emit_cnt=1
+# INFO: [299565000] SRAM_A done
+# DIAG_FRAME: [299575000] frame_done RISES pix_cnt=392 layer=10
+# DIAG_FRAME: [301005000] frame_rearm layer=10 pix_cnt=392
+# DIAG_L3P1SUM: [301005000] before runner_done pool_words=30 sram_b_busy=1 txn_active=1 addr_counter=30
+# INFO: [301145000] SRAM_B done
+# DIAG_WRB: [301145000] SRAM_B write txn done: count=36 addr_counter=35 layer_sel=3 data_sel=2 pass_id=1
+# INFO: [301155000] Runner state 6 -> 7 (layer=10 fc=0)
+# DIAG_PFD: [301155000] pool_frame_done layer=10 pass=1 burst=0 emit_cnt=0
+# INFO: [301165000] runner_done (layer_sel=10, pass_id=1, is_fc=0)
+# INFO: [301165000] Runner state 7 -> 0 (layer=10 fc=0)
+# INFO: [301175000] TopFSM state 12 -> 13
+# DIAG_L3POOL[1]: 72 words checked (2 passes), 0 errors
+# DBG_FSM: [301185000] runner_start=1  top_state=13 runner_state=0 layer_sel=0 is_fc=1
+# INFO: [301195000] Runner state 0 -> 1 (layer=0 fc=1)
+# INFO: [301205000] Runner state 1 -> 2 (layer=0 fc=1)
+# INFO: [301215000] SRAM_A start (layer_sel=4, data_sel=0, pass_id=0, preload_mode=0)
+# DIAG_FC_CFG: [301235000] data=fffd807a last=0
+# DIAG_FC_CFG: [301245000] data=fffeceeb last=0
+# INFO: [301255000] SRAM_A done
+# DIAG_FC_CFG: [301255000] data=ffffe25e last=1
+# INFO: [301265000] Runner state 2 -> 5 (layer=0 fc=1)
+# INFO: [301275000] Runner state 5 -> 6 (layer=0 fc=1)
+# INFO: [301275000] SRAM_B start (layer_sel=4, data_sel=2, pass_id=0)
+# INFO: [301285000] SRAM_A start (layer_sel=4, data_sel=1, pass_id=0, preload_mode=0)
+# DIAG_FC_DATA:[301295000] idx=0 data=808a8085 b3=-128 b2=-118 b1=-128 b0=-123
+# DIAG_FC_WT:  [301305000] idx=0 data=00ff3dd3 k0=0 k1=-1 k2=61
+# DIAG_FC_MUL: [301315000] idx=0 px=-128 k0=-45 k1=61 k2=-1 acc0=0 acc1=0 acc2=0
+# DIAG_FC_WT:  [301325000] idx=1 data=0048ceff k0=0 k1=72 k2=-50
+# DIAG_FC_MUL: [301335000] idx=1 px=-118 k0=-1 k1=-50 k2=72 acc0=-157958 acc1=-85909 acc2=-7458
+# DIAG_FC_WT:  [301345000] idx=2 data=00e3e318 k0=0 k1=-29 k2=-29
+# DIAG_FC_MUL: [301355000] idx=2 px=-128 k0=24 k1=-29 k2=-29 acc0=-157840 acc1=-80009 acc2=-15954
+# DIAG_FC_WT:  [301365000] idx=3 data=00e813fb k0=0 k1=-24 k2=19
+# DIAG_FC_MUL: [301375000] idx=3 px=-123 k0=-5 k1=19 k2=-24 acc0=-160912 acc1=-76297 acc2=-12242
+# DIAG_FC_WT:  [301385000] idx=4 data=00fd0512 k0=0 k1=-3 k2=5
+# DIAG_FC_DATA:[301385000] idx=1 data=8b808087 b3=-117 b2=-128 b1=-128 b0=-121
+# DIAG_FC_MUL: [301395000] idx=4 px=-117 k0=18 k1=5 k2=-3 acc0=-160297 acc1=-78634 acc2=-9290
+# DIAG_FC_WT:  [301405000] idx=5 data=00f9f911 k0=0 k1=-7 k2=-7
+# DIAG_FC_MUL: [301415000] idx=5 px=-128 k0=17 k1=-7 k2=-7 acc0=-162403 acc1=-79219 acc2=-8939
+# DIAG_FC_WT:  [301425000] idx=6 data=0021a43d k0=0 k1=33 k2=-92
+# DIAG_FC_MUL: [301435000] idx=6 px=-128 k0=61 k1=-92 k2=33 acc0=-164579 acc1=-78323 acc2=-8043
+# DIAG_FC_WT:  [301445000] idx=7 data=000be200 k0=0 k1=11 k2=-30
+# DIAG_FC_MUL: [301455000] idx=7 px=-121 k0=0 k1=-30 k2=11 acc0=-172387 acc1=-66547 acc2=-12267
+# DIAG_FC_DATA:[301465000] idx=2 data=80808080 b3=-128 b2=-128 b1=-128 b0=-128
+# DIAG_FC_DATA:[301545000] idx=3 data=9a808088 b3=-102 b2=-128 b1=-128 b0=-120
+# DIAG_FC_DATA:[301625000] idx=4 data=80828085 b3=-128 b2=-126 b1=-128 b0=-123
+# DIAG_FC_DATA:[301705000] idx=5 data=90808089 b3=-112 b2=-128 b1=-128 b0=-119
+# DIAG_FC_DATA:[301785000] idx=6 data=80818086 b3=-128 b2=-127 b1=-128 b0=-122
+# DIAG_FC_DATA:[301865000] idx=7 data=93808087 b3=-109 b2=-128 b1=-128 b0=-121
+# INFO: [306985000] SRAM_B done
+# INFO: [307045000] SRAM_A done
+# INFO: [307075000] Runner state 6 -> 7 (layer=0 fc=1)
+# INFO: [307085000] runner_done (layer_sel=0, pass_id=0, is_fc=1)
+# INFO: [307085000] Runner state 7 -> 0 (layer=0 fc=1)
+# INFO: [307095000] TopFSM state 13 -> 14
+# DIAG_FC[1]: acc0=-11927 (exp -11927)   OK
+# DIAG_FC[1]: acc1=4557 (exp 4557)   OK
+# DIAG_FC[1]: acc2=-3688 (exp -3688)   OK
+# INFO: [307105000] TopFSM state 14 -> 7
+# DIAG_FC_SUM: wt_words=288 data_words=72 muls=288
+# INFO: inference done in 9113 cycles
+# INFO: predict_class=1 (expected 1=rock)
+# INFO: fc_acc0=-11927, fc_acc1=4557, fc_acc2=-3688
+# CYCLE_SUMMARY[rock]: preload_pixel=0 argmax=1 end_to_end=15056
+# CYCLE_SUMMARY[rock]: L1    total=6023 cfg=16 wt=15 data=5992
+# CYCLE_SUMMARY[rock]: L2_P0 total=3020 cfg=16 wt=42 data=2962
+# CYCLE_SUMMARY[rock]: L2_P1 total=3020 cfg=16 wt=42 data=2962
+# CYCLE_SUMMARY[rock]: L2    total=6040
+# CYCLE_SUMMARY[rock]: L3_P0 total=1200 cfg=16 wt=78 data=1106
+# CYCLE_SUMMARY[rock]: L3_P1 total=1200 cfg=16 wt=78 data=1106
+# CYCLE_SUMMARY[rock]: L3    total=2400
+# CYCLE_SUMMARY[rock]: FC    total=592 cfg=10 wt=0 data=582
+# CYCLE_SUMMARY[rock]: layers_total=15055
+# PASS: rock classified correctly
+# 
+# === TEST: SCISSORS INFERENCE ===
+# INFO: sending scissors image for inference...
+# INFO: [307185000] TopFSM state 7 -> 8
+# DBG_FSM: [307195000] runner_start=1  top_state=8 runner_state=0 layer_sel=0 is_fc=0
+# INFO: [307205000] Runner state 0 -> 1 (layer=0 fc=0)
+# INFO: [307215000] Runner state 1 -> 2 (layer=0 fc=0)
+# INFO: [307225000] SRAM_A start (layer_sel=1, data_sel=0, pass_id=0, preload_mode=0)
+# INFO: [307325000] SRAM_A done
+# INFO: [307335000] Runner state 2 -> 3 (layer=0 fc=0)
+# INFO: [307345000] Runner state 3 -> 4 (layer=0 fc=0)
+# INFO: [307355000] SRAM_A start (layer_sel=1, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [307475000] SRAM_A done
+# INFO: [307485000] Runner state 4 -> 5 (layer=0 fc=0)
+# DIAG_WT: [307485000] wt_load_done! layer_sel=0 weights_loaded=1
+# INFO: [307495000] Runner state 5 -> 6 (layer=0 fc=0)
+# INFO: [307495000] SRAM_B start (layer_sel=1, data_sel=2, pass_id=0)
+# DBG_A: [307495000] cnt=0 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307495000] cnt=0 adapter: up_valid=1 up_ready=0 up_data=19191919 | dn_valid=1 dn_ready=1 dn_data=00000019 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [307495000] cnt=0 conv: in_valid=1 in_ready=1 pix_cnt=30 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [307495000] cnt=0 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [307505000] cnt=1 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307505000] cnt=1 adapter: up_valid=1 up_ready=1 up_data=19191919 | dn_valid=1 dn_ready=1 dn_data=00000019 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [307505000] cnt=1 conv: in_valid=1 in_ready=1 pix_cnt=31 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [307505000] cnt=1 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [307515000] cnt=2 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307515000] cnt=2 adapter: up_valid=1 up_ready=0 up_data=19191919 | dn_valid=1 dn_ready=1 dn_data=00000019 byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [307515000] cnt=2 conv: in_valid=1 in_ready=1 pix_cnt=32 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [307515000] cnt=2 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [307525000] cnt=3 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307525000] cnt=3 adapter: up_valid=1 up_ready=0 up_data=19191919 | dn_valid=1 dn_ready=1 dn_data=00000019 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [307525000] cnt=3 conv: in_valid=1 in_ready=1 pix_cnt=33 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [307525000] cnt=3 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [307535000] cnt=4 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307535000] cnt=4 adapter: up_valid=1 up_ready=0 up_data=19191919 | dn_valid=1 dn_ready=1 dn_data=00000019 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [307535000] cnt=4 conv: in_valid=1 in_ready=1 pix_cnt=34 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_D: [307535000] cnt=4 preload_mode=0 active_data_sel=1 active_is_fc=0 layer_sel=0
+# DBG_A: [307545000] cnt=5 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307545000] cnt=5 adapter: up_valid=1 up_ready=1 up_data=19191919 | dn_valid=1 dn_ready=1 dn_data=00000019 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [307545000] cnt=5 conv: in_valid=1 in_ready=1 pix_cnt=35 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307555000] cnt=6 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307555000] cnt=6 adapter: up_valid=1 up_ready=0 up_data=1a1a1a19 | dn_valid=1 dn_ready=1 dn_data=00000019 byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [307555000] cnt=6 conv: in_valid=1 in_ready=1 pix_cnt=36 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307565000] cnt=7 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307565000] cnt=7 adapter: up_valid=1 up_ready=0 up_data=1a1a1a19 | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [307565000] cnt=7 conv: in_valid=1 in_ready=1 pix_cnt=37 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307575000] cnt=8 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307575000] cnt=8 adapter: up_valid=1 up_ready=0 up_data=1a1a1a19 | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [307575000] cnt=8 conv: in_valid=1 in_ready=1 pix_cnt=38 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307585000] cnt=9 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307585000] cnt=9 adapter: up_valid=1 up_ready=1 up_data=1a1a1a19 | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [307585000] cnt=9 conv: in_valid=1 in_ready=1 pix_cnt=39 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307595000] cnt=10 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307595000] cnt=10 adapter: up_valid=1 up_ready=0 up_data=1a1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [307595000] cnt=10 conv: in_valid=1 in_ready=1 pix_cnt=40 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307605000] cnt=11 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307605000] cnt=11 adapter: up_valid=1 up_ready=0 up_data=1a1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [307605000] cnt=11 conv: in_valid=1 in_ready=1 pix_cnt=41 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307615000] cnt=12 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307615000] cnt=12 adapter: up_valid=1 up_ready=0 up_data=1a1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [307615000] cnt=12 conv: in_valid=1 in_ready=1 pix_cnt=42 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307625000] cnt=13 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307625000] cnt=13 adapter: up_valid=1 up_ready=1 up_data=1a1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [307625000] cnt=13 conv: in_valid=1 in_ready=1 pix_cnt=43 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307635000] cnt=14 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307635000] cnt=14 adapter: up_valid=1 up_ready=0 up_data=1c1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [307635000] cnt=14 conv: in_valid=1 in_ready=1 pix_cnt=44 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307645000] cnt=15 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307645000] cnt=15 adapter: up_valid=1 up_ready=0 up_data=1c1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [307645000] cnt=15 conv: in_valid=1 in_ready=1 pix_cnt=45 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307655000] cnt=16 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307655000] cnt=16 adapter: up_valid=1 up_ready=0 up_data=1c1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [307655000] cnt=16 conv: in_valid=1 in_ready=1 pix_cnt=46 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307665000] cnt=17 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307665000] cnt=17 adapter: up_valid=1 up_ready=1 up_data=1c1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001c byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [307665000] cnt=17 conv: in_valid=1 in_ready=1 pix_cnt=47 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307675000] cnt=18 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307675000] cnt=18 adapter: up_valid=1 up_ready=0 up_data=1b1b1c1c | dn_valid=1 dn_ready=1 dn_data=0000001c byte_en=0001 | hold_valid=0 byte_sel=0
+# DBG_C: [307675000] cnt=18 conv: in_valid=1 in_ready=1 pix_cnt=48 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [307685000] cnt=19 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [307685000] cnt=19 adapter: up_valid=1 up_ready=0 up_data=1b1b1c1c | dn_valid=1 dn_ready=1 dn_data=0000001c byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [307685000] cnt=19 conv: in_valid=1 in_ready=1 pix_cnt=49 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_E: [310685000] pool_out[0]: data=828bef85 valid=1 ready=1 last=0
+# DBG_E: [310695000] pool_out[1]: data=828bef85 valid=1 ready=1 last=0
+# DBG_E: [310705000] pool_out[2]: data=828bef85 valid=1 ready=1 last=0
+# DBG_E: [310715000] pool_out[3]: data=828bf085 valid=1 ready=1 last=0
+# DBG_E: [310725000] pool_out[4]: data=828bef85 valid=1 ready=1 last=0
+# DBG_E: [310735000] pool_out[5]: data=828bef85 valid=1 ready=1 last=0
+# DBG_E: [310745000] pool_out[6]: data=828bef85 valid=1 ready=1 last=0
+# DBG_E: [310755000] pool_out[7]: data=828bf085 valid=1 ready=1 last=0
+# DBG_E: [310765000] pool_out[8]: data=828bf085 valid=1 ready=1 last=0
+# DBG_E: [310775000] pool_out[9]: data=828bf185 valid=1 ready=1 last=0
+# DBG_A: [312495000] cnt=500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [312495000] cnt=500 adapter: up_valid=1 up_ready=0 up_data=1a1a1a1a | dn_valid=1 dn_ready=1 dn_data=0000001a byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [312495000] cnt=500 conv: in_valid=1 in_ready=1 pix_cnt=409 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [317495000] cnt=1000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [317495000] cnt=1000 adapter: up_valid=1 up_ready=1 up_data=1f1af5f0 | dn_valid=1 dn_ready=1 dn_data=0000001f byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [317495000] cnt=1000 conv: in_valid=1 in_ready=1 pix_cnt=751 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [322495000] cnt=1500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [322495000] cnt=1500 adapter: up_valid=1 up_ready=0 up_data=18181717 | dn_valid=1 dn_ready=0 dn_data=00000017 byte_en=0001 | hold_valid=1 byte_sel=0
+# DBG_C: [322495000] cnt=1500 conv: in_valid=1 in_ready=0 pix_cnt=1088 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [327495000] cnt=2000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [327495000] cnt=2000 adapter: up_valid=1 up_ready=0 up_data=f7f2f0ed | dn_valid=1 dn_ready=1 dn_data=000000f0 byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [327495000] cnt=2000 conv: in_valid=1 in_ready=1 pix_cnt=1429 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [332495000] cnt=2500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [332495000] cnt=2500 adapter: up_valid=1 up_ready=1 up_data=e5e6e5f7 | dn_valid=1 dn_ready=1 dn_data=000000e5 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [332495000] cnt=2500 conv: in_valid=1 in_ready=1 pix_cnt=1771 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [337495000] cnt=3000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [337495000] cnt=3000 adapter: up_valid=1 up_ready=0 up_data=1d1d1d1d | dn_valid=1 dn_ready=0 dn_data=0000001d byte_en=0001 | hold_valid=1 byte_sel=0
+# DBG_C: [337495000] cnt=3000 conv: in_valid=1 in_ready=0 pix_cnt=2112 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [342495000] cnt=3500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [342495000] cnt=3500 adapter: up_valid=1 up_ready=0 up_data=25252524 | dn_valid=1 dn_ready=0 dn_data=00000025 byte_en=0001 | hold_valid=1 byte_sel=2
+# DBG_C: [342495000] cnt=3500 conv: in_valid=1 in_ready=0 pix_cnt=2450 frame_done=0 bank_can_write=0 | wt_loaded=1 backend_idle=0
+# DBG_A: [347495000] cnt=4000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [347495000] cnt=4000 adapter: up_valid=1 up_ready=1 up_data=f6f7f5ef | dn_valid=1 dn_ready=1 dn_data=000000f6 byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [347495000] cnt=4000 conv: in_valid=1 in_ready=1 pix_cnt=2791 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [352495000] cnt=4500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [352495000] cnt=4500 adapter: up_valid=1 up_ready=0 up_data=f1f0ebe2 | dn_valid=1 dn_ready=1 dn_data=000000eb byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [352495000] cnt=4500 conv: in_valid=1 in_ready=1 pix_cnt=3133 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [357495000] cnt=5000 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [357495000] cnt=5000 adapter: up_valid=1 up_ready=0 up_data=2d2c2b2b | dn_valid=1 dn_ready=1 dn_data=0000002b byte_en=0001 | hold_valid=1 byte_sel=1
+# DBG_C: [357495000] cnt=5000 conv: in_valid=1 in_ready=1 pix_cnt=3473 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DBG_A: [362495000] cnt=5500 sram_a: txn_active=0 read_mode=1 read_en=0 data_valid=0 data_last=0 data_ready=0 read_data=7f7f2a37 | route_conv_in=0
+# DBG_B: [362495000] cnt=5500 adapter: up_valid=1 up_ready=1 up_data=dbdb0434 | dn_valid=1 dn_ready=1 dn_data=000000db byte_en=0001 | hold_valid=1 byte_sel=3
+# DBG_C: [362495000] cnt=5500 conv: in_valid=1 in_ready=1 pix_cnt=3811 frame_done=0 bank_can_write=1 | wt_loaded=1 backend_idle=0
+# DIAG_FRAME: [366625000] frame_done RISES pix_cnt=4096 layer=0
+# DIAG_FRAME: [366995000] frame_rearm layer=0 pix_cnt=4096
+# INFO: [367385000] SRAM_B done
+# DIAG_WRB: [367385000] SRAM_B write txn done: count=961 addr_counter=960 layer_sel=1 data_sel=2 pass_id=0
+# INFO: [367395000] Runner state 6 -> 7 (layer=0 fc=0)
+# DIAG_PFD: [367395000] pool_frame_done layer=0 pass=0 burst=0 emit_cnt=0
+# INFO: [367405000] runner_done (layer_sel=0, pass_id=0, is_fc=0)
+# INFO: [367405000] Runner state 7 -> 0 (layer=0 fc=0)
+# DIAG_L1POOL[2]: 961 words checked, 0 errors
+# INFO: [367415000] TopFSM state 8 -> 9
+# DBG_FSM: [367425000] runner_start=1  top_state=9 runner_state=0 layer_sel=1 is_fc=0
+# INFO: [367435000] Runner state 0 -> 1 (layer=1 fc=0)
+# INFO: [367445000] Runner state 1 -> 2 (layer=1 fc=0)
+# INFO: [367455000] SRAM_A start (layer_sel=2, data_sel=0, pass_id=0, preload_mode=0)
+# INFO: [367555000] SRAM_A done
+# INFO: [367565000] Runner state 2 -> 3 (layer=1 fc=0)
+# INFO: [367575000] Runner state 3 -> 4 (layer=1 fc=0)
+# INFO: [367585000] SRAM_A start (layer_sel=2, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [367975000] SRAM_A done
+# INFO: [367985000] Runner state 4 -> 5 (layer=1 fc=0)
+# DIAG_WT: [367985000] wt_load_done! layer_sel=1 weights_loaded=1
+# INFO: [367995000] Runner state 5 -> 6 (layer=1 fc=0)
+# INFO: [367995000] SRAM_B start (layer_sel=2, data_sel=2, pass_id=0)
+# DIAG_ADAPTER: [367995000] L2 SRAM_B start: hold_valid=0 hold_reg=fbfcf3f3 byte_sel=0 is_l1=0 dn_ready=1
+# INFO: [368005000] SRAM_A start (layer_sel=2, data_sel=2, pass_id=0, preload_mode=0)
+# DIAG_L2PIX: [368015000] pix[0]: data=85ef8b82 byte_en=1111
+# DIAG_L2PIX: [368025000] pix[1]: data=85ef8b82 byte_en=1111
+# DIAG_L2PIX: [368035000] pix[2]: data=85ef8b82 byte_en=1111
+# DIAG_L2PIX: [368045000] pix[3]: data=85f08b82 byte_en=1111
+# DIAG_L2PIX: [368055000] pix[4]: data=85ef8b82 byte_en=1111
+# DIAG_SA_L2: [369215000] SA col0=-11995 col1=0 col2=0 col3=0 valid=0001  (#0)
+# DIAG_SA_L2: [369225000] SA col0=-11980 col1=-59361 col2=0 col3=0 valid=0011  (#1)
+# DIAG_SA_L2: [369235000] SA col0=-11956 col1=-59374 col2=-140304 col3=0 valid=0111  (#2)
+# DIAG_SA_L2: [369245000] SA col0=-11893 col1=-59379 col2=-140318 col3=-8501 valid=1111  (#3)
+# DIAG_WR: [370935000] SRAM_A FIRST write: data=80808085 addr=561
+# INFO: [396665000] SRAM_B done
+# DIAG_FRAME: [396675000] frame_done RISES pix_cnt=961 layer=1
+# INFO: [396805000] SRAM_A done
+# DIAG_WR: [396805000] SRAM_A write txn done: 196 writes, addr_gen_counter=195, layer_sel=2 data_sel=2 pass_id=0
+# DIAG_PFD: [396815000] pool_frame_done layer=1 pass=0 burst=0 emit_cnt=0
+# DIAG_FRAME: [397585000] frame_rearm layer=1 pix_cnt=961
+# INFO: [397595000] Runner state 6 -> 7 (layer=1 fc=0)
+# INFO: [397605000] runner_done (layer_sel=1, pass_id=0, is_fc=0)
+# INFO: [397605000] Runner state 7 -> 0 (layer=1 fc=0)
+# INFO: [397615000] TopFSM state 9 -> 10
+# DBG_FSM: [397625000] runner_start=1  top_state=10 runner_state=0 layer_sel=1 is_fc=0
+# INFO: [397635000] Runner state 0 -> 1 (layer=1 fc=0)
+# INFO: [397645000] Runner state 1 -> 2 (layer=1 fc=0)
+# INFO: [397655000] SRAM_A start (layer_sel=2, data_sel=0, pass_id=1, preload_mode=0)
+# INFO: [397755000] SRAM_A done
+# INFO: [397765000] Runner state 2 -> 3 (layer=1 fc=0)
+# INFO: [397775000] Runner state 3 -> 4 (layer=1 fc=0)
+# INFO: [397785000] SRAM_A start (layer_sel=2, data_sel=1, pass_id=1, preload_mode=0)
+# DIAG_L2P1WT: [397795000] beat[0]=00000000 last=0
+# DIAG_L2P1WT: [397805000] beat[1]=00000000 last=0
+# DIAG_L2P1WT: [397815000] beat[2]=00000000 last=0
+# DIAG_L2P1WT: [397825000] beat[3]=f47f23f0 last=0
+# DIAG_L2P1WT: [397835000] beat[4]=def8fec9 last=0
+# DIAG_L2P1WT: [397845000] beat[5]=d3febef4 last=0
+# DIAG_L2P1WT: [397855000] beat[6]=dde23bf6 last=0
+# DIAG_L2P1WT: [397865000] beat[7]=76f66a3f last=0
+# DIAG_L2P1WT: [397955000] beat[0]=b31e39f0 last=0
+# DIAG_L2P1WT: [397965000] beat[1]=24fd0624 last=0
+# DIAG_L2P1WT: [397975000] beat[2]=b01e0de8 last=0
+# DIAG_L2P1WT: [397985000] beat[3]=4f13607f last=0
+# DIAG_L2P1WT: [397995000] beat[4]=1b210504 last=0
+# DIAG_L2P1WT: [398005000] beat[5]=dc24ceb2 last=0
+# DIAG_L2P1WT: [398015000] beat[6]=06292347 last=0
+# DIAG_L2P1WT: [398025000] beat[7]=542a511c last=0
+# DIAG_L2P1WT: [398115000] beat[0]=f912225d last=0
+# DIAG_L2P1WT: [398125000] beat[1]=c9de20d0 last=0
+# DIAG_L2P1WT: [398135000] beat[2]=e12c2d61 last=0
+# DIAG_L2P1WT: [398145000] beat[3]=7b13ee97 last=0
+# DIAG_L2P1WT: [398155000] beat[4]=faf90a0b last=0
+# DIAG_L2P1WT: [398165000] beat[5]=05fa33f5 last=0
+# INFO: [398175000] SRAM_A done
+# DIAG_L2P1WT: [398175000] beat[6]=3a1e2032 last=1
+# INFO: [398185000] Runner state 4 -> 5 (layer=1 fc=0)
+# DIAG_WT: [398185000] wt_load_done! layer_sel=1 weights_loaded=1
+# INFO: [398195000] Runner state 5 -> 6 (layer=1 fc=0)
+# INFO: [398195000] SRAM_B start (layer_sel=2, data_sel=2, pass_id=1)
+# DIAG_L2P1Q: [398195000] QPE bias/M/sh = (000097ab,638e7923,39) (0000c81e,5479f7b1,39) (00018c7f,6628e8e3,39) (0001085f,524fbd78,39)
+# DIAG_ADAPTER: [398195000] L2 SRAM_B start: hold_valid=0 hold_reg=8480a687 byte_sel=0 is_l1=0 dn_ready=1
+# INFO: [398205000] SRAM_A start (layer_sel=2, data_sel=2, pass_id=1, preload_mode=0)
+# DIAG_L2PIX: [398215000] pix[0]: data=85ef8b82 byte_en=1111
+# DIAG_L2PIX: [398225000] pix[1]: data=85ef8b82 byte_en=1111
+# DIAG_L2PIX: [398235000] pix[2]: data=85ef8b82 byte_en=1111
+# DIAG_L2PIX: [398245000] pix[3]: data=85f08b82 byte_en=1111
+# DIAG_L2PIX: [398255000] pix[4]: data=85ef8b82 byte_en=1111
+# DIAG_L2P1ALIGN: [398835000] first pix3 rows:
+#   row0=0000000085ef8b82
+#   row1=0000000085ef8b82
+#   row2=0000000085ef8b82
+# DIAG_L2P1BANK: [398835000] first bank_wr: row=0 bank=0 data[127:0]=0000000085ef8b820000000085ef8b82
+# DIAG_SA_L2: [399415000] SA col0=-51051 col1=0 col2=0 col3=0 valid=0001  (#0)
+# DIAG_SA_L2: [399425000] SA col0=-51038 col1=-53483 col2=0 col3=0 valid=0011  (#1)
+# DIAG_SA_L2: [399435000] SA col0=-51075 col1=-53492 col2=-93071 col3=0 valid=0111  (#2)
+# DIAG_SA_L2: [399445000] SA col0=-51008 col1=-53511 col2=-93082 col3=-73402 valid=1111  (#3)
+# DIAG_CUT_SYSTEM: [399475000] idx=0 c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_CUT_SYSTEM: [399485000] idx=1 c1=-128 c2=-128 c3=-128 c4=-128
+# DIAG_CUT_SYSTEM: [399495000] idx=2 c1=-128 c2=-128 c3=-102 c4=-128
+# DIAG_CUT_SYSTEM: [399505000] idx=3 c1=-128 c2=-128 c3=-102 c4=-128
+# DIAG_CUT_SYSTEM: [399515000] idx=4 c1=-128 c2=-128 c3=-102 c4=-128
+# DIAG_CUT_SYSTEM: [399525000] idx=5 c1=-128 c2=-128 c3=-102 c4=-128
+# DIAG_CUT_SYSTEM: [399535000] idx=6 c1=-128 c2=-128 c3=-102 c4=-128
+# DIAG_CUT_SYSTEM: [399545000] idx=7 c1=-128 c2=-128 c3=-101 c4=-128
+# DIAG_WR: [401135000] SRAM_A FIRST write: data=80809b80 addr=561
+# INFO: [426865000] SRAM_B done
+# DIAG_FRAME: [426875000] frame_done RISES pix_cnt=961 layer=1
+# INFO: [427005000] SRAM_A done
+# DIAG_WR: [427005000] SRAM_A write txn done: 196 writes, addr_gen_counter=195, layer_sel=2 data_sel=2 pass_id=1
+# DIAG_PFD: [427015000] pool_frame_done layer=1 pass=1 burst=0 emit_cnt=0
+# DIAG_FRAME: [427785000] frame_rearm layer=1 pix_cnt=961
+# INFO: [427795000] Runner state 6 -> 7 (layer=1 fc=0)
+# INFO: [427805000] runner_done (layer_sel=1, pass_id=1, is_fc=0)
+# INFO: [427805000] Runner state 7 -> 0 (layer=1 fc=0)
+# INFO: [427815000] TopFSM state 10 -> 11
+# DIAG_L2POOL[2]: total=0  pass0=0/196  pass1=0/196
+# DIAG_L2POOL[2]: pass0[0]: actual=80808085 exp=80808085
+# DIAG_L2POOL[2]: pass0[195]: actual=808eae80 exp=808eae80
+# DIAG_L2POOL[2]: pass1[0]: actual=80808086 exp=80808086
+# DIAG_L2POOL[2]: pass1[1]: actual=80809e80 exp=80809e80
+# DIAG_L3IN: SRAM_A L2 pool area at L3 start:
+#   [561]=80808085 [562]=80809b80 [563]=80808085 [564]=80809b80
+# DBG_FSM: [427825000] runner_start=1  top_state=11 runner_state=0 layer_sel=10 is_fc=0
+# INFO: [427835000] Runner state 0 -> 1 (layer=10 fc=0)
+# DIAG_DROP: [427835000] drop=1 any_cut=1 lane_reset=1
+# INFO: [427845000] Runner state 1 -> 2 (layer=10 fc=0)
+# INFO: [427855000] SRAM_A start (layer_sel=3, data_sel=0, pass_id=0, preload_mode=0)
+# DIAG_DROP: [427865000] drop=1 any_cut=0 lane_reset=0
+# DIAG_DROP: [427875000] drop=0 any_cut=0 lane_reset=1
+# INFO: [427955000] SRAM_A done
+# INFO: [427965000] Runner state 2 -> 3 (layer=10 fc=0)
+# INFO: [427975000] Runner state 3 -> 4 (layer=10 fc=0)
+# INFO: [427985000] SRAM_A start (layer_sel=3, data_sel=1, pass_id=0, preload_mode=0)
+# INFO: [428735000] SRAM_A done
+# INFO: [428745000] Runner state 4 -> 5 (layer=10 fc=0)
+# DIAG_WT: [428745000] wt_load_done! layer_sel=10 weights_loaded=1
+# INFO: [428755000] Runner state 5 -> 6 (layer=10 fc=0)
+# INFO: [428755000] SRAM_B start (layer_sel=3, data_sel=2, pass_id=0)
+# INFO: [428765000] SRAM_A start (layer_sel=3, data_sel=2, pass_id=0, preload_mode=0)
+# INFO: [438205000] SRAM_A done
+# DIAG_FRAME: [438215000] frame_done RISES pix_cnt=392 layer=10
+# DIAG_FRAME: [439645000] frame_rearm layer=10 pix_cnt=392
+# INFO: [439785000] SRAM_B done
+# DIAG_WRB: [439785000] SRAM_B write txn done: count=36 addr_counter=35 layer_sel=3 data_sel=2 pass_id=0
+# INFO: [439795000] Runner state 6 -> 7 (layer=10 fc=0)
+# DIAG_PFD: [439795000] pool_frame_done layer=10 pass=0 burst=0 emit_cnt=0
+# INFO: [439805000] runner_done (layer_sel=10, pass_id=0, is_fc=0)
+# INFO: [439805000] Runner state 7 -> 0 (layer=10 fc=0)
+# INFO: [439815000] TopFSM state 11 -> 12
+# DBG_FSM: [439825000] runner_start=1  top_state=12 runner_state=0 layer_sel=10 is_fc=0
+# INFO: [439835000] Runner state 0 -> 1 (layer=10 fc=0)
+# INFO: [439845000] Runner state 1 -> 2 (layer=10 fc=0)
+# INFO: [439855000] SRAM_A start (layer_sel=3, data_sel=0, pass_id=1, preload_mode=0)
+# INFO: [439955000] SRAM_A done
+# INFO: [439965000] Runner state 2 -> 3 (layer=10 fc=0)
+# INFO: [439975000] Runner state 3 -> 4 (layer=10 fc=0)
+# INFO: [439985000] SRAM_A start (layer_sel=3, data_sel=1, pass_id=1, preload_mode=0)
+# INFO: [440735000] SRAM_A done
+# INFO: [440745000] Runner state 4 -> 5 (layer=10 fc=0)
+# DIAG_WT: [440745000] wt_load_done! layer_sel=10 weights_loaded=1
+# INFO: [440755000] Runner state 5 -> 6 (layer=10 fc=0)
+# INFO: [440755000] SRAM_B start (layer_sel=3, data_sel=2, pass_id=1)
+# INFO: [440765000] SRAM_A start (layer_sel=3, data_sel=2, pass_id=1, preload_mode=0)
+# DIAG_L3P1SA: [442385000] first SA col0=221698 col1=0 col2=0 col3=0
+# DIAG_L3P1CUT: [442445000] first cut c1=-128 c2=-128 c3=-128 c4=-128 drop=0
+# DIAG_L3P1POOL: [443435000] word[0]=80808085 last=0 burst=0 emit_cnt=0
+# DIAG_L3P1POOL: [443445000] word[1]=88808086 last=0 burst=0 emit_cnt=1
+# DIAG_L3P1POOL: [443455000] word[2]=83808089 last=0 burst=0 emit_cnt=2
+# DIAG_L3P1POOL: [443465000] word[3]=80808097 last=0 burst=0 emit_cnt=3
+# DIAG_L3P1POOL: [443475000] word[4]=8080809a last=0 burst=0 emit_cnt=4
+# DIAG_L3P1POOL: [443485000] word[5]=80808090 last=1 burst=0 emit_cnt=5
+# DIAG_L3P1POOL: [445095000] word[6]=8080808a last=0 burst=1 emit_cnt=0
+# DIAG_L3P1POOL: [445105000] word[7]=86808087 last=0 burst=1 emit_cnt=1
+# INFO: [450205000] SRAM_A done
+# DIAG_FRAME: [450215000] frame_done RISES pix_cnt=392 layer=10
+# DIAG_FRAME: [451645000] frame_rearm layer=10 pix_cnt=392
+# DIAG_L3P1SUM: [451645000] before runner_done pool_words=30 sram_b_busy=1 txn_active=1 addr_counter=30
+# INFO: [451785000] SRAM_B done
+# DIAG_WRB: [451785000] SRAM_B write txn done: count=36 addr_counter=35 layer_sel=3 data_sel=2 pass_id=1
+# INFO: [451795000] Runner state 6 -> 7 (layer=10 fc=0)
+# DIAG_PFD: [451795000] pool_frame_done layer=10 pass=1 burst=0 emit_cnt=0
+# INFO: [451805000] runner_done (layer_sel=10, pass_id=1, is_fc=0)
+# INFO: [451805000] Runner state 7 -> 0 (layer=10 fc=0)
+# INFO: [451815000] TopFSM state 12 -> 13
+# DIAG_L3POOL[2]: 72 words checked (2 passes), 0 errors
+# DBG_FSM: [451825000] runner_start=1  top_state=13 runner_state=0 layer_sel=0 is_fc=1
+# INFO: [451835000] Runner state 0 -> 1 (layer=0 fc=1)
+# INFO: [451845000] Runner state 1 -> 2 (layer=0 fc=1)
+# INFO: [451855000] SRAM_A start (layer_sel=4, data_sel=0, pass_id=0, preload_mode=0)
+# DIAG_FC_CFG: [451875000] data=fffd807a last=0
+# DIAG_FC_CFG: [451885000] data=fffeceeb last=0
+# INFO: [451895000] SRAM_A done
+# DIAG_FC_CFG: [451895000] data=ffffe25e last=1
+# INFO: [451905000] Runner state 2 -> 5 (layer=0 fc=1)
+# INFO: [451915000] Runner state 5 -> 6 (layer=0 fc=1)
+# INFO: [451915000] SRAM_B start (layer_sel=4, data_sel=2, pass_id=0)
+# INFO: [451925000] SRAM_A start (layer_sel=4, data_sel=1, pass_id=0, preload_mode=0)
+# DIAG_FC_DATA:[451935000] idx=0 data=80828085 b3=-128 b2=-126 b1=-128 b0=-123
+# DIAG_FC_WT:  [451945000] idx=0 data=00ff3dd3 k0=0 k1=-1 k2=61
+# DIAG_FC_MUL: [451955000] idx=0 px=-128 k0=-45 k1=61 k2=-1 acc0=0 acc1=0 acc2=0
+# DIAG_FC_WT:  [451965000] idx=1 data=0048ceff k0=0 k1=72 k2=-50
+# DIAG_FC_MUL: [451975000] idx=1 px=-126 k0=-1 k1=-50 k2=72 acc0=-157958 acc1=-85909 acc2=-7458
+# DIAG_FC_WT:  [451985000] idx=2 data=00e3e318 k0=0 k1=-29 k2=-29
+# DIAG_FC_MUL: [451995000] idx=2 px=-128 k0=24 k1=-29 k2=-29 acc0=-157832 acc1=-79609 acc2=-16530
+# DIAG_FC_WT:  [452005000] idx=3 data=00e813fb k0=0 k1=-24 k2=19
+# DIAG_FC_MUL: [452015000] idx=3 px=-123 k0=-5 k1=19 k2=-24 acc0=-160904 acc1=-75897 acc2=-12818
+# DIAG_FC_WT:  [452025000] idx=4 data=00fd0512 k0=0 k1=-3 k2=5
+# DIAG_FC_DATA:[452025000] idx=1 data=80808085 b3=-128 b2=-128 b1=-128 b0=-123
+# DIAG_FC_MUL: [452035000] idx=4 px=-128 k0=18 k1=5 k2=-3 acc0=-160289 acc1=-78234 acc2=-9866
+# DIAG_FC_WT:  [452045000] idx=5 data=00f9f911 k0=0 k1=-7 k2=-7
+# DIAG_FC_MUL: [452055000] idx=5 px=-128 k0=17 k1=-7 k2=-7 acc0=-162593 acc1=-78874 acc2=-9482
+# DIAG_FC_WT:  [452065000] idx=6 data=0021a43d k0=0 k1=33 k2=-92
+# DIAG_FC_MUL: [452075000] idx=6 px=-128 k0=61 k1=-92 k2=33 acc0=-164769 acc1=-77978 acc2=-8586
+# DIAG_FC_WT:  [452085000] idx=7 data=000be200 k0=0 k1=11 k2=-30
+# DIAG_FC_MUL: [452095000] idx=7 px=-123 k0=0 k1=-30 k2=11 acc0=-172577 acc1=-66202 acc2=-12810
+# DIAG_FC_DATA:[452105000] idx=2 data=80828085 b3=-128 b2=-126 b1=-128 b0=-123
+# DIAG_FC_DATA:[452185000] idx=3 data=88808086 b3=-120 b2=-128 b1=-128 b0=-122
+# DIAG_FC_DATA:[452265000] idx=4 data=80808085 b3=-128 b2=-128 b1=-128 b0=-123
+# DIAG_FC_DATA:[452345000] idx=5 data=83808089 b3=-125 b2=-128 b1=-128 b0=-119
+# DIAG_FC_DATA:[452425000] idx=6 data=85828987 b3=-123 b2=-126 b1=-119 b0=-121
+# DIAG_FC_DATA:[452505000] idx=7 data=80808097 b3=-128 b2=-128 b1=-128 b0=-105
+# INFO: [457625000] SRAM_B done
+# INFO: [457685000] SRAM_A done
+# INFO: [457715000] Runner state 6 -> 7 (layer=0 fc=1)
+# INFO: [457725000] runner_done (layer_sel=0, pass_id=0, is_fc=1)
+# INFO: [457725000] Runner state 7 -> 0 (layer=0 fc=1)
+# INFO: [457735000] TopFSM state 13 -> 14
+# DIAG_FC[2]: acc0=-7170 (exp -7170)   OK
+# DIAG_FC[2]: acc1=-15652 (exp -15652)   OK
+# DIAG_FC[2]: acc2=6820 (exp 6820)   OK
+# INFO: [457745000] TopFSM state 14 -> 7
+# DIAG_FC_SUM: wt_words=288 data_words=72 muls=288
+# INFO: inference done in 9113 cycles
+# INFO: predict_class=2 (expected 2=scissors)
+# INFO: fc_acc0=-7170, fc_acc1=-15652, fc_acc2=6820
+# CYCLE_SUMMARY[scissors]: preload_pixel=0 argmax=1 end_to_end=15056
+# CYCLE_SUMMARY[scissors]: L1    total=6023 cfg=16 wt=15 data=5992
+# CYCLE_SUMMARY[scissors]: L2_P0 total=3020 cfg=16 wt=42 data=2962
+# CYCLE_SUMMARY[scissors]: L2_P1 total=3020 cfg=16 wt=42 data=2962
+# CYCLE_SUMMARY[scissors]: L2    total=6040
+# CYCLE_SUMMARY[scissors]: L3_P0 total=1200 cfg=16 wt=78 data=1106
+# CYCLE_SUMMARY[scissors]: L3_P1 total=1200 cfg=16 wt=78 data=1106
+# CYCLE_SUMMARY[scissors]: L3    total=2400
+# CYCLE_SUMMARY[scissors]: FC    total=592 cfg=10 wt=0 data=582
+# CYCLE_SUMMARY[scissors]: layers_total=15055
+# PASS: scissors classified correctly
+# 
+# ========================================
+# PASS: Full E2E test passed (3/3 classifications correct)
+# ========================================
+# 
+# ** Note: $finish    : /courses/ee6350/proj_2026Spring/team05/SAA/Layer_v1/input/TB/tb_system_e2e.v(845)
+#    Time: 457845 ns  Iteration: 1  Instance: /tb_system_e2e
+# End time: 18:52:15 on Apr 14,2026, Elapsed time: 0:00:31
+# Errors: 0, Warnings: 0
+Support of the MGLS_LICENSE_FILE and LM_LICENSE_FILE licensing environment variables will be discontinued starting with the 2025.1 release. Please update to using the SALT_LICENSE_SERVER variable.
+Please contact Siemens EDA Customer Support (https://support.sw.siemens.com/) for assistance.

@@ -1,0 +1,23 @@
+extraction_setup \
+	-technology_layer_map \
+		PO	poly \
+		CO	polyCont \
+		M1	metal1 \
+		VIA1	VIA1 \
+		M2	metal2 \
+		VIA2	VIA2 \
+		M3	metal3 \
+		VIA3	VIA3 \
+		M4	metal4 \
+		VIA4	VIA4 \
+		M5	metal5 \
+		VIA5	VIA5 \
+		M6	metal6 \
+		VIA6	VIA6 \
+		M7	metal7 \
+		VIA7	VIA7 \
+		M8	metal8 \
+		VIA8	VIA8 \
+		M9	metal9 \
+		RV	VIA9 \
+		AP	metal10
