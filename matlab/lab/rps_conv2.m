@@ -3,10 +3,11 @@ clear;
 close all;
 
 matlab_dir = fileparts(mfilename('fullpath'));
-repo_root = fileparts(matlab_dir);
+matlab_root = fileparts(matlab_dir);
+repo_root = fileparts(matlab_root);
 
 params_path = fullfile(repo_root, 'models', 'v1.int8.params.mat');
-image_path = fullfile(matlab_dir, 'digit_3_test.png');
+image_path = fullfile(matlab_root, 'digit_9_test.png');
 class_names = string(0:9);
 show_layer_outputs = true;
 

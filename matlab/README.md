@@ -1,24 +1,40 @@
 # MATLAB INT8 Golden Flow
 
-This folder is intentionally small now. It keeps one main MATLAB pipeline and
-the INT8 operator helpers needed to rebuild CNN inference.
+This folder now separates the model reference path from the RTL-oriented TXT
+generator.
 
-## Main Entry Point
+## Reference Path
 
 ```matlab
-run('matlab/rps_conv2.m')
+run('matlab/lab/rps_conv2.m')
 ```
 
-Before running, export the TFLite parameters from the repository root:
+Use this to inspect the original MATLAB/TFLite-style inference path and layer
+figures.
+
+## Hardware-Aligned TXT Generator
+
+```matlab
+run('matlab/hardware_aligned/run_all.m')
+```
+
+This writes `tb_*.txt` files under:
+
+```text
+matlab/hardware_aligned/debug/txt_cases/<case>/
+```
+
+The hardware-aligned path is intentionally separate from the reference path
+because the RTL uses raw conv MAC, separate effective bias quantization, pure
+maxpool, and INT32 FC argmax.
+
+## Model Export
+
+Before running either path, export the TFLite parameters from the repository
+root:
 
 ```bash
 .venv/bin/python pytorch/export_tflite_params_mat.py \
   --model models/v1.int8.tflite \
   --out models/v1.int8.params.mat
 ```
-
-## Kept Scope
-
-- `rps_conv2.m`: clean Conv/ReLU/Pool/Flatten/FC pipeline
-- `*_int8.m`, `relu*.m`, `tflite_quantize_multiplier.m`: integer operator helpers
-- No generated debug files, NPY dumps, or TXT golden writers are kept here.

@@ -1,10 +1,4 @@
 *.asv
 *.fig
-*.mat
-*.png
-!digit_0_test.png
-*.jpg
-*.jpeg
-*.bmp
 *.webp
 *.log
