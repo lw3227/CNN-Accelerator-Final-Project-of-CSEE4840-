@@ -185,8 +185,10 @@ module top_fsm #(
         ST_PL_CFG_W: begin
           if (load_last_seen && (sram_a_done || preload_sram_done)) begin
             preload_active <= 1'b0;
-            load_last_seen <= 1'b0;
-            state          <= ST_PL_WT;
+            if (!load_valid) begin
+              load_last_seen <= 1'b0;
+              state          <= ST_PL_WT;
+            end
           end
         end
 
@@ -203,9 +205,11 @@ module top_fsm #(
         ST_PL_WT_W: begin
           if (load_last_seen && (sram_a_done || preload_sram_done)) begin
             preload_active <= 1'b0;
-            load_last_seen <= 1'b0;
-            // Continue preload: FC bias words, then FCW weight packed stream.
-            state          <= ST_PL_FC_CFG;
+            if (!load_valid) begin
+              load_last_seen <= 1'b0;
+              // Continue preload: FC bias words, then FCW weight packed stream.
+              state          <= ST_PL_FC_CFG;
+            end
           end
         end
 
@@ -226,8 +230,10 @@ module top_fsm #(
         ST_PL_FC_CFG_W: begin
           if (load_last_seen && (sram_a_done || preload_sram_done)) begin
             preload_active <= 1'b0;
-            load_last_seen <= 1'b0;
-            state          <= ST_PL_FCW;
+            if (!load_valid) begin
+              load_last_seen <= 1'b0;
+              state          <= ST_PL_FCW;
+            end
           end
         end
 
@@ -246,10 +252,12 @@ module top_fsm #(
         ST_PL_FCW_W: begin
           if (load_last_seen && (sram_a_done || preload_sram_done)) begin
             preload_active <= 1'b0;
-            load_last_seen <= 1'b0;
-            // MODEL_LOAD complete.
-            model_loaded   <= 1'b1;
-            state          <= ST_READY;
+            if (!load_valid) begin
+              load_last_seen <= 1'b0;
+              // MODEL_LOAD complete.
+              model_loaded   <= 1'b1;
+              state          <= ST_READY;
+            end
           end
         end
 
@@ -259,10 +267,10 @@ module top_fsm #(
         // ---------------------------------------------------------
         ST_READY: begin
           preload_active <= 1'b0;
-          if (load_valid && load_sel == 1'b1) begin
+          if (load_valid && !load_last && load_sel == 1'b1) begin
             // Host wants to send image → enter L1 (pixels stream directly)
             state <= ST_L1;
-          end else if (load_valid && load_sel == 1'b0) begin
+          end else if (load_valid && !load_last && load_sel == 1'b0) begin
             // Host wants to reload model
             model_loaded <= 1'b0;
             state <= ST_PL_CFG;

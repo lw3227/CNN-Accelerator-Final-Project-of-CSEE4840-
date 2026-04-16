@@ -209,7 +209,8 @@ module system_top #(
   wire        fc_cfg_last  = route_fc_cfg ? sram_a_data_last  : 1'b0;
 
   // SRAM_A data_ready: OR of all active consumers on the shared 32-bit bus.
-  assign sram_a_data_ready = (route_conv_cfg ? conv_cfg_ready            : 1'b0) |
+  assign sram_a_data_ready = preload_mode ? 1'b0 :
+                             (route_conv_cfg ? conv_cfg_ready            : 1'b0) |
                              (route_conv_wt  ? wt_prepad_up_ready        : 1'b0) |
                              (route_conv_in  ? conv_in_adapter_up_ready  : 1'b0) |
                              (route_fc_cfg   ? fc_cfg_ready              : 1'b0);
@@ -319,7 +320,7 @@ module system_top #(
     .sram_b_data_sel(run_sram_b_data_sel),
     .sram_b_pass_id(run_sram_b_pass_id),
     .sram_b_done(sram_b_done),
-    .cfg_load_done(conv_cfg_load_done),
+    .cfg_load_done(runner_is_fc ? fc_param_load_done : conv_cfg_load_done),
     .wt_load_done(conv_wt_load_done),
     .pool_frame_done(conv_pool_frame_done),
     .conv_frame_rearm(conv_frame_rearm_done),

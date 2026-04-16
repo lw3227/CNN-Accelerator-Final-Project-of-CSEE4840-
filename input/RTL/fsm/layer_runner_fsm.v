@@ -141,14 +141,19 @@ module layer_runner_fsm (
           sram_a_layer_sel <= to_lsel(layer_sel, is_fc);
           sram_a_data_sel  <= SEL_CFG;
           sram_a_pass_id   <= pass_id;
+          sram_a_done_seen <= 1'b0;
           state            <= ST_WAIT_CFG;
         end
 
         ST_WAIT_CFG: begin
-          if (sram_a_done) begin
-            if (is_fc)
+          if (sram_a_done) sram_a_done_seen <= 1'b1;
+          if (is_fc) begin
+            if ((sram_a_done_seen || sram_a_done) && cfg_load_done) begin
+              sram_a_done_seen <= 1'b0;
               state <= ST_STREAM;   // FC skips LOAD_WT
-            else
+            end
+          end else begin
+            if (sram_a_done)
               state <= ST_LOAD_WT;
           end
         end

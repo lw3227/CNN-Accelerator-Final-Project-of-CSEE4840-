@@ -5,9 +5,11 @@
 
 # --- RTL source list (behav only: all files compiled from input/RTL/) ---
 proc compile_rtl_sources {proj_dir} {
-    # SRAM wrappers
+    # SRAM wrappers (incl. new 80b SRAM_FCW + packer for 10-class FC weights)
     foreach f {Addr_Gen.v sram_A_controller.v sram_B_controller.v \
-               sram_A_wrapper.v sram_B_wrapper.v top_sram_A.v top_sram_B.v} {
+               sram_A_wrapper.v sram_B_wrapper.v \
+               sram_FCW_wrapper.v fcw_preload_packer.v \
+               top_sram_A.v top_sram_B.v} {
         vlog +acc -incr [file join $proj_dir input RTL SRAM $f]
     }
     # Conv core
@@ -53,10 +55,10 @@ proc compile_tb {proj_dir mode} {
         vlog +acc -incr [file join $proj_dir input TB tb_system_e2e_gate.v]
         return "tb_system_e2e_gate"
     } else {
-        puts "INFO: using behavioral SRAM + tb_system_e2e."
+        puts "INFO: using behavioral SRAM + tb_system_e2e_10class."
         vlog +acc -incr [file join $proj_dir input TB sram_behav.v]
-        vlog +acc -incr [file join $proj_dir input TB tb_system_e2e.v]
-        return "tb_system_e2e"
+        vlog +acc -incr [file join $proj_dir input TB tb_system_e2e_10class.v]
+        return "tb_system_e2e_10class"
     }
 }
 

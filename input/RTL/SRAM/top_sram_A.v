@@ -272,8 +272,10 @@ assign busy      = txn_active | fcw_active;
 wire fcw_done_pulse = fcw_active
                       ? (fcw_rd_mode ? fcw_rd_done : fcw_pl_done)
                       : 1'b0;
+wire a32_write_done = write_en && txn_done;
+wire a32_read_done  = read_mode && data_last;
 assign done      = fcw_done_pulse
-                   | (!fcw_active && (read_mode ? data_last : (write_en && txn_done)));
+                   | (!fcw_active && (a32_write_done | a32_read_done));
 
 // pool_ready: during non-FCW transactions behaves as before; during FCW
 // preload the packer always accepts (up_ready=1) so we echo that through.
