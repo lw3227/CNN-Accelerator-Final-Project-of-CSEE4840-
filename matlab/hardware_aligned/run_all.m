@@ -21,8 +21,9 @@ params_candidates = {
 };
 
 % Glob all `digit_<n>_*.png` images in matlab/. Adjust as you add cases.
-image_glob  = fullfile(matlab_dir, 'digit_*.png');
-out_root    = fullfile(hw_dir, 'debug', 'txt_cases');
+image_glob       = fullfile(matlab_dir, 'digit_*.png');
+out_root         = fullfile(hw_dir, 'debug', 'txt_cases');
+sram_out_root    = fullfile(hw_dir, 'debug', 'sram_preload');
 % -------------------------------------------------------------------------
 
 params_path = "";
@@ -52,6 +53,7 @@ for i = 1:numel(imgs)
     case_name = sanitize_case_name(base);
 
     R = export_case(img_path, P, case_name, out_root);
+    gen_sram_preload(case_name, R, P, sram_out_root);
 end
 
 fprintf('run_all: done.\n');

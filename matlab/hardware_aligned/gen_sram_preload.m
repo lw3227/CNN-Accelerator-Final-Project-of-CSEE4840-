@@ -10,7 +10,7 @@ function gen_sram_preload(case_name, R, P, out_root)
 %
 %   Writes to <out_root>/<case_name>/:
 %     preload_conv_cfg_<NCFG>w.txt     conv L1/L2/L3 cfg (45 host words to SRAM_A@0x000)
-%     preload_conv_wt_225w.txt         conv L1/L2/L3 weights (225 host words to SRAM_A@0x030)
+%     preload_conv_wt_225w_bytes.txt   conv L1/L2/L3 weights (900 INT8 bytes = 225 packed words)
 %     preload_fc_bias_10w.txt          FC bias eff (10 host words to SRAM_A@0x111 via LAYER_FC+SEL_CFG)
 %     preload_fcw_864w.txt             FC weight host stream (864 words -> packer -> 288 x 80b)
 %
@@ -24,9 +24,9 @@ function gen_sram_preload(case_name, R, P, out_root)
 %     * FC bias  (10w)   : FULLY IMPLEMENTED
 %     * FC weight (864w) : FULLY IMPLEMENTED -- matches RTL fcw_preload_packer
 %                          spec (3 host words -> 80-bit slot, ch0 in LSB)
-%     * Conv weight (225w) : IMPLEMENTED via the reorder ported from
-%                            matlab_old/gen_sram_preload.py. Verify against
-%                            standalone L1/L2/L3 conv TBs before trusting.
+%     * Conv weight (900B) : IMPLEMENTED via the reorder ported from
+%                            matlab_old/gen_sram_preload.py. TB packs this
+%                            byte stream into 225 host words.
 %     * Conv cfg (45w)   : SCAFFOLD ONLY. Each layer-pass uses 9 cfg words,
 %                          but the bit-packing inside each word depends on
 %                          how Quantization_Top.v unpacks them. See the TODO
@@ -53,14 +53,14 @@ function gen_sram_preload(case_name, R, P, out_root)
     dump_txt(fullfile(case_dir, 'preload_conv_cfg_45w.txt'), cfg_stream, 'i32', 'flat');
 
     % ---------------------------------------------------------------------
-    %  conv WT: 225 words = 9 (L1) + 36 (L2p0) + 36 (L2p1) + 72 (L3p0) + 72 (L3p1)
+    %  conv WT: 900 bytes = 4*(9 + 36*2 + 72*2), later packed to 225 host words
     % ---------------------------------------------------------------------
     wt_stream = [conv_wt_pass(P.W1, 9,  1, 1, 4);   % L1: dot_k=9,  Cin=1, 4 channels (single pass)
                  conv_wt_pass(P.W2, 36, 4, 1, 4);   % L2 pass 0: dot_k=36, Cin=4, ch 1..4
                  conv_wt_pass(P.W2, 36, 4, 5, 4);   % L2 pass 1: ch 5..8
                  conv_wt_pass(P.W3, 72, 8, 1, 4);   % L3 pass 0: dot_k=72, Cin=8, ch 1..4
                  conv_wt_pass(P.W3, 72, 8, 5, 4)];  % L3 pass 1: ch 5..8
-    assert(numel(wt_stream) == 9 + 36*2 + 72*2, 'conv wt stream length %d != 225', numel(wt_stream));
+    assert(numel(wt_stream) == 4 * (9 + 36*2 + 72*2), 'conv wt stream length %d != 900 bytes', numel(wt_stream));
     % wt_stream is byte-stream (each entry one INT8 byte); host word packs 4 bytes,
     % so the file ends up as 225 host beats only after 4-byte packing in the TB.
     % Until the TB's packer is hooked here, dump byte-by-byte for transparency.
@@ -92,10 +92,11 @@ function gen_sram_preload(case_name, R, P, out_root)
         word1 = bitor(bitor(bitor(bytes(5), bitshift(bytes(6), 8)), ...
                             bitshift(bytes(7), 16)), bitshift(bytes(8), 24));
         word2 = bitor(bytes(9), bitshift(bytes(10), 8));   % upper 16b = 0
-        % Re-interpret as signed int32 for the txt file (TB will read raw bits).
-        fcw_stream(3*(k-1)+1) = typecast(uint32(word0), 'int32');
-        fcw_stream(3*(k-1)+2) = typecast(uint32(word1), 'int32');
-        fcw_stream(3*(k-1)+3) = typecast(uint32(word2), 'int32');
+        % word0/1/2 are already int32 with the correct bit pattern.
+        % Do NOT pass through uint32() — MATLAB saturates negatives to 0.
+        fcw_stream(3*(k-1)+1) = word0;
+        fcw_stream(3*(k-1)+2) = word1;
+        fcw_stream(3*(k-1)+3) = word2;
     end
     assert(numel(fcw_stream) == 864, 'fcw stream length %d != 864', numel(fcw_stream));
     dump_txt(fullfile(case_dir, 'preload_fcw_864w.txt'), fcw_stream, 'i32', 'flat');
@@ -108,32 +109,32 @@ end
 %  Helpers
 % =========================================================================
 
-function out = conv_cfg_stream(eff_bias, M, sh, zp_out, tag)
-% Pack 9 host words for one conv pass cfg.
+function out = conv_cfg_stream(eff_bias, M, sh, zp_out, tag)   %#ok<INUSD>
+% Pack 9 host words for one conv pass cfg, matching input/RTL/quant_pool/
+% integration/quant_param_loader.v (lines 6-8 header comment):
 %
-% TODO(layout): the exact word-by-word packing is fixed by Quantization_Top.v
-% / quant_param_loader.v. The order below is a *placeholder* matching what
-% the standalone L1/L2/L3 cfg test vectors used (4 eff_bias + 4 M + 4 sh =
-% 12 values, but only 9 cfg words per pass: assumes 3 channels packed into
-% each word? or different channel ordering?).
+%   word 0..3 : bias0..3 (per-channel eff_bias, one INT32 per word)
+%   word 4..7 : M0..3    (per-channel TFLite multiplier, one INT32 per word)
+%   word 8    : sh_packed = {sh1[31:24], sh2[23:16], sh3[15:8], sh4[7:0]}
+%               i.e. ch1 is MSB, ch4 is LSB (Verilog concat order).
 %
-% UNTIL THIS IS VERIFIED AGAINST input/RTL/quant_pool/integration/quant_param_loader.v
-% the produced file should NOT be assumed correct.
-%
-% Suggested verification: dump the cfg stream the existing standalone L1
-% testbench feeds in, compare element-by-element.
-    out = int32(zeros(9, 1));
-    n = numel(eff_bias);
-    assert(n == 4, 'conv_cfg_stream: expected 4 channels per pass, got %d (%s)', n, tag);
-    % Placeholder: pack as [eff_bias(1..4), M(1..4), sh(1)] -- exactly 9 words.
-    out(1:4) = int32(eff_bias);
-    out(5:8) = int32(M);
-    out(9)   = int32(sh(1));
-    % Mark for the dev: replace with real cfg layout.
-    if false
-        warning('gen_sram_preload:cfg_layout', ...
-                'conv cfg packing is a placeholder (tag=%s); verify against RTL', tag);
-    end
+% Verified against Quantization_Top.v:32-53 which slices sh_in[31:24]->PE1,
+% [23:16]->PE2, [15:8]->PE3, [7:0]->PE4.
+    assert(numel(eff_bias) == 4 && numel(M) == 4 && numel(sh) == 4, ...
+           'conv_cfg_stream: expected 4 channels per pass, got [%d,%d,%d] (%s)', ...
+           numel(eff_bias), numel(M), numel(sh), tag);
+
+    sh8 = bitand(int32(sh(:)), int32(255));   % truncate each shift to 8 bits
+    sh_packed = bitor(bitor(bitor( ...
+        bitshift(sh8(1), 24), ...
+        bitshift(sh8(2), 16)), ...
+        bitshift(sh8(3),  8)), ...
+                     sh8(4));
+
+    out       = int32(zeros(9, 1));
+    out(1:4)  = int32(eff_bias(:));
+    out(5:8)  = int32(M(:));
+    out(9)    = int32(sh_packed);
 end
 
 

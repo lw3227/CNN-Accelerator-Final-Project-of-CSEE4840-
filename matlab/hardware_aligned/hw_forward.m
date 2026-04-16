@@ -66,10 +66,13 @@ function R = hw_forward(img_int8, P)
         'fc_in',      P.z_fc_in);
 
     % --- Layer 1 -----------------------------------------------------------
+    % R.conv*_sh is the HARDWARE-facing right-shift amount consumed by
+    % Quantization_PE.v (`correct >>> sh`), so we pre-convert from the
+    % TFLite exponent `shift` to `31 - shift` = total right-shift count.
     R.conv1_mac      = conv2d_mac(img_int8, P.W1);                       % int32 [62,62,4]
     R.conv1_eff_bias = compute_eff_bias(P.b1, P.W1, P.in_zp);            % int32 [4]
     R.conv1_M        = int32(P.qm1);
-    R.conv1_sh       = int32(P.shift1);
+    R.conv1_sh       = int32(int32(31) - int32(P.shift1));
     R.conv1_requant  = quant_int32_to_int8(R.conv1_mac, R.conv1_eff_bias, ...
                                            R.conv1_M, R.conv1_sh, P.z_conv1_out);
     R.pool1          = maxpool2x2_int8(R.conv1_requant);                 % int8 [31,31,4]
@@ -78,7 +81,7 @@ function R = hw_forward(img_int8, P)
     R.conv2_mac      = conv2d_mac(R.pool1, P.W2);                        % int32 [29,29,8]
     R.conv2_eff_bias = compute_eff_bias(P.b2, P.W2, P.z_conv1_out);      % int32 [8]
     R.conv2_M        = int32(P.qm2);
-    R.conv2_sh       = int32(P.shift2);
+    R.conv2_sh       = int32(int32(31) - int32(P.shift2));
     R.conv2_requant  = quant_int32_to_int8(R.conv2_mac, R.conv2_eff_bias, ...
                                            R.conv2_M, R.conv2_sh, P.z_conv2_out);
     R.pool2          = maxpool2x2_int8(R.conv2_requant);                 % int8 [14,14,8]
@@ -87,7 +90,7 @@ function R = hw_forward(img_int8, P)
     R.conv3_mac      = conv2d_mac(R.pool2, P.W3);                        % int32 [12,12,8]
     R.conv3_eff_bias = compute_eff_bias(P.b3, P.W3, P.z_conv2_out);      % int32 [8]
     R.conv3_M        = int32(P.qm3);
-    R.conv3_sh       = int32(P.shift3);
+    R.conv3_sh       = int32(int32(31) - int32(P.shift3));
     R.conv3_requant  = quant_int32_to_int8(R.conv3_mac, R.conv3_eff_bias, ...
                                            R.conv3_M, R.conv3_sh, P.z_conv3_out);
     R.pool3          = maxpool2x2_int8(R.conv3_requant);                 % int8 [6,6,8]
@@ -200,30 +203,36 @@ end
 
 
 function out = quant_int32_to_int8(mac_i32, eff_bias_i32, M_i32, sh_i32, zp_out)
-% TFLite single-rounding requant, with eff_bias added pre-multiply:
-%   acc = mac + eff_bias
-%   y   = (acc * M) round-shifted right by (31 - sh)
-%   out = clamp(y + zp_out, -128, 127)
+% Mirror of RTL Quantization_PE.v requant:
+%   acc     = mac + eff_bias                 // signed 32b
+%   mul     = acc * M                        // signed 64b
+%   correct = mul + (1<<(sh-1)) - (mul<0?1:0)
+%   shiftt  = correct >>> sh                 // arithmetic right shift
+%   y       = shiftt - 128                   // zp_out = -128 baked in
+%   out     = clamp(y, -128, 127)
+%
+% sh_i32 is the HARDWARE-native shift (= 31 - TFLite_exp). Passed through
+% verbatim. For typical conv layers this is a positive value ~39..41.
 %
 % mac_i32:      int32 [H, W, C]
 % eff_bias_i32: int32 [C]
 % M_i32:        int32 [C]
-% sh_i32:       int32 [C]
+% sh_i32:       int32 [C]   (RTL-style right-shift amount)
 % zp_out:       int32 scalar
     [H, W, C] = size3(mac_i32);
     out = zeros(H, W, C, 'int8');
     for c = 1:C
         acc64 = int64(mac_i32(:, :, c)) + int64(eff_bias_i32(c));
         prod  = acc64 * int64(M_i32(c));
-        ts    = 31 - int64(sh_i32(c));
-        if ts > 0
-            round_term = bitshift(int64(1), ts - 1);
+        sh    = int64(sh_i32(c));
+        if sh > 0
+            round_term = bitshift(int64(1), sh - 1);
             prod_adj   = prod + round_term - int64(prod < 0);
-            scaled     = bitshift(prod_adj, -ts);
-        elseif ts == 0
+            scaled     = bitshift(prod_adj, -sh);
+        elseif sh == 0
             scaled = prod;
         else
-            scaled = bitshift(prod, -ts);
+            scaled = bitshift(prod, -sh);
         end
         scaled = scaled + int64(zp_out);
         scaled(scaled >  127) =  127;
