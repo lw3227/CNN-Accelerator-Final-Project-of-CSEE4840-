@@ -33,8 +33,8 @@ module fc_bias_loader #(
   assign cfg_ready       = !preload_active && (rx_idx < CFG_WORDS);
   assign param_load_done = load_done_r;
 
-  integer i;
-  always @(posedge clk or negedge rst_n) begin
+  always @(posedge clk or negedge rst_n) begin : bias_fsm
+    integer i;
     if (!rst_n) begin
       for (i = 0; i < OUT_CHANNELS; i = i + 1)
         bias_reg[i] <= 32'sd0;

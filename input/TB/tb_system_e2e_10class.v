@@ -12,7 +12,7 @@
 //              fc_acc_vec[i]    == fc_golden[i] (10 accumulators)
 //
 // Golden source:
-//   <proj_dir>/CNN-Accelerator-Final-Project-of-CSEE4840-/matlab/hardware_aligned/debug/
+//   <proj_dir>/Golden-Module/matlab/hardware_aligned/debug/
 //       txt_cases/<case>/      tb_*.txt (compare goldens + image + manifest)
 //       sram_preload/<case>/   preload_*.txt (host stream content)
 //
@@ -469,8 +469,8 @@ module tb_system_e2e_10class;
       proj_dir_str = ".";
 
     // Goldens live under the external repo clone.
-    $sformat(tb_root_str, "%0s/CNN-Accelerator-Final-Project-of-CSEE4840-/matlab/hardware_aligned/debug/txt_cases", proj_dir_str);
-    $sformat(sram_root_str, "%0s/CNN-Accelerator-Final-Project-of-CSEE4840-/matlab/hardware_aligned/debug/sram_preload", proj_dir_str);
+    $sformat(tb_root_str, "%0s/Golden-Module/matlab/hardware_aligned/debug/txt_cases", proj_dir_str);
+    $sformat(sram_root_str, "%0s/Golden-Module/matlab/hardware_aligned/debug/sram_preload", proj_dir_str);
 
     // Build case table
     for (i = 0; i < NUM_CASES; i = i + 1) begin
@@ -484,7 +484,7 @@ module tb_system_e2e_10class;
     // Load all preload streams (from case digit_0 -- CFG/WT/bias/FCW
     // are model-wide, not case-dependent).
     // --------------------------------------------------------------
-    $sformat(sram_root_str, "%0s/CNN-Accelerator-Final-Project-of-CSEE4840-/matlab/hardware_aligned/debug/sram_preload/digit_0_test", proj_dir_str);
+    $sformat(sram_root_str, "%0s/Golden-Module/matlab/hardware_aligned/debug/sram_preload/digit_0_test", proj_dir_str);
     load_conv_cfg;
     load_conv_wt;
     load_fc_bias;

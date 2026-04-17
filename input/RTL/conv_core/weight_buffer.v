@@ -65,23 +65,23 @@ wire step_en = burst_active && (!in_valid_window || out_ready);
 reg signed [DATA_W-1:0] out_tap;
 integer oi;
 always @* begin
-  out_tap = '0;
+  out_tap = 0;
   for (oi = 0; oi < Length; oi = oi + 1)
     if (oi[6:0] == eff_len - 7'd1)
       out_tap = sr[oi];
 end
-assign out_data = (burst_active && in_valid_window) ? out_tap : '0;
+assign out_data = (burst_active && in_valid_window) ? out_tap : 0;
 assign out_valid = burst_active && in_valid_window;
 
 integer i;
 always@(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
     for(i=0;i<Length;i=i+1) begin
-      sr[i] <= '0;
-      saved_sr[i] <= '0;
+      sr[i] <= 0;
+      saved_sr[i] <= 0;
     end
-    phase <= '0;
-    burst_cnt <= '0;
+    phase <= 0;
+    burst_cnt <= 0;
     burst_active <= 1'b0;
     ring_d <= 1'b0;
   end
@@ -90,20 +90,20 @@ always@(posedge clk or negedge rst_n)begin
     if(ring_rise) begin
       for (i=0; i<Length; i=i+1) saved_sr[i] <= sr[i];
       burst_active <= 1'b1;
-      burst_cnt <= '0;
-      phase <= '0;
+      burst_cnt <= 0;
+      phase <= 0;
     end
     else if(burst_active && step_en) begin
       if(burst_cnt == eff_period) begin
         for (i=0; i<Length; i=i+1) sr[i] <= saved_sr[i];
-        phase <= '0;
-        burst_cnt <= '0;
+        phase <= 0;
+        burst_cnt <= 0;
         burst_active <= 1'b0;
       end else begin
         // Runtime-select the feedback tap so smaller Length instances
         // never statically reference out-of-range sr[] entries.
         if (feedback_idx_valid) sr[0] <= sr[feedback_idx];
-        else                    sr[0] <= '0;
+        else                    sr[0] <= 0;
         for (i=1; i<Length; i=i+1) sr[i] <= sr[i-1];
         phase <= phase + 1'b1;
         burst_cnt <= burst_cnt + 1'b1;
@@ -112,8 +112,8 @@ always@(posedge clk or negedge rst_n)begin
     else if(wr_en) begin
       sr[0] <= in_data;
       for (i=1; i<Length; i=i+1) sr[i] <= sr[i-1];
-      phase <= '0;
-      burst_cnt <= '0;
+      phase <= 0;
+      burst_cnt <= 0;
     end
   end
 end

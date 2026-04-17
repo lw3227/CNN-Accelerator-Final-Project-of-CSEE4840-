@@ -1,14 +1,9 @@
 set sdc_version 1.6
 
-current_design system_top
-
 set clk_name   clk
 set clkperiod  20.0
 
 create_clock -name $clk_name -period $clkperiod [get_ports clk]
-set_clock_transition 0.2 [get_clocks $clk_name]
-set_clock_uncertainty -setup 0.2 [get_clocks $clk_name]
-set_clock_uncertainty -hold  0.05 [get_clocks $clk_name]
 
 set_false_path -from [get_ports rst_n]
 
@@ -18,4 +13,3 @@ set all_outs          [all_outputs]
 set_input_transition 0.1 $all_in_no_clk_rst
 set_input_delay  -clock $clk_name 0.2 $all_in_no_clk_rst
 set_output_delay -clock $clk_name 0.2 $all_outs
-set_load -pin_load 0.1 $all_outs

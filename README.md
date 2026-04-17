@@ -284,16 +284,86 @@ RTL 已完成：
 - 10 路组合 argmax，`predict_class` 扩到 4-bit
 - SRAM_A 地址图：FC bias 迁到 0x111，原 FC 权重区留空
 - `vlog -sv` 全量 lint 0 errors / 0 warnings
+- 新增 `cnn_mmio_interface`，把现有 `system_top` 包成 `memory space + config space` 的 MMIO 外设
+- 新增 host/runtime 路径：
+  - `gesture_runtime/`：Python driver-like wrapper、量化/预处理、scratchpad 布局
+  - `tools/hps_mmio_infer.c`：HPS `/dev/mem` 方式的 userspace 示例
+  - `platform_designer/cnn_mmio_interface_hw.tcl`：Platform Designer 组件描述
+- 约束已修复到 Quartus 可接受形式，`quartus_fit` / `quartus_sta` 可正常运行
+
+当前验证状态：
+- 行为级 10-class E2E：PASS 10/10
+- MMIO wrapper smoke test：PASS
+- Python host/runtime 单测：PASS
+- Quartus fitter：PASS
+- Quartus STA：fully constrained，但 slow corner 仍未过时序
 
 待办：
-1. MATLAB 生成器出 10 类 FC 权重/bias preload 流（含 80-bit 打包约定）
-2. TB 更新：`fc_golden` 扩到 10 项、`predict_class` 比较扩到 4-bit、FC-WT probe 宽度改 80b、新增 0-9 各一个测试 case
-3. FPGA port：用 Block Memory Generator IP 替换 `sram_FCW_wrapper` 内部行为级 `mem`
-4. SRAM_A/B wrapper 后续也需改造为 Vivado 原生端口（与主线迁移解耦，可延后）
+1. 做 slow-corner timing closure，或先降板级时钟
+2. 把 `cnn_mmio_interface` 真正接到 DE1-SoC 的 lightweight HPS-FPGA bridge
+3. 增补 Platform Designer 系统工程和板级 top
+4. 在 HPS Linux 上跑通 `tools/hps_mmio_infer.c`
 
 ---
 
-## 10. 参数总表
+## 10. MMIO / DE1-SoC 路径
+
+新增的板级集成路径不是替换现有 RTL，而是在 `system_top` 外面加一层兼容 Gesture 风格的 MMIO wrapper：
+
+```text
+HPS/Linux userspace
+    ↓ /dev/mem or lightweight MMIO
+cnn_mmio_interface
+    ├── scratchpad memory space (16-bit halfword)
+    ├── config/status register space
+    └── replay engine
+            ↓
+        system_top (existing stream protocol)
+```
+
+关键文件：
+
+| 文件 | 作用 |
+|---|---|
+| `input/RTL/interface/cnn_mmio_interface.v` | MMIO 外设 wrapper |
+| `include/cnn_mmio_regs.h` | HPS/RTL 共享寄存器定义 |
+| `platform_designer/cnn_mmio_interface_hw.tcl` | Platform Designer 组件封装 |
+| `de1_soc/README.md` | DE1-SoC 集成说明 |
+| `de1_soc/soc_system_template.tcl` | `soc_system.qsys` 接线模板 |
+| `include/cnn_mmio_host.h` | HPS userspace 共享 host runtime API |
+| `tools/cnn_mmio_host.c` | HPS userspace 共享 host runtime 实现 |
+| `tools/hps_mmio_infer.c` | HPS userspace `/dev/mem` 示例 |
+| `tools/hps_mmio_load_model.c` | HPS 分步 bring-up：仅加载模型 |
+| `tools/hps_mmio_run_case.c` | HPS 分步 bring-up：仅运行单张样本 |
+| `tools/hps_mmio_status.c` | HPS 寄存器/状态检查工具 |
+| `tools/run_mmio_inference.py` | mock/devmem 两种 backend 的脚本入口 |
+| `tools/Makefile` | HPS 工具构建入口 |
+
+推荐 bring-up 顺序：
+1. 在 Platform Designer 中接入 `cnn_mmio_interface`
+2. 分配 lightweight bridge 基地址
+3. 编译 `hps_mmio_infer`
+4. 先用 golden preload/image 跑一张已知样本
+5. 确认 `predict_done / predict_class / interface_error`
+
+HPS 工具构建：
+
+```bash
+make -C tools
+```
+
+Mock backend 快速验证：
+
+```bash
+python3 tools/run_mmio_inference.py \
+  --backend mock \
+  --preload-root Golden-Module/matlab/hardware_aligned/debug/sram_preload/digit_0_test \
+  --case-root Golden-Module/matlab/hardware_aligned/debug/txt_cases/digit_0_test
+```
+
+---
+
+## 11. 参数总表
 
 | 参数 | 值 | 位置 |
 |---|---|---|

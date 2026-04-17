@@ -41,3 +41,27 @@ oaScan.log
 .claude/
 .codex
 vish_stacktrace.vstf
+
+# Quartus / Platform Designer generated files
+.qsys_edit/
+db/
+incremental_db/
+output_files/
+input/RTL/db/
+input/RTL/output_files/
+*.qws
+
+# Python / local build artifacts
+*.pyc
+gesture_runtime/__pycache__/
+gesture_runtime/tests/__pycache__/
+tools/*.o
+tools/hps_mmio_infer
+tools/hps_mmio_load_model
+tools/hps_mmio_run_case
+tools/hps_mmio_status
+
+# Temporary exploration files
+test_*.qsys
+test_refstyle.qsys
+*~

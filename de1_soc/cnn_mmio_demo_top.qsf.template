@@ -1,0 +1,61 @@
+# Quartus template for the FPGA-only bring-up shell.
+#
+# This top is useful before the full HPS system is wired up. It exposes the
+# cnn_mmio_interface status on LEDs while leaving the MMIO request signals as
+# plain top-level ports that can later be connected to a bridge fabric.
+
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSEMA5F31C6
+set_global_assignment -name TOP_LEVEL_ENTITY cnn_mmio_demo_top
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files_demo_top
+
+set_global_assignment -name VERILOG_FILE de1_soc/cnn_mmio_demo_top.v
+set_global_assignment -name VERILOG_FILE input/RTL/interface/cnn_mmio_interface.v
+set_global_assignment -name VERILOG_FILE input/TB/sram_behav.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/weight_buffer.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/systolic_array_top.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/sa_skew_feeder.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/Line_Buffer.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/input_row_aligner.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/conv_top.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/conv_quant_pool.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/conv_engine_ctrl.v
+set_global_assignment -name VERILOG_FILE input/RTL/conv_core/Conv_Buffer.v
+set_global_assignment -name VERILOG_FILE input/RTL/fc/FC.v
+set_global_assignment -name VERILOG_FILE input/RTL/fc/fc_bias_loader.v
+set_global_assignment -name VERILOG_FILE input/RTL/fc/fc_data_adapter.v
+set_global_assignment -name VERILOG_FILE input/RTL/fc/mac.v
+set_global_assignment -name VERILOG_FILE input/RTL/fsm/conv_data_adapter.v
+set_global_assignment -name VERILOG_FILE input/RTL/fsm/layer_runner_fsm.v
+set_global_assignment -name VERILOG_FILE input/RTL/fsm/top_fsm.v
+set_global_assignment -name VERILOG_FILE input/RTL/fsm/wt_prepad_inserter.v
+set_global_assignment -name VERILOG_FILE input/RTL/quant_pool/integration/conv_quant_adapter.v
+set_global_assignment -name VERILOG_FILE input/RTL/quant_pool/integration/quant_param_loader.v
+set_global_assignment -name VERILOG_FILE input/RTL/quant_pool/integration/quant_pool_adapter.v
+set_global_assignment -name VERILOG_FILE input/RTL/quant_pool/pool/pool_core.v
+set_global_assignment -name VERILOG_FILE input/RTL/quant_pool/pool/pool_stream_top.v
+set_global_assignment -name VERILOG_FILE input/RTL/quant_pool/quant/Quantization_PE.v
+set_global_assignment -name VERILOG_FILE input/RTL/quant_pool/quant/Quantization_Top.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/Addr_Gen.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/fcw_preload_packer.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/sram_A_controller.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/sram_A_wrapper.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/sram_B_controller.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/sram_B_wrapper.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/sram_FCW_wrapper.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/top_sram_A.v
+set_global_assignment -name VERILOG_FILE input/RTL/SRAM/top_sram_B.v
+set_global_assignment -name VERILOG_FILE input/RTL/system_top.v
+
+set_global_assignment -name SDC_FILE input/SDC/system_top.sdc
+
+# Add your board-specific pin assignments here.
+# Example logical ports from cnn_mmio_demo_top:
+#   CLOCK_50
+#   KEY[3:0]
+#   LEDR[9:0]
+#   mmio_address[19:0]
+#   mmio_chipselect
+#   mmio_write
+#   mmio_writedata[15:0]
+#   mmio_readdata[15:0]
