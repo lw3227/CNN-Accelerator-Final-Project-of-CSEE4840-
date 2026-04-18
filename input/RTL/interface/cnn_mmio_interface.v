@@ -47,13 +47,15 @@ module cnn_mmio_interface #(
   localparam [1:0] ENG_MODEL   = 2'd1;
   localparam [1:0] ENG_INFER   = 2'd2;
 
-  localparam [2:0] ST_IDLE     = 3'd0;
-  localparam [2:0] ST_RD_LO    = 3'd1;
-  localparam [2:0] ST_CAP_LO   = 3'd2;
-  localparam [2:0] ST_RD_HI    = 3'd3;
-  localparam [2:0] ST_CAP_HI   = 3'd4;
-  localparam [2:0] ST_SEND     = 3'd5;
-  localparam [2:0] ST_GAP      = 3'd6;
+  localparam [3:0] ST_IDLE     = 4'd0;
+  localparam [3:0] ST_RD_LO    = 4'd1;
+  localparam [3:0] ST_WAIT_LO  = 4'd2;
+  localparam [3:0] ST_CAP_LO   = 4'd3;
+  localparam [3:0] ST_RD_HI    = 4'd4;
+  localparam [3:0] ST_WAIT_HI  = 4'd5;
+  localparam [3:0] ST_CAP_HI   = 4'd6;
+  localparam [3:0] ST_SEND     = 4'd7;
+  localparam [3:0] ST_GAP      = 4'd8;
 
   localparam [1:0] SEG_CONV_CFG = 2'd0;
   localparam [1:0] SEG_CONV_WT  = 2'd1;
@@ -68,6 +70,9 @@ module cnn_mmio_interface #(
 
   reg [15:0]       mem_rdata_q;
   reg              host_mem_rd_q;
+  reg [MEM_AW-1:0] mem_rd_addr_q;
+  reg              mem_rd_pending_q;
+  reg              mem_rd_host_q;
 
   wire mem_sel    = chipselect && !address[19];
   wire cfg_sel    = chipselect &&  address[19];
@@ -156,7 +161,7 @@ module cnn_mmio_interface #(
   // ---------------------------------------------------------------------------
   // Replay engine
   // ---------------------------------------------------------------------------
-  reg [2:0] eng_state;
+  reg [3:0] eng_state;
   reg [1:0] model_seg_idx;
   reg [15:0] seg_word_idx;
   reg [15:0] seg_word_count;
@@ -198,17 +203,34 @@ module cnn_mmio_interface #(
   wire eng_read_in_range = (current_halfword_addr < MEM_HALFWORDS);
 
   always @(posedge clk) begin
-    host_mem_rd_q <= 1'b0;
-
-    if (mem_wr_req && !eng_busy && mem_addr_ok)
-      mem[address[MEM_AW-1:0]] <= writedata;
-
-    if (issue_eng_read && eng_read_in_range) begin
-      mem_rdata_q   <= mem[current_halfword_addr[MEM_AW-1:0]];
+    if (reset) begin
+      mem_rdata_q      <= 16'd0;
+      host_mem_rd_q    <= 1'b0;
+      mem_rd_addr_q    <= {MEM_AW{1'b0}};
+      mem_rd_pending_q <= 1'b0;
+      mem_rd_host_q    <= 1'b0;
+    end else begin
       host_mem_rd_q <= 1'b0;
-    end else if (mem_rd_req && !eng_busy && mem_addr_ok) begin
-      mem_rdata_q   <= mem[address[MEM_AW-1:0]];
-      host_mem_rd_q <= 1'b1;
+
+      if (mem_wr_req && !eng_busy && mem_addr_ok)
+        mem[address[MEM_AW-1:0]] <= writedata;
+
+      if (mem_rd_pending_q) begin
+        mem_rdata_q   <= mem[mem_rd_addr_q];
+        host_mem_rd_q <= mem_rd_host_q;
+      end
+
+      mem_rd_pending_q <= 1'b0;
+
+      if (issue_eng_read && eng_read_in_range) begin
+        mem_rd_addr_q    <= current_halfword_addr[MEM_AW-1:0];
+        mem_rd_pending_q <= 1'b1;
+        mem_rd_host_q    <= 1'b0;
+      end else if (mem_rd_req && !eng_busy && mem_addr_ok) begin
+        mem_rd_addr_q    <= address[MEM_AW-1:0];
+        mem_rd_pending_q <= 1'b1;
+        mem_rd_host_q    <= 1'b1;
+      end
     end
   end
 
@@ -306,8 +328,12 @@ module cnn_mmio_interface #(
             eng_mode           <= ENG_IDLE;
             eng_state          <= ST_IDLE;
           end else begin
-            eng_state <= ST_CAP_LO;
+            eng_state <= ST_WAIT_LO;
           end
+        end
+
+        ST_WAIT_LO: begin
+          eng_state <= ST_CAP_LO;
         end
 
         ST_CAP_LO: begin
@@ -321,8 +347,12 @@ module cnn_mmio_interface #(
             eng_mode           <= ENG_IDLE;
             eng_state          <= ST_IDLE;
           end else begin
-            eng_state <= ST_CAP_HI;
+            eng_state <= ST_WAIT_HI;
           end
+        end
+
+        ST_WAIT_HI: begin
+          eng_state <= ST_CAP_HI;
         end
 
         ST_CAP_HI: begin

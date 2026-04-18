@@ -4,7 +4,7 @@
 
 `timescale 1ns / 1ps
 
-module sram_A (
+module sram_A_model (
   input         CLK,
   input         CEN,   // chip enable, active low
   input         WEN,   // write enable, active low (CEN=0, WEN=0 → write)
@@ -26,7 +26,7 @@ module sram_A (
   end
 endmodule
 
-module sram_B (
+module sram_B_model (
   input         CLK,
   input         CEN,
   input         WEN,

@@ -37,7 +37,7 @@ module sram_A_wrapper # (
             read_valid <= do_read;
     end
 
-    sram_A sram_A_inst (
+    sram_A_model sram_A_inst (
         .CLK(clk),
         .CEN(CEN),
         .WEN(WEN),

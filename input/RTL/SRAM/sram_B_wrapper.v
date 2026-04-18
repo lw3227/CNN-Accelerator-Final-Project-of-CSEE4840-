@@ -37,7 +37,7 @@ module sram_B_wrapper # (
             read_valid <= do_read;
     end
 
-    sram_B sram_B_inst (
+    sram_B_model sram_B_inst (
         .CLK(clk),
         .CEN(CEN),
         .WEN(WEN),
