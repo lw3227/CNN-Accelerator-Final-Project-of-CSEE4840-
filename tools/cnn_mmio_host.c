@@ -81,40 +81,104 @@ static void build_path(char *dst, size_t dst_len, const char *root, const char *
   snprintf(dst, dst_len, "%s/%s", root, leaf);
 }
 
-static void mmio_write16(volatile uint16_t *base, uint32_t halfword_addr, uint16_t value) {
-  base[halfword_addr] = value;
+static int try_read_i32_lines(const char *root, const char *const *leaves,
+                              int32_t *dst, size_t count) {
+  char path[1024];
+  size_t i;
+  for (i = 0; leaves[i] != NULL; ++i) {
+    build_path(path, sizeof(path), root, leaves[i]);
+    if (read_i32_lines(path, dst, count) == 0)
+      return 0;
+  }
+  return -1;
 }
 
-static uint16_t mmio_read16(volatile uint16_t *base, uint32_t halfword_addr) {
-  return base[halfword_addr];
+static int try_read_packed_i8_words(const char *root, const char *const *leaves,
+                                    uint32_t *dst, size_t word_count) {
+  char path[1024];
+  size_t i;
+  for (i = 0; leaves[i] != NULL; ++i) {
+    build_path(path, sizeof(path), root, leaves[i]);
+    if (read_packed_i8_words(path, dst, word_count) == 0)
+      return 0;
+  }
+  return -1;
+}
+
+static volatile uint32_t *mmio_words(volatile uint16_t *base) {
+  return (volatile uint32_t *)base;
+}
+
+static void mmio_write32_word(volatile uint16_t *base, uint32_t word_addr, uint32_t value) {
+  mmio_words(base)[word_addr] = value;
+}
+
+static uint32_t mmio_read32_word(volatile uint16_t *base, uint32_t word_addr) {
+  return mmio_words(base)[word_addr];
+}
+
+static uint32_t mmio_cfg_word_addr(uint32_t even_reg_idx) {
+  return cnn_mmio_cfg_addr(even_reg_idx) >> 1;
+}
+
+static void mmio_write_cfg_pair(volatile uint16_t *base, uint32_t even_reg_idx,
+                                uint16_t even_value, uint16_t odd_value) {
+  uint32_t packed = ((uint32_t)odd_value << 16) | even_value;
+  mmio_write32_word(base, mmio_cfg_word_addr(even_reg_idx), packed);
+}
+
+static void mmio_write_cfg_control(volatile uint16_t *base, uint16_t control_value) {
+  mmio_write32_word(base, mmio_cfg_word_addr(CNN_MMIO_REG_CONTROL), (uint32_t)control_value);
+}
+
+static uint16_t mmio_read_cfg_odd(volatile uint16_t *base, uint32_t odd_reg_idx) {
+  uint32_t even_reg_idx = odd_reg_idx & ~1u;
+  uint32_t packed = mmio_read32_word(base, mmio_cfg_word_addr(even_reg_idx));
+  return (uint16_t)(packed & 0xFFFFu);
 }
 
 static void write_word_image(volatile uint16_t *base, uint32_t start_halfword,
                              const uint32_t *words, size_t word_count) {
   size_t i;
+  uint32_t start_word_addr = start_halfword >> 1;
+
   for (i = 0; i < word_count; ++i) {
-    uint32_t word = words[i];
-    mmio_write16(base, cnn_mmio_mem_addr(start_halfword + (uint32_t)(i * 2)), (uint16_t)(word & 0xFFFFu));
-    mmio_write16(base, cnn_mmio_mem_addr(start_halfword + (uint32_t)(i * 2 + 1)), (uint16_t)((word >> 16) & 0xFFFFu));
+    mmio_write32_word(base, start_word_addr + (uint32_t)i, words[i]);
   }
 }
 
 int cnn_mmio_load_preload_bundle(const char *preload_root, struct cnn_mmio_preload_bundle *bundle) {
-  char path[1024];
-  build_path(path, sizeof(path), preload_root, "conv_cfg_words.txt");
-  if (read_i32_lines(path, bundle->conv_cfg, CNN_MMIO_DEFAULT_CONV_CFG_WORDS) != 0)
+  static const char *const conv_cfg_candidates[] = {
+      "preload_conv_cfg_45w.txt",
+      "conv_cfg_words.txt",
+      NULL};
+  static const char *const conv_wt_candidates[] = {
+      "preload_conv_wt_225w_bytes.txt",
+      "conv_wt_words.txt",
+      NULL};
+  static const char *const fc_bias_candidates[] = {
+      "preload_fc_bias_10w.txt",
+      "fc_bias_words.txt",
+      NULL};
+  static const char *const fcw_candidates[] = {
+      "preload_fcw_864w.txt",
+      "fcw_words.txt",
+      NULL};
+
+  if (try_read_i32_lines(preload_root, conv_cfg_candidates, bundle->conv_cfg,
+                         CNN_MMIO_DEFAULT_CONV_CFG_WORDS) != 0)
     return -1;
 
-  build_path(path, sizeof(path), preload_root, "conv_wt_words.txt");
-  if (read_packed_i8_words(path, bundle->conv_wt, CNN_MMIO_DEFAULT_CONV_WT_WORDS) != 0)
+  if (try_read_packed_i8_words(preload_root, conv_wt_candidates, bundle->conv_wt,
+                               CNN_MMIO_DEFAULT_CONV_WT_WORDS) != 0)
     return -1;
 
-  build_path(path, sizeof(path), preload_root, "fc_bias_words.txt");
-  if (read_i32_lines(path, bundle->fc_bias, CNN_MMIO_DEFAULT_FC_BIAS_WORDS) != 0)
+  if (try_read_i32_lines(preload_root, fc_bias_candidates, bundle->fc_bias,
+                         CNN_MMIO_DEFAULT_FC_BIAS_WORDS) != 0)
     return -1;
 
-  build_path(path, sizeof(path), preload_root, "fcw_words.txt");
-  if (read_i32_lines(path, (int32_t *)bundle->fcw, CNN_MMIO_DEFAULT_FCW_WORDS) != 0)
+  if (try_read_i32_lines(preload_root, fcw_candidates, (int32_t *)bundle->fcw,
+                         CNN_MMIO_DEFAULT_FCW_WORDS) != 0)
     return -1;
 
   return 0;
@@ -122,8 +186,13 @@ int cnn_mmio_load_preload_bundle(const char *preload_root, struct cnn_mmio_prelo
 
 int cnn_mmio_load_inference_case(const char *case_root, struct cnn_mmio_inference_case *tc) {
   char path[1024];
-  build_path(path, sizeof(path), case_root, "image_words.txt");
-  if (read_packed_i8_words(path, tc->image, CNN_MMIO_DEFAULT_IMAGE_WORDS) != 0)
+  static const char *const image_candidates[] = {
+      "tb_conv1_in_i8_64x64x1.txt",
+      "image_words.txt",
+      NULL};
+
+  if (try_read_packed_i8_words(case_root, image_candidates, tc->image,
+                               CNN_MMIO_DEFAULT_IMAGE_WORDS) != 0)
     return -1;
 
   build_path(path, sizeof(path), case_root, "manifest.txt");
@@ -169,16 +238,16 @@ void cnn_mmio_close(struct cnn_mmio_device *dev) {
 }
 
 void cnn_mmio_program_default_registers(volatile uint16_t *mmio_base) {
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_CONV_CFG_BASE), CNN_MMIO_DEFAULT_CONV_CFG_BASE_HW);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_CONV_CFG_LEN), CNN_MMIO_DEFAULT_CONV_CFG_WORDS);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_CONV_WT_BASE), CNN_MMIO_DEFAULT_CONV_WT_BASE_HW);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_CONV_WT_LEN), CNN_MMIO_DEFAULT_CONV_WT_WORDS);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_FC_BIAS_BASE), CNN_MMIO_DEFAULT_FC_BIAS_BASE_HW);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_FC_BIAS_LEN), CNN_MMIO_DEFAULT_FC_BIAS_WORDS);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_FCW_BASE), CNN_MMIO_DEFAULT_FCW_BASE_HW);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_FCW_LEN), CNN_MMIO_DEFAULT_FCW_WORDS);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_IMAGE_BASE), CNN_MMIO_DEFAULT_IMAGE_BASE_HW);
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_IMAGE_LEN), CNN_MMIO_DEFAULT_IMAGE_WORDS);
+  mmio_write_cfg_pair(mmio_base, CNN_MMIO_REG_CONV_CFG_BASE,
+                      CNN_MMIO_DEFAULT_CONV_CFG_BASE_HW, CNN_MMIO_DEFAULT_CONV_CFG_WORDS);
+  mmio_write_cfg_pair(mmio_base, CNN_MMIO_REG_CONV_WT_BASE,
+                      CNN_MMIO_DEFAULT_CONV_WT_BASE_HW, CNN_MMIO_DEFAULT_CONV_WT_WORDS);
+  mmio_write_cfg_pair(mmio_base, CNN_MMIO_REG_FC_BIAS_BASE,
+                      CNN_MMIO_DEFAULT_FC_BIAS_BASE_HW, CNN_MMIO_DEFAULT_FC_BIAS_WORDS);
+  mmio_write_cfg_pair(mmio_base, CNN_MMIO_REG_FCW_BASE,
+                      CNN_MMIO_DEFAULT_FCW_BASE_HW, CNN_MMIO_DEFAULT_FCW_WORDS);
+  mmio_write_cfg_pair(mmio_base, CNN_MMIO_REG_IMAGE_BASE,
+                      CNN_MMIO_DEFAULT_IMAGE_BASE_HW, CNN_MMIO_DEFAULT_IMAGE_WORDS);
 }
 
 void cnn_mmio_write_preload_bundle(volatile uint16_t *mmio_base, const struct cnn_mmio_preload_bundle *bundle) {
@@ -198,27 +267,27 @@ void cnn_mmio_write_inference_case(volatile uint16_t *mmio_base, const struct cn
 }
 
 uint16_t cnn_mmio_read_status(volatile uint16_t *mmio_base) {
-  return mmio_read16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_STATUS));
+  return mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_STATUS);
 }
 
 uint16_t cnn_mmio_read_error(volatile uint16_t *mmio_base) {
-  return mmio_read16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_IF_ERROR));
+  return mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_IF_ERROR);
 }
 
 uint16_t cnn_mmio_read_predict(volatile uint16_t *mmio_base) {
-  return mmio_read16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_PREDICT));
+  return (uint16_t)cnn_mmio_pack_status_predict(cnn_mmio_read_status(mmio_base));
 }
 
 void cnn_mmio_clear_status(volatile uint16_t *mmio_base) {
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_CONTROL), CNN_MMIO_CTRL_CLEAR_STATUS);
+  mmio_write_cfg_control(mmio_base, CNN_MMIO_CTRL_CLEAR_STATUS);
 }
 
 void cnn_mmio_start_model_load(volatile uint16_t *mmio_base) {
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_CONTROL), CNN_MMIO_CTRL_MODEL_LOAD);
+  mmio_write_cfg_control(mmio_base, CNN_MMIO_CTRL_MODEL_LOAD);
 }
 
 void cnn_mmio_start_infer(volatile uint16_t *mmio_base) {
-  mmio_write16(mmio_base, cnn_mmio_cfg_addr(CNN_MMIO_REG_CONTROL), CNN_MMIO_CTRL_INFER);
+  mmio_write_cfg_control(mmio_base, CNN_MMIO_CTRL_INFER);
 }
 
 int cnn_mmio_wait_for_status_bit(

@@ -1,5 +1,15 @@
 # DE1-SoC Integration Notes
 
+Primary working guide for this branch:
+
+- [de1_soc/DEVELOPMENT_MAINLINE.md](DEVELOPMENT_MAINLINE.md)
+- [de1_soc/BOARD_TEST_PLAN.md](BOARD_TEST_PLAN.md)
+- [de1_soc/device_tree/README.md](device_tree/README.md)
+
+If you only read one file before touching board bring-up, read
+`DEVELOPMENT_MAINLINE.md`. That is the current "must look / can ignore /
+recommended next step" entry point for this branch.
+
 This project now has a board-facing wrapper, [cnn_mmio_interface.v](/homes/user/stud/fall25/lw3227/CNN_ACC/input/RTL/interface/cnn_mmio_interface.v), intended to be exposed to the HPS as a memory-mapped Avalon slave.
 
 ## What gets instantiated on FPGA
@@ -111,6 +121,18 @@ Quick status readback:
 ./hps_mmio_status 0xff200000
 ```
 
+Recommended bring-up order on the real board:
+
+1. `make -C tools`
+2. boot with matching `soc_system.rbf` and `soc_system.dtb`
+3. `./tools/hps_mmio_status 0xff200000`
+4. `./tools/hps_mmio_load_model 0xff200000 <preload_root>`
+5. `./tools/hps_mmio_run_case 0xff200000 <case_root>`
+
+If the board still boots an old DTB, use the patch helper under
+`de1_soc/device_tree/` to add `cnn_mmio_interface@0` under the lightweight
+bridge before trusting Linux-side MMIO reads.
+
 ## Expected software sequence
 
 1. Program register file.
@@ -133,3 +155,12 @@ Quick status readback:
 - DE1-SoC project helper shell script: added
 - Quartus fit: successful
 - Timing: still not closed at 50 MHz slow corner, so on-board use should start with a lower clock target or further timing optimization
+
+## Recommended Mainline
+
+Stay on a staged `HPS + MMIO` mainline.
+
+- `system_top` remains the compute core
+- `cnn_mmio_interface` is the host-facing contract
+- `de1_soc/` is the integration layer
+- `cnn_mmio_demo_top.v` is only a fallback debug shell

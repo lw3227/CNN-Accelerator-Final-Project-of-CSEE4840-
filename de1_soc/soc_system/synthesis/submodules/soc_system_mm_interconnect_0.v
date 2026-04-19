@@ -84,6 +84,7 @@ module soc_system_mm_interconnect_0 (
 		input  wire        hps_0_h2f_axi_master_agent_clk_reset_reset_bridge_in_reset_reset, // hps_0_h2f_axi_master_agent_clk_reset_reset_bridge_in_reset.reset
 		output wire [19:0] cnn_mmio_interface_0_avalon_slave_0_address,                      //                        cnn_mmio_interface_0_avalon_slave_0.address
 		output wire        cnn_mmio_interface_0_avalon_slave_0_write,                        //                                                           .write
+		output wire        cnn_mmio_interface_0_avalon_slave_0_read,                         //                                                           .read
 		input  wire [15:0] cnn_mmio_interface_0_avalon_slave_0_readdata,                     //                                                           .readdata
 		output wire [15:0] cnn_mmio_interface_0_avalon_slave_0_writedata,                    //                                                           .writedata
 		output wire        cnn_mmio_interface_0_avalon_slave_0_chipselect                    //                                                           .chipselect
@@ -350,10 +351,10 @@ module soc_system_mm_interconnect_0 (
 		.uav_debugaccess        (cnn_mmio_interface_0_avalon_slave_0_agent_m0_debugaccess),   //                         .debugaccess
 		.av_address             (cnn_mmio_interface_0_avalon_slave_0_address),                //      avalon_anti_slave_0.address
 		.av_write               (cnn_mmio_interface_0_avalon_slave_0_write),                  //                         .write
+		.av_read                (cnn_mmio_interface_0_avalon_slave_0_read),                   //                         .read
 		.av_readdata            (cnn_mmio_interface_0_avalon_slave_0_readdata),               //                         .readdata
 		.av_writedata           (cnn_mmio_interface_0_avalon_slave_0_writedata),              //                         .writedata
 		.av_chipselect          (cnn_mmio_interface_0_avalon_slave_0_chipselect),             //                         .chipselect
-		.av_read                (),                                                           //              (terminated)
 		.av_begintransfer       (),                                                           //              (terminated)
 		.av_beginbursttransfer  (),                                                           //              (terminated)
 		.av_burstcount          (),                                                           //              (terminated)

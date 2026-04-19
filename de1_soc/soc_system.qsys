@@ -55,7 +55,9 @@
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
+ <interface name="hps" internal="hps_0.hps_io" type="conduit" dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
+ <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
  <module name="clk_0" kind="clock_source" version="21.1" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
@@ -144,9 +146,9 @@
   <parameter name="EMAC0_Mode" value="N/A" />
   <parameter name="EMAC0_PTP" value="false" />
   <parameter name="EMAC0_PinMuxing" value="Unused" />
-  <parameter name="EMAC1_Mode" value="N/A" />
+  <parameter name="EMAC1_Mode" value="RGMII" />
   <parameter name="EMAC1_PTP" value="false" />
-  <parameter name="EMAC1_PinMuxing" value="Unused" />
+  <parameter name="EMAC1_PinMuxing" value="HPS I/O Set 0" />
   <parameter name="ENABLE_ABS_RAM_MEM_INIT" value="false" />
   <parameter name="ENABLE_BONDING" value="false" />
   <parameter name="ENABLE_BURST_MERGE" value="false" />
@@ -216,7 +218,7 @@
   <parameter name="FPGA_PERIPHERAL_OUTPUT_CLOCK_FREQ_SDIO_CCLK" value="100" />
   <parameter name="FPGA_PERIPHERAL_OUTPUT_CLOCK_FREQ_SPIM0_SCLK_OUT" value="100" />
   <parameter name="FPGA_PERIPHERAL_OUTPUT_CLOCK_FREQ_SPIM1_SCLK_OUT" value="100" />
-  <parameter name="GPIO_Enable">No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No</parameter>
+  <parameter name="GPIO_Enable">No,No,No,No,No,No,No,No,No,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,Yes,No,No,No,No,Yes,No,No,No,No,No,No,No,Yes,No,No,No,No,Yes,Yes,No,No,No,No,No,No,Yes,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No</parameter>
   <parameter name="GP_Enable" value="false" />
   <parameter name="H2F_AXI_CLOCK_FREQ" value="50000000" />
   <parameter name="H2F_CTI_CLOCK_FREQ" value="100" />
@@ -230,10 +232,10 @@
   <parameter name="HHP_HPS_VERIFICATION" value="false" />
   <parameter name="HLGPI_Enable" value="false" />
   <parameter name="HPS_PROTOCOL" value="DDR3" />
-  <parameter name="I2C0_Mode" value="N/A" />
-  <parameter name="I2C0_PinMuxing" value="Unused" />
-  <parameter name="I2C1_Mode" value="N/A" />
-  <parameter name="I2C1_PinMuxing" value="Unused" />
+  <parameter name="I2C0_Mode" value="I2C" />
+  <parameter name="I2C0_PinMuxing" value="HPS I/O Set 0" />
+  <parameter name="I2C1_Mode" value="I2C" />
+  <parameter name="I2C1_PinMuxing" value="HPS I/O Set 0" />
   <parameter name="I2C2_Mode" value="N/A" />
   <parameter name="I2C2_PinMuxing" value="Unused" />
   <parameter name="I2C3_Mode" value="N/A" />
@@ -440,8 +442,8 @@
   <parameter name="S2FINTERRUPT_USB_Enable" value="false" />
   <parameter name="S2FINTERRUPT_WATCHDOG_Enable" value="false" />
   <parameter name="S2F_Width" value="2" />
-  <parameter name="SDIO_Mode" value="N/A" />
-  <parameter name="SDIO_PinMuxing" value="Unused" />
+  <parameter name="SDIO_Mode" value="4-bit Data" />
+  <parameter name="SDIO_PinMuxing" value="HPS I/O Set 0" />
   <parameter name="SEQUENCER_TYPE" value="NIOS" />
   <parameter name="SEQ_MODE" value="0" />
   <parameter name="SKIP_MEM_INIT" value="true" />
@@ -449,8 +451,8 @@
   <parameter name="SPEED_GRADE" value="7" />
   <parameter name="SPIM0_Mode" value="N/A" />
   <parameter name="SPIM0_PinMuxing" value="Unused" />
-  <parameter name="SPIM1_Mode" value="N/A" />
-  <parameter name="SPIM1_PinMuxing" value="Unused" />
+  <parameter name="SPIM1_Mode" value="Single Slave Select" />
+  <parameter name="SPIM1_PinMuxing" value="HPS I/O Set 0" />
   <parameter name="SPIS0_Mode" value="N/A" />
   <parameter name="SPIS0_PinMuxing" value="Unused" />
   <parameter name="SPIS1_Mode" value="N/A" />
@@ -509,14 +511,14 @@
   <parameter name="TRACKING_WATCH_TEST" value="false" />
   <parameter name="TREFI" value="35100" />
   <parameter name="TRFC" value="350" />
-  <parameter name="UART0_Mode" value="N/A" />
-  <parameter name="UART0_PinMuxing" value="Unused" />
+  <parameter name="UART0_Mode" value="No Flow Control" />
+  <parameter name="UART0_PinMuxing" value="HPS I/O Set 0" />
   <parameter name="UART1_Mode" value="N/A" />
   <parameter name="UART1_PinMuxing" value="Unused" />
   <parameter name="USB0_Mode" value="N/A" />
   <parameter name="USB0_PinMuxing" value="Unused" />
-  <parameter name="USB1_Mode" value="N/A" />
-  <parameter name="USB1_PinMuxing" value="Unused" />
+  <parameter name="USB1_Mode" value="SDR" />
+  <parameter name="USB1_PinMuxing" value="HPS I/O Set 0" />
   <parameter name="USER_DEBUG_LEVEL" value="1" />
   <parameter name="USE_AXI_ADAPTOR" value="false" />
   <parameter name="USE_FAKE_PHY" value="false" />

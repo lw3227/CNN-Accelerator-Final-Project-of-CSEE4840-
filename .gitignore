@@ -65,3 +65,15 @@ tools/hps_mmio_status
 test_*.qsys
 test_refstyle.qsys
 *~
+tmp/
+tmp_wsl/
+
+# Local Quartus report snapshots
+de1_soc/*.flow.rpt
+de1_soc/*.map.rpt
+de1_soc/*.map.summary
+de1_soc/device_tree/build/
+
+# Local lab reference downloads
+lab3-hw/*.pdf
+lab3-hw/*.tar.gz

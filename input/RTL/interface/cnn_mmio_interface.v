@@ -23,9 +23,14 @@ module cnn_mmio_interface #(
   input  wire        reset,
   input  wire [15:0] writedata,
   input  wire        write,
+  input  wire        read,
   input  wire        chipselect,
   input  wire [19:0] address,
-  output reg  [15:0] readdata
+  output reg  [15:0] readdata,
+  output wire        debug_model_loaded,
+  output wire        debug_predict_done,
+  output wire [3:0]  debug_predict_class,
+  output wire [15:0] debug_interface_error
 );
 
   localparam [4:0] REG_CONTROL       = 5'd0;
@@ -77,9 +82,9 @@ module cnn_mmio_interface #(
   wire mem_sel    = chipselect && !address[19];
   wire cfg_sel    = chipselect &&  address[19];
   wire mem_wr_req = mem_sel &&  write;
-  wire mem_rd_req = mem_sel && !write;
+  wire mem_rd_req = mem_sel &&  read;
   wire cfg_wr_req = cfg_sel &&  write;
-  wire cfg_rd_req = cfg_sel && !write;
+  wire cfg_rd_req = cfg_sel &&  read;
   wire mem_addr_ok = (address[18:0] < MEM_HALFWORDS);
 
   // ---------------------------------------------------------------------------
@@ -415,5 +420,10 @@ module cnn_mmio_interface #(
     else if (cfg_rd_req)
       readdata = cfg_read_data;
   end
+
+  assign debug_model_loaded   = model_loaded;
+  assign debug_predict_done   = predict_done;
+  assign debug_predict_class  = predict_class_latched;
+  assign debug_interface_error = interface_error;
 
 endmodule

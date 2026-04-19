@@ -98,6 +98,7 @@ set_interface_property avalon_slave_0 writeWaitTime 0
 set_interface_property avalon_slave_0 ENABLED true
 add_interface_port avalon_slave_0 writedata writedata Input 16
 add_interface_port avalon_slave_0 write write Input 1
+add_interface_port avalon_slave_0 read read Input 1
 add_interface_port avalon_slave_0 chipselect chipselect Input 1
 add_interface_port avalon_slave_0 address address Input 20
 add_interface_port avalon_slave_0 readdata readdata Output 16
