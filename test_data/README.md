@@ -4,6 +4,10 @@ This folder is a lightweight entry point for the hardware-aligned test data.
 It does not duplicate the real data files; it points to the canonical copies
 under `Golden-Module/matlab/hardware_aligned/debug/`.
 
+The current case folders still use `digit_*` names. Treat that as the existing
+test-data naming convention, not as the top-level documentation source for the
+whole project task definition.
+
 ## Real data locations
 
 - Preload bundles:
