@@ -37,8 +37,8 @@ def login(ser, username, password):
 
 
 def run_command(ser, command, settle_s):
-    start_marker = "__CODEX_START__"
-    end_marker = "__CODEX_END__"
+    start_marker = "__CNN_ACC_EXEC_START__"
+    end_marker = "__CNN_ACC_EXEC_END__"
     ser.reset_input_buffer()
     wrapped = "\n".join(
         [

@@ -34,9 +34,9 @@ def login(ser, username, password):
 
 
 def fetch_file(ser, remote_path: str) -> bytes:
-    start_marker = "__CODEX_B64_START__"
-    end_marker = "__CODEX_B64_END__"
-    status_marker = "__CODEX_B64_STATUS__"
+    start_marker = "__CNN_ACC_B64_START__"
+    end_marker = "__CNN_ACC_B64_END__"
+    status_marker = "__CNN_ACC_B64_STATUS__"
     ser.reset_input_buffer()
     cmd = "\n".join(
         [
