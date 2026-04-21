@@ -3,226 +3,366 @@
 This document is the teammate-facing setup guide for the current
 `DE1-SoC + HPS + MMIO + web demo` mainline.
 
-Use this file when a teammate needs to answer:
+Use it to answer:
 
-- which host OS is supported for which task
+- which host OS is practical for which task
 - what must be installed locally
-- which commands are expected to work from the repository root
-- what is board-only vs host-only vs cross-platform
+- which commands are shared across systems
+- what changes when you move from Windows to Linux or macOS
 
 ## Support Matrix
 
-The current repo supports three practical host roles.
-
-| Task | Windows host | Linux host | macOS host |
+| Task | Windows | Linux | macOS |
 | --- | --- | --- | --- |
 | Read docs / inspect repo | Yes | Yes | Yes |
 | Python preprocessing / local model checks | Yes | Yes | Yes |
 | Run Flask web demo over SSH to board | Yes | Yes | Yes |
 | Run host-side helper scripts | Yes | Yes | Yes |
-| Quartus full FPGA rebuild | Yes | Yes | Depends on external Intel-tool setup; not the validated lane |
-| JTAG program `.sof` with `quartus_pgm` | Yes | Usually yes if Quartus programmer is installed | Not the validated lane |
-| UART/serial bring-up helper scripts | Yes | Yes | Yes, if serial device path is known |
+| Serial bring-up helpers | Yes | Yes | Yes |
+| Quartus full FPGA rebuild | Yes | Usually yes if Intel tools are installed | Not the validated lane |
+| JTAG program `.sof` with `quartus_pgm` | Yes | Usually yes if programmer is installed | Not the validated lane |
 
-## Practical Recommendation
+## Practical Summary
 
-For teammates, the most reliable split today is:
+- Use **Windows** for the full validated board lane:
+  Quartus, JTAG, USB-Blaster, serial bring-up, SSH, and web demo.
+- Use **Linux** for host-side runtime work and, if your Intel tool setup is
+  already good, possibly for rebuild / programming too.
+- Use **macOS** for host-side runtime work:
+  Python, SSH, web demo, and optional serial access.
 
-- use **Windows** if you need Quartus GUI, `quartus_pgm`, USB-Blaster, and COM-port bring-up
-- use **Windows or Linux** if you only need board SSH, web demo, Python preprocessing, or board-side tool validation
-- use **macOS** only for host-side Python/web/SSH tasks unless you already maintain your own FPGA-toolchain setup
+## Shared Assumptions
 
-## Repository Root
-
-All commands in the active docs assume you start at the repository root:
+All commands assume you start at the repository root:
 
 ```text
 <repo>/
 ```
 
-That matters because many scripts use repo-relative paths.
+Current validated board-side constants:
 
-## Required Host Tools
+- board repo path:
+  `/root/cnn_acc_hps`
+- board IP:
+  `169.254.217.241`
+- host bind IP on the direct-link NIC:
+  `169.254.217.240`
+- MMIO base:
+  `0xff200000`
+- local demo URL:
+  `http://127.0.0.1:5000`
 
-### Always Useful
+## Common Host Requirements
+
+Install these on any OS:
 
 - Python 3.10+ recommended
 - `pip`
 - Git
 
-### Needed For The Web Demo / Runtime Lane
+For the web / runtime lane you also need:
 
-- Python packages from:
-  - `web_demo/requirements.txt`
+- dependencies from `web_demo/requirements.txt`
 - one TFLite runtime path:
-  - `tflite-runtime`, or
-  - `tensorflow`
+  `tflite-runtime` or `tensorflow`
 
-Install with:
-
-```bash
-python -m pip install -r web_demo/requirements.txt
-```
-
-### Needed For Quartus / Board Programming Lane
-
-- Intel Quartus / Quartus Lite 21.1 compatible with this repo
-- `quartus_sh`
-- `qsys-generate`
-- `quartus_cpf`
-- `quartus_pgm`
-
-### Needed For Serial Bring-Up
-
-- a usable USB-UART path
-- on Windows: a `COM` port such as `COM3`
-- on Linux/macOS: a serial device such as `/dev/ttyUSB0`, `/dev/ttyACM0`, or `/dev/cu.usbserial-*`
-
-## First Commands To Try
-
-### 1. Confirm The Repo And Python Environment
-
-```bash
-python --version
-python de1_soc/build_soc_system.py --check
-```
-
-The `--check` command is the safest first probe because it checks for the main
-Intel tools without starting a full build.
-
-### 2. Install Web / Runtime Dependencies
+Install the repo Python packages with:
 
 ```bash
 python -m pip install -r web_demo/requirements.txt
 ```
 
-### 3. Build HPS-side Tools Locally
+If your machine uses `python3` as the main command, replace `python` with
+`python3` in the rest of this document.
 
-```bash
-make -C tools
-```
+## Common First Checks
 
-This confirms the host compiler can build the C helpers and that the shared
-headers are internally consistent.
+These are the best first commands on any OS:
 
-## Cross-Platform Commands
+1. Confirm Python:
+   ```bash
+   python --version
+   ```
+2. Probe the repo tooling:
+   ```bash
+   python de1_soc/build_soc_system.py --check
+   ```
+3. Install runtime dependencies:
+   ```bash
+   python -m pip install -r web_demo/requirements.txt
+   ```
+4. Build the host-side C helpers:
+   ```bash
+   make -C tools
+   ```
 
-These commands are intended to work from any host OS, assuming Python and the
-required dependencies are present.
-
-### Run The Web Demo
-
-```bash
-python web_demo/app.py
-```
-
-Open:
-
-```text
-http://127.0.0.1:5000
-```
-
-### Check Board SSH
+Useful cross-platform runtime commands:
 
 ```bash
 python web_demo/check_board.py
 python web_demo/check_board.py --build-tools
-```
-
-### Run A Local Mock Case
-
-```bash
+python web_demo/app.py
 python test_data/run_case.py digit_0_test
 ```
 
-### Inspect The Active Demo Config
+## Windows Walkthrough
 
-```text
-GET /api/health
-```
+This is the fully validated lane for the current repo.
 
-## Windows-Specific Commands
+### What Windows Covers
 
-These are the currently validated commands for the main board lane.
+Windows is the practical choice if you need:
 
-### Build Quartus Project
+- Quartus GUI
+- `quartus_pgm`
+- USB-Blaster / JTAG programming
+- COM-port serial bring-up
+- SSH and web demo
 
-```powershell
-python de1_soc\build_soc_system.py --check
-python de1_soc\build_soc_system.py
-```
+### Windows-Specific Tools
 
-### One-Command Board Prep
+For the full board lane, make sure your machine has:
 
-```powershell
-python tools\prepare_web_demo.py --program-sof --build-tools
-```
+- Intel Quartus / Quartus Lite 21.1
+- `quartus_sh`
+- `qsys-generate`
+- `quartus_cpf`
+- `quartus_pgm`
+- a serial port such as `COM3`
 
-### Serial MMIO Check
+### Windows Quickstart
 
-```powershell
-python tools\hps_serial_exec.py --port COM3 "cd /root/cnn_acc_hps && ./tools/hps_mmio_status 0xff200000"
-```
-
-## Linux / macOS Notes
-
-If the board has already been programmed and networked, Linux/macOS teammates
-can still do the high-value runtime work:
-
-- run the web demo
-- inspect preprocessing behavior
-- verify SSH access
-- compare CPU vs FPGA inference
-- iterate on host-side scripts and docs
-
-Typical flow:
-
-```bash
-python web_demo/check_board.py
-python web_demo/app.py
-```
-
-If you want to use serial helpers on Linux/macOS, replace `COM3` with the
-correct device path for your machine.
-
-Examples:
-
-```bash
-python tools/hps_serial_exec.py --port /dev/ttyUSB0 "cd /root/cnn_acc_hps && pwd"
-python tools/hps_serial_exec.py --port /dev/cu.usbserial-0001 "cd /root/cnn_acc_hps && pwd"
-```
-
-## Board Assumptions
-
-The board-side validated repository root is:
-
-```text
-/root/cnn_acc_hps
-```
-
-The current direct-link Ethernet configuration is:
-
-- host bind address: `169.254.217.240`
-- board address: `169.254.217.241`
-
-## If You Only Need The Current Working Flow
-
-The shortest safe teammate path is:
-
-1. Open a terminal at the repo root
-2. Install Python dependencies
-3. If you are on Windows and need a fresh FPGA image:
+1. Check the toolchain:
+   ```powershell
+   python de1_soc\build_soc_system.py --check
+   ```
+2. Build if needed:
+   ```powershell
+   python de1_soc\build_soc_system.py
+   ```
+3. Bring the board all the way up:
    ```powershell
    python tools\prepare_web_demo.py --program-sof --build-tools
    ```
-4. If the board is already up:
-   ```bash
-   python web_demo/check_board.py --build-tools
+4. Optional serial MMIO sanity check:
+   ```powershell
+   python tools\hps_serial_exec.py --port COM3 "cd /root/cnn_acc_hps && ./tools/hps_mmio_status 0xff200000"
    ```
-5. Start the demo:
-   ```bash
-   python web_demo/app.py
+5. Start the web demo:
+   ```powershell
+   python web_demo\app.py
    ```
+
+## Linux Walkthrough
+
+Use Linux when you want concrete host-side runtime steps.
+
+### What Linux Covers Well
+
+Linux is practical for:
+
+- Python preprocessing and local model checks
+- board SSH access
+- the Flask web demo
+- runtime code edits
+- serial bring-up if you know the UART device path
+
+Quartus and `quartus_pgm` may also work on Linux, but that is not the current
+validated teammate lane in this repo.
+
+### Linux Packages
+
+On Debian / Ubuntu style systems:
+
+```bash
+sudo apt update
+sudo apt install -y python3 python3-pip make gcc openssh-client
+```
+
+On Fedora:
+
+```bash
+sudo dnf install -y python3 python3-pip make gcc openssh-clients
+```
+
+Then install the repo Python packages:
+
+```bash
+python3 -m pip install -r web_demo/requirements.txt
+```
+
+### Linux Quickstart
+
+If the board is already programmed and networked, this is usually enough:
+
+1. Check Python and the repo:
+   ```bash
+   python3 --version
+   python3 de1_soc/build_soc_system.py --check
+   ```
+2. Install runtime dependencies:
+   ```bash
+   python3 -m pip install -r web_demo/requirements.txt
+   ```
+3. Verify board SSH:
+   ```bash
+   python3 web_demo/check_board.py --build-tools
+   ```
+4. Start the web app:
+   ```bash
+   python3 web_demo/app.py
+   ```
+
+### Linux Serial Discovery
+
+Typical UART device names:
+
+- `/dev/ttyUSB0`
+- `/dev/ttyACM0`
+
+Find candidates with:
+
+```bash
+ls /dev/ttyUSB* /dev/ttyACM* 2>/dev/null
+```
+
+Example serial probe:
+
+```bash
+python3 tools/hps_serial_exec.py --port /dev/ttyUSB0 "cd /root/cnn_acc_hps && pwd"
+```
+
+If permission is denied, check whether your user needs access to a serial
+group such as `dialout`.
+
+### Linux Network Check
+
+If you are directly cabled to the board, inspect interfaces with:
+
+```bash
+ip addr
+```
+
+Look for the host-side address:
+
+```text
+169.254.217.240
+```
+
+### Linux Limits
+
+- Do not assume Quartus is installed just because Python and SSH work.
+- `python tools/prepare_web_demo.py --program-sof --build-tools` only makes
+  sense on Linux if:
+  - Quartus programmer is installed and in PATH
+  - serial access is also working
+
+## macOS Walkthrough
+
+Use macOS for the supported host-side runtime path.
+
+### What macOS Covers Well
+
+macOS is practical for:
+
+- reading and editing the repo
+- Python preprocessing and local model checks
+- the Flask web demo
+- SSH access to the board
+- serial bring-up if you know the `/dev/cu.*` device path
+
+macOS is not the validated lane for Quartus rebuilds or JTAG programming.
+
+### macOS Setup
+
+Typical minimum setup:
+
+```bash
+xcode-select --install
+python3 --version
+python3 -m pip install -r web_demo/requirements.txt
+```
+
+If you use Homebrew and need Python 3:
+
+```bash
+brew install python
+```
+
+### macOS Quickstart
+
+1. Check Python and the repo:
+   ```bash
+   python3 --version
+   python3 de1_soc/build_soc_system.py --check
+   ```
+2. Verify board SSH:
+   ```bash
+   python3 web_demo/check_board.py --build-tools
+   ```
+3. Start the web app:
+   ```bash
+   python3 web_demo/app.py
+   ```
+
+### macOS Serial Discovery
+
+Typical UART device names:
+
+- `/dev/cu.usbserial-0001`
+- `/dev/cu.usbmodem*`
+
+Find candidates with:
+
+```bash
+ls /dev/cu.usb* /dev/cu.usbmodem* 2>/dev/null
+```
+
+Example serial probe:
+
+```bash
+python3 tools/hps_serial_exec.py --port /dev/cu.usbserial-0001 "cd /root/cnn_acc_hps && pwd"
+```
+
+### macOS Network Check
+
+Inspect interfaces with:
+
+```bash
+ifconfig
+```
+
+Look for the host-side address:
+
+```text
+169.254.217.240
+```
+
+### macOS Limits
+
+- Do not plan around Quartus GUI or `quartus_pgm` on macOS for this repo.
+- Treat macOS as a host-side runtime / SSH / web-demo environment unless you
+  already maintain your own FPGA tooling separately.
+
+## If You Switch Host OS
+
+When you move the same repo and board workflow to another OS, the main things
+that usually change are:
+
+- `python` vs `python3`
+- serial port name:
+  `COM3` vs `/dev/ttyUSB0` vs `/dev/cu.usbserial-*`
+- whether Quartus tools are installed and on PATH
+- whether the host NIC still owns `169.254.217.240`
+- SSH key paths if you use key-based auth
+
+Minimum recheck after switching:
+
+1. Confirm Python
+2. Reinstall `web_demo/requirements.txt` if needed
+3. Verify `web_demo/check_board.py --build-tools`
+4. Rediscover the serial device name before using `hps_serial_exec.py`
+5. Recheck `quartus_pgm` if you also expect JTAG programming on the new host
 
 ## Read Next
 

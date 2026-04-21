@@ -7,7 +7,7 @@ This file is the top-level documentation guide for the current repository.
 - [README.md](README.md)
   Short repository overview and current active lane
 - [TEAMMATE_SETUP.md](TEAMMATE_SETUP.md)
-  Cross-platform teammate setup, support matrix, and first commands to try
+  Cross-platform teammate setup, support matrix, and concrete Windows / Linux / macOS walkthroughs
 - [TEAM_RUNBOOK.md](TEAM_RUNBOOK.md)
   Detailed teammate runbook for rebuild, programming, board validation, web demo, and recovery after unplugging
 - [WEB_TO_FPGA_WORKFLOW.md](WEB_TO_FPGA_WORKFLOW.md)

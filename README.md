@@ -25,7 +25,7 @@ The validated board path is:
 For teammates, the most useful doc split is:
 
 - [TEAMMATE_SETUP.md](TEAMMATE_SETUP.md)
-  Cross-platform host-role guidance and first commands to try
+  Cross-platform host-role guidance, plus concrete Linux and macOS walkthroughs
 - [WEB_TO_FPGA_WORKFLOW.md](WEB_TO_FPGA_WORKFLOW.md)
   Detailed browser -> host -> board -> FPGA runtime flow
 - [MMIO_INTERFACE_GUIDE.md](MMIO_INTERFACE_GUIDE.md)
