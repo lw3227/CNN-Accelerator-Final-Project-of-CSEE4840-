@@ -22,11 +22,26 @@ The validated board path is:
 
 `HPS Linux userspace -> lightweight HPS-FPGA bridge -> cnn_mmio_interface -> system_top`
 
+For teammates, the most useful doc split is:
+
+- [TEAMMATE_SETUP.md](TEAMMATE_SETUP.md)
+  Cross-platform host-role guidance and first commands to try
+- [WEB_TO_FPGA_WORKFLOW.md](WEB_TO_FPGA_WORKFLOW.md)
+  Detailed browser -> host -> board -> FPGA runtime flow
+- [MMIO_INTERFACE_GUIDE.md](MMIO_INTERFACE_GUIDE.md)
+  Shared register map, scratchpad layout, and host helper contract at
+  `0xff200000`
+
 ## Start Here
 
 Read these first:
 
 - [DOCS_INDEX.md](DOCS_INDEX.md)
+- [TEAMMATE_SETUP.md](TEAMMATE_SETUP.md)
+- [WEB_TO_FPGA_WORKFLOW.md](WEB_TO_FPGA_WORKFLOW.md)
+- [MMIO_INTERFACE_GUIDE.md](MMIO_INTERFACE_GUIDE.md)
+- [TEAM_RUNBOOK.md](TEAM_RUNBOOK.md)
+- [DATASET_GUIDE.md](DATASET_GUIDE.md)
 - [PROJECT_STATUS_AND_PLAN.md](PROJECT_STATUS_AND_PLAN.md)
 - [de1_soc/DEVELOPMENT_MAINLINE.md](de1_soc/DEVELOPMENT_MAINLINE.md)
 
@@ -65,6 +80,11 @@ Do not treat older paper/rock/scissors materials as the current board mainline.
 They are still useful as historical references, but they are not the primary
 development path now.
 
+For the current model/data interpretation, treat the active task as a
+**10-class sign-language gesture** problem. Existing `digit_*` case-folder names
+are legacy artifact names for gesture class IDs, not a statement that the
+project has reverted to handwritten-digit semantics.
+
 ## Quick Commands
 
 Build HPS-side tools:
@@ -85,6 +105,24 @@ Typical board-side staged flow:
 ./tools/hps_mmio_status 0xff200000
 ./tools/hps_mmio_load_model 0xff200000 <preload_root>
 ./tools/hps_mmio_run_case 0xff200000 <case_root>
+```
+
+Rebuild the DE1-SoC Quartus project from the repository root:
+
+```bash
+python de1_soc/build_soc_system.py
+```
+
+Quick team environment check:
+
+```bash
+python de1_soc/build_soc_system.py --check
+```
+
+or on Windows:
+
+```cmd
+de1_soc\build_soc_system.cmd
 ```
 
 ## Documentation Policy
