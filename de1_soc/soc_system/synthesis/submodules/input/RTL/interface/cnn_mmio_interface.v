@@ -47,6 +47,22 @@ module cnn_mmio_interface #(
   localparam [4:0] REG_IMAGE_LEN     = 5'd11;
   localparam [4:0] REG_PREDICT       = 5'd12;
   localparam [4:0] REG_IF_ERROR      = 5'd13;
+  localparam [4:0] REG_PROFILE_L1_LO     = 5'd14;
+  localparam [4:0] REG_PROFILE_L1_HI     = 5'd15;
+  localparam [4:0] REG_PROFILE_L2_P0_LO  = 5'd16;
+  localparam [4:0] REG_PROFILE_L2_P0_HI  = 5'd17;
+  localparam [4:0] REG_PROFILE_L2_P1_LO  = 5'd18;
+  localparam [4:0] REG_PROFILE_L2_P1_HI  = 5'd19;
+  localparam [4:0] REG_PROFILE_L3_P0_LO  = 5'd20;
+  localparam [4:0] REG_PROFILE_L3_P0_HI  = 5'd21;
+  localparam [4:0] REG_PROFILE_L3_P1_LO  = 5'd22;
+  localparam [4:0] REG_PROFILE_L3_P1_HI  = 5'd23;
+  localparam [4:0] REG_PROFILE_FC_LO     = 5'd24;
+  localparam [4:0] REG_PROFILE_FC_HI     = 5'd25;
+  localparam [4:0] REG_PROFILE_ARGMAX_LO = 5'd26;
+  localparam [4:0] REG_PROFILE_ARGMAX_HI = 5'd27;
+  localparam [4:0] REG_PROFILE_TOTAL_LO  = 5'd28;
+  localparam [4:0] REG_PROFILE_TOTAL_HI  = 5'd29;
 
   localparam [1:0] ENG_IDLE    = 2'd0;
   localparam [1:0] ENG_MODEL   = 2'd1;
@@ -134,6 +150,22 @@ module cnn_mmio_interface #(
       REG_IMAGE_LEN:     cfg_read_data = image_len_w;
       REG_PREDICT:       cfg_read_data = {12'd0, predict_class_latched};
       REG_IF_ERROR:      cfg_read_data = interface_error;
+      REG_PROFILE_L1_LO:     cfg_read_data = 16'd0;
+      REG_PROFILE_L1_HI:     cfg_read_data = accel_profile_l1_cycles[15:0];
+      REG_PROFILE_L2_P0_LO:  cfg_read_data = 16'd0;
+      REG_PROFILE_L2_P0_HI:  cfg_read_data = accel_profile_l2_p0_cycles[15:0];
+      REG_PROFILE_L2_P1_LO:  cfg_read_data = 16'd0;
+      REG_PROFILE_L2_P1_HI:  cfg_read_data = accel_profile_l2_p1_cycles[15:0];
+      REG_PROFILE_L3_P0_LO:  cfg_read_data = 16'd0;
+      REG_PROFILE_L3_P0_HI:  cfg_read_data = accel_profile_l3_p0_cycles[15:0];
+      REG_PROFILE_L3_P1_LO:  cfg_read_data = 16'd0;
+      REG_PROFILE_L3_P1_HI:  cfg_read_data = accel_profile_l3_p1_cycles[15:0];
+      REG_PROFILE_FC_LO:     cfg_read_data = 16'd0;
+      REG_PROFILE_FC_HI:     cfg_read_data = accel_profile_fc_cycles[15:0];
+      REG_PROFILE_ARGMAX_LO: cfg_read_data = 16'd0;
+      REG_PROFILE_ARGMAX_HI: cfg_read_data = accel_profile_argmax_cycles[15:0];
+      REG_PROFILE_TOTAL_LO:  cfg_read_data = 16'd0;
+      REG_PROFILE_TOTAL_HI:  cfg_read_data = accel_profile_total_cycles[15:0];
       default:           cfg_read_data = 16'd0;
     endcase
   end
@@ -149,6 +181,14 @@ module cnn_mmio_interface #(
   wire        accel_busy;
   wire        accel_predict_valid;
   wire [3:0]  accel_predict_class;
+  wire [31:0] accel_profile_l1_cycles;
+  wire [31:0] accel_profile_l2_p0_cycles;
+  wire [31:0] accel_profile_l2_p1_cycles;
+  wire [31:0] accel_profile_l3_p0_cycles;
+  wire [31:0] accel_profile_l3_p1_cycles;
+  wire [31:0] accel_profile_fc_cycles;
+  wire [31:0] accel_profile_argmax_cycles;
+  wire [31:0] accel_profile_total_cycles;
 
   system_top u_system_top (
     .clk(clk),
@@ -160,7 +200,15 @@ module cnn_mmio_interface #(
     .load_ready(accel_load_ready),
     .busy(accel_busy),
     .predict_valid(accel_predict_valid),
-    .predict_class(accel_predict_class)
+    .predict_class(accel_predict_class),
+    .profile_l1_cycles(accel_profile_l1_cycles),
+    .profile_l2_p0_cycles(accel_profile_l2_p0_cycles),
+    .profile_l2_p1_cycles(accel_profile_l2_p1_cycles),
+    .profile_l3_p0_cycles(accel_profile_l3_p0_cycles),
+    .profile_l3_p1_cycles(accel_profile_l3_p1_cycles),
+    .profile_fc_cycles(accel_profile_fc_cycles),
+    .profile_argmax_cycles(accel_profile_argmax_cycles),
+    .profile_total_cycles(accel_profile_total_cycles)
   );
 
   // ---------------------------------------------------------------------------

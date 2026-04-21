@@ -26,7 +26,15 @@ module system_top #(
   // --- Status ---
   output wire        busy,
   output wire        predict_valid,
-  output wire [3:0]  predict_class
+  output wire [3:0]  predict_class,
+  output wire [31:0] profile_l1_cycles,
+  output wire [31:0] profile_l2_p0_cycles,
+  output wire [31:0] profile_l2_p1_cycles,
+  output wire [31:0] profile_l3_p0_cycles,
+  output wire [31:0] profile_l3_p1_cycles,
+  output wire [31:0] profile_fc_cycles,
+  output wire [31:0] profile_argmax_cycles,
+  output wire [31:0] profile_total_cycles
 );
 
   // =============================================================
@@ -284,6 +292,14 @@ module system_top #(
     .load_data(load_data), .load_last(load_last),
     .load_ready(load_ready),
     .busy(busy), .predict_valid(predict_valid), .predict_class(predict_class),
+    .profile_l1_cycles(profile_l1_cycles),
+    .profile_l2_p0_cycles(profile_l2_p0_cycles),
+    .profile_l2_p1_cycles(profile_l2_p1_cycles),
+    .profile_l3_p0_cycles(profile_l3_p0_cycles),
+    .profile_l3_p1_cycles(profile_l3_p1_cycles),
+    .profile_fc_cycles(profile_fc_cycles),
+    .profile_argmax_cycles(profile_argmax_cycles),
+    .profile_total_cycles(profile_total_cycles),
     .runner_start(runner_start),
     .runner_layer_sel(runner_layer_sel),
     .runner_pass_id(runner_pass_id),

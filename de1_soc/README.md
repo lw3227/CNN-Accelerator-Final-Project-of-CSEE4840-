@@ -40,9 +40,79 @@ The FPGA-only LED demo is still useful, but only as a fallback debug shell.
 
 - [`soc_system.qsys`](soc_system.qsys)
 - [`soc_system_top.sv`](soc_system_top.sv)
+- [`build_soc_system.py`](build_soc_system.py)
+- [`build_soc_system.cmd`](build_soc_system.cmd)
+- [`build_soc_system.ps1`](build_soc_system.ps1)
+- [`build_soc_system.sh`](build_soc_system.sh)
 - [`BOARD_TEST_PLAN.md`](BOARD_TEST_PLAN.md)
 - [`DEVELOPMENT_MAINLINE.md`](DEVELOPMENT_MAINLINE.md)
 - [`device_tree/README.md`](device_tree/README.md)
+
+## Fast Build
+
+If Quartus is installed on the machine, the most portable rebuild entry point is:
+
+```bash
+python de1_soc/build_soc_system.py
+```
+
+Team setup check:
+
+```bash
+python de1_soc/build_soc_system.py --check
+```
+
+Verbose tool discovery:
+
+```bash
+python de1_soc/build_soc_system.py --check --verbose
+```
+
+On Windows, `--check` also validates the extra Quartus HPS/Qsys prerequisites:
+
+- `nios2eds/Nios II Command Shell.bat`
+- `WSL`
+- `dos2unix` inside WSL
+
+If a machine already trusts the committed `soc_system/synthesis/` outputs and
+only needs a rebuild from the current checked-in generated HDL, use:
+
+```bash
+python de1_soc/build_soc_system.py --skip-qsys
+```
+
+There is also a tiny shell wrapper:
+
+```bash
+./de1_soc/build_soc_system.sh
+```
+
+On Windows, you can still use:
+
+```cmd
+de1_soc\build_soc_system.cmd
+```
+
+These wrappers try `PATH`, `QUARTUS_ROOTDIR`, and common Quartus install
+folders automatically. You can also override each tool explicitly:
+
+```bash
+export QSYS_GENERATE=/path/to/qsys-generate
+export QUARTUS_SH=/path/to/quartus_sh
+export QUARTUS_CPF=/path/to/quartus_cpf
+```
+
+Then they run:
+
+1. `qsys-generate soc_system.qsys --synthesis=VERILOG`
+2. `quartus_sh --flow compile soc_system`
+3. `quartus_cpf -c output_files\soc_system.sof output_files\soc_system.rbf`
+
+There is also a PowerShell version:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File de1_soc\build_soc_system.ps1
+```
 
 ## Note On Historical Materials
 

@@ -58,35 +58,50 @@ module soc_system_top (
     output wire        HPS_DDR3_WE_N
 );
 
-    wire        predict_done_hex;
-    wire [3:0]  predict_class_hex;
-    wire [15:0] interface_error_hex;
-    wire        debug_model_loaded_unused;
+    // Temporary timing workaround: run the FPGA fabric at 25 MHz by dividing
+    // the board's 50 MHz oscillator in half before feeding the Qsys system.
+    (* preserve *) reg fabric_clk_div2 = 1'b0;
+    wire [3:0] predict_class_dbg;
+    wire       predict_done_dbg;
+    wire       model_loaded_dbg;
+    wire [15:0] interface_error_dbg;
 
-    function automatic [6:0] seven_seg_digit;
+    always @(posedge CLOCK_50) begin
+        fabric_clk_div2 <= ~fabric_clk_div2;
+    end
+
+    localparam [6:0] SEVEN_SEG_BLANK = 7'b1111111;
+
+    function automatic [6:0] seven_seg_decode;
         input [3:0] value;
         begin
             case (value)
-                4'd0: seven_seg_digit = 7'b1000000;
-                4'd1: seven_seg_digit = 7'b1111001;
-                4'd2: seven_seg_digit = 7'b0100100;
-                4'd3: seven_seg_digit = 7'b0110000;
-                4'd4: seven_seg_digit = 7'b0011001;
-                4'd5: seven_seg_digit = 7'b0010010;
-                4'd6: seven_seg_digit = 7'b0000010;
-                4'd7: seven_seg_digit = 7'b1111000;
-                4'd8: seven_seg_digit = 7'b0000000;
-                4'd9: seven_seg_digit = 7'b0010000;
-                default: seven_seg_digit = 7'b1111111;
+                4'h0: seven_seg_decode = 7'b1000000;
+                4'h1: seven_seg_decode = 7'b1111001;
+                4'h2: seven_seg_decode = 7'b0100100;
+                4'h3: seven_seg_decode = 7'b0110000;
+                4'h4: seven_seg_decode = 7'b0011001;
+                4'h5: seven_seg_decode = 7'b0010010;
+                4'h6: seven_seg_decode = 7'b0000010;
+                4'h7: seven_seg_decode = 7'b1111000;
+                4'h8: seven_seg_decode = 7'b0000000;
+                4'h9: seven_seg_decode = 7'b0010000;
+                4'hA: seven_seg_decode = 7'b0001000; // A
+                4'hB: seven_seg_decode = 7'b0000011; // b
+                4'hC: seven_seg_decode = 7'b1000110; // C
+                4'hD: seven_seg_decode = 7'b0100001; // d
+                4'hE: seven_seg_decode = 7'b0000110; // E
+                default: seven_seg_decode = SEVEN_SEG_BLANK;
             endcase
         end
     endfunction
 
-    localparam [6:0] SEVEN_SEG_BLANK = 7'b1111111;
-    localparam [6:0] SEVEN_SEG_E     = 7'b0000110;
-
     soc_system u_soc_system (
-        .clk_clk            (CLOCK_50),
+        .clk_clk            (fabric_clk_div2),
+        .cnn_debug_model_loaded(model_loaded_dbg),
+        .cnn_debug_predict_done(predict_done_dbg),
+        .cnn_debug_predict_class(predict_class_dbg),
+        .cnn_debug_interface_error(interface_error_dbg),
         .reset_reset_n      (1'b1),
         .memory_mem_a       (HPS_DDR3_ADDR),
         .memory_mem_ba      (HPS_DDR3_BA),
@@ -104,10 +119,6 @@ module soc_system_top (
         .memory_mem_odt     (HPS_DDR3_ODT),
         .memory_mem_dm      (HPS_DDR3_DM),
         .memory_oct_rzqin   (HPS_DDR3_RZQ),
-        .cnn_debug_model_loaded   (debug_model_loaded_unused),
-        .cnn_debug_predict_done   (predict_done_hex),
-        .cnn_debug_predict_class  (predict_class_hex),
-        .cnn_debug_interface_error(interface_error_hex),
         .hps_hps_io_emac1_inst_TX_CLK (HPS_ENET_GTX_CLK),
         .hps_hps_io_emac1_inst_TXD0   (HPS_ENET_TX_DATA[0]),
         .hps_hps_io_emac1_inst_TXD1   (HPS_ENET_TX_DATA[1]),
@@ -159,11 +170,17 @@ module soc_system_top (
         .hps_hps_io_gpio_inst_GPIO61  (HPS_GSENSOR_INT)
     );
 
-    assign HEX0 = predict_done_hex ? seven_seg_digit(predict_class_hex) : SEVEN_SEG_BLANK;
-    assign HEX1 = (interface_error_hex != 16'd0) ? SEVEN_SEG_E : SEVEN_SEG_BLANK;
-    assign HEX2 = SEVEN_SEG_BLANK;
+    // Current seven-segment policy:
+    // - HEX0 shows the predicted class once predict_done is asserted
+    // - HEX1 shows model_loaded / predict_done as two debug bits
+    // - HEX2 shows the low nibble of interface_error when non-zero
+    // - HEX3/HEX4 stay blank
+    // - HEX5 shows "E" only when an interface error is latched
+    assign HEX0 = predict_done_dbg ? seven_seg_decode(predict_class_dbg) : SEVEN_SEG_BLANK;
+    assign HEX1 = seven_seg_decode({2'b00, model_loaded_dbg, predict_done_dbg});
+    assign HEX2 = (interface_error_dbg != 16'h0000) ? seven_seg_decode(interface_error_dbg[3:0]) : SEVEN_SEG_BLANK;
     assign HEX3 = SEVEN_SEG_BLANK;
     assign HEX4 = SEVEN_SEG_BLANK;
-    assign HEX5 = SEVEN_SEG_BLANK;
+    assign HEX5 = (interface_error_dbg != 16'h0000) ? seven_seg_decode(4'hE) : SEVEN_SEG_BLANK;
 
 endmodule

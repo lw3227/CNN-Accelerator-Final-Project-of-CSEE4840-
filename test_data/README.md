@@ -5,8 +5,12 @@ It does not duplicate the real data files; it points to the canonical copies
 under `Golden-Module/matlab/hardware_aligned/debug/`.
 
 The current case folders still use `digit_*` names. Treat that as the existing
-test-data naming convention, not as the top-level documentation source for the
-whole project task definition.
+hardware-artifact naming convention, not as the top-level documentation source
+for the whole project task definition.
+
+For the current active lane, these case names should be read as **gesture class
+IDs** in a 10-class sign-language gesture task. See
+[DATASET_GUIDE.md](../DATASET_GUIDE.md).
 
 ## Real data locations
 

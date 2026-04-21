@@ -27,6 +27,14 @@ module top_fsm #(
   output wire        busy,
   output reg         predict_valid,
   output reg  [3:0]  predict_class,  // 10-class gesture id (0-9)
+  output reg  [31:0] profile_l1_cycles,
+  output reg  [31:0] profile_l2_p0_cycles,
+  output reg  [31:0] profile_l2_p1_cycles,
+  output reg  [31:0] profile_l3_p0_cycles,
+  output reg  [31:0] profile_l3_p1_cycles,
+  output reg  [31:0] profile_fc_cycles,
+  output reg  [31:0] profile_argmax_cycles,
+  output reg  [31:0] profile_total_cycles,
 
   // --- LayerRunnerFSM control ---
   output reg         runner_start,
@@ -136,6 +144,14 @@ module top_fsm #(
       runner_layer_sel <= 2'b00;
       runner_pass_id   <= 1'b0;
       runner_is_fc     <= 1'b0;
+      profile_l1_cycles <= 32'd0;
+      profile_l2_p0_cycles <= 32'd0;
+      profile_l2_p1_cycles <= 32'd0;
+      profile_l3_p0_cycles <= 32'd0;
+      profile_l3_p1_cycles <= 32'd0;
+      profile_fc_cycles <= 32'd0;
+      profile_argmax_cycles <= 32'd0;
+      profile_total_cycles <= 32'd0;
       sram_a_start     <= 1'b0;
       sram_a_layer_sel <= 3'd0;
       sram_a_data_sel   <= 2'b00;
@@ -158,6 +174,27 @@ module top_fsm #(
       // Latch sram_a_done during preload wait (done is a 1-cycle pulse)
       if (preload_active && sram_a_done)
         preload_sram_done <= 1'b1;
+
+      if (state != ST_IDLE && state != ST_READY &&
+          state != ST_PL_CFG && state != ST_PL_CFG_W &&
+          state != ST_PL_WT && state != ST_PL_WT_W &&
+          state != ST_PL_PIXEL && state != ST_PL_PIXEL_W &&
+          state != ST_PL_FC_CFG && state != ST_PL_FC_CFG_W &&
+          state != ST_PL_FCW && state != ST_PL_FCW_W) begin
+        profile_total_cycles <= profile_total_cycles + 32'd1;
+      end
+
+      case (state)
+        ST_L1:     profile_l1_cycles <= profile_l1_cycles + 32'd1;
+        ST_L2_P0:  profile_l2_p0_cycles <= profile_l2_p0_cycles + 32'd1;
+        ST_L2_P1:  profile_l2_p1_cycles <= profile_l2_p1_cycles + 32'd1;
+        ST_L3_P0:  profile_l3_p0_cycles <= profile_l3_p0_cycles + 32'd1;
+        ST_L3_P1:  profile_l3_p1_cycles <= profile_l3_p1_cycles + 32'd1;
+        ST_FC:     profile_fc_cycles <= profile_fc_cycles + 32'd1;
+        ST_ARGMAX: profile_argmax_cycles <= profile_argmax_cycles + 32'd1;
+        default: begin
+        end
+      endcase
 
       case (state)
         // ---------------------------------------------------------
@@ -268,6 +305,14 @@ module top_fsm #(
         ST_READY: begin
           preload_active <= 1'b0;
           if (load_valid && !load_last && load_sel == 1'b1) begin
+            profile_l1_cycles <= 32'd0;
+            profile_l2_p0_cycles <= 32'd0;
+            profile_l2_p1_cycles <= 32'd0;
+            profile_l3_p0_cycles <= 32'd0;
+            profile_l3_p1_cycles <= 32'd0;
+            profile_fc_cycles <= 32'd0;
+            profile_argmax_cycles <= 32'd0;
+            profile_total_cycles <= 32'd0;
             // Host wants to send image → enter L1 (pixels stream directly)
             state <= ST_L1;
           end else if (load_valid && !load_last && load_sel == 1'b0) begin

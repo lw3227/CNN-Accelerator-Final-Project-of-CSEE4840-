@@ -79,6 +79,24 @@ def parse_result(output):
     }
 
 
+def read_case_manifest_label(case_name):
+    manifest_path = CASE_ROOT / case_name / "manifest.txt"
+    if not manifest_path.is_file():
+        return None
+    for line in manifest_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if line.startswith("predict_class="):
+            try:
+                return int(line.split("=", 1)[1].strip())
+            except ValueError:
+                return None
+    return None
+
+
+def parse_case_name_label(case_name):
+    match = re.fullmatch(r"digit_(\d+)_test", case_name)
+    return int(match.group(1)) if match else None
+
+
 def main():
     parser = argparse.ArgumentParser(description="Upload and run digit_0_test..digit_9_test on DE1-SoC over serial")
     parser.add_argument("--port", default="COM3")
@@ -111,9 +129,31 @@ def main():
         print("Building HPS tools on board...")
         serial_exec(args.port, 120.0, f"cd '{args.remote_repo}/tools' && make")
 
+    manifest_mismatches = []
+    local_labels = {}
+    for case_name in case_names:
+        local_label = read_case_manifest_label(case_name)
+        local_labels[case_name] = local_label
+        case_name_label = parse_case_name_label(case_name)
+        if (
+            local_label is not None
+            and case_name_label is not None
+            and local_label != case_name_label
+        ):
+            manifest_mismatches.append((case_name, case_name_label, local_label))
+
+    if manifest_mismatches:
+        print("Warning: case directory names do not match manifest labels:")
+        for case_name, name_label, manifest_label in manifest_mismatches:
+            print(
+                f"  {case_name}: directory implies {name_label}, "
+                f"but manifest says {manifest_label}"
+            )
+        print()
+
     print()
-    print("Case           Exp  Pred  Status  Error  Result")
-    print("-------------  ---  ----  ------  -----  ------")
+    print("Case           Name  Exp  Pred  Status  Error  Result")
+    print("-------------  ----  ---  ----  ------  -----  ------")
 
     failures = 0
     for case_name in case_names:
@@ -135,6 +175,7 @@ def main():
             failures += 1
         print(
             f"{case_name:<13}  "
+            f"{str(local_labels[case_name]):>4}  "
             f"{str(parsed['expected']):>3}  "
             f"{str(parsed['predicted']):>4}  "
             f"{str(parsed['status']):>6}  "

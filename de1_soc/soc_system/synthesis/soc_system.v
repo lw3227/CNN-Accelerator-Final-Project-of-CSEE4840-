@@ -4,7 +4,11 @@
 
 `timescale 1 ps / 1 ps
 module soc_system (
-		input  wire        clk_clk,                      //    clk.clk
+		input  wire        clk_clk,
+		output wire        cnn_debug_model_loaded,
+		output wire        cnn_debug_predict_done,
+		output wire [3:0]  cnn_debug_predict_class,
+		output wire [15:0] cnn_debug_interface_error,                      //    clk.clk
 		output wire        hps_hps_io_emac1_inst_TX_CLK, //    hps.hps_io_emac1_inst_TX_CLK
 		output wire        hps_hps_io_emac1_inst_TXD0,   //       .hps_io_emac1_inst_TXD0
 		output wire        hps_hps_io_emac1_inst_TXD1,   //       .hps_io_emac1_inst_TXD1
@@ -70,11 +74,7 @@ module soc_system (
 		output wire        memory_mem_odt,               //       .mem_odt
 		output wire [3:0]  memory_mem_dm,                //       .mem_dm
 		input  wire        memory_oct_rzqin,             //       .oct_rzqin
-		input  wire        reset_reset_n,                //  reset.reset_n
-		output wire        cnn_debug_model_loaded,       //  cnn_debug.model_loaded
-		output wire        cnn_debug_predict_done,       //           .predict_done
-		output wire [3:0]  cnn_debug_predict_class,      //           .predict_class
-		output wire [15:0] cnn_debug_interface_error     //           .interface_error
+		input  wire        reset_reset_n                 //  reset.reset_n
 	);
 
 	wire         hps_0_h2f_reset_reset;                                            // hps_0:h2f_rst_n -> [rst_controller:reset_in0, rst_controller_001:reset_in0]
@@ -158,10 +158,6 @@ module soc_system (
 	wire  [15:0] mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_writedata;  // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_writedata -> cnn_mmio_interface_0:writedata
 	wire         rst_controller_reset_out_reset;                                   // rst_controller:reset_out -> [cnn_mmio_interface_0:reset, mm_interconnect_0:cnn_mmio_interface_0_reset_reset_bridge_in_reset_reset]
 	wire         rst_controller_001_reset_out_reset;                               // rst_controller_001:reset_out -> mm_interconnect_0:hps_0_h2f_axi_master_agent_clk_reset_reset_bridge_in_reset_reset
-	wire         cnn_mmio_interface_0_debug_model_loaded;                          // cnn_mmio_interface_0:debug_model_loaded -> cnn_debug.model_loaded
-	wire         cnn_mmio_interface_0_debug_predict_done;                          // cnn_mmio_interface_0:debug_predict_done -> cnn_debug.predict_done
-	wire   [3:0] cnn_mmio_interface_0_debug_predict_class;                         // cnn_mmio_interface_0:debug_predict_class -> cnn_debug.predict_class
-	wire  [15:0] cnn_mmio_interface_0_debug_interface_error;                       // cnn_mmio_interface_0:debug_interface_error -> cnn_debug.interface_error
 
 	cnn_mmio_interface cnn_mmio_interface_0 (
 		.clk        (clk_clk),                                                          //          clock.clk
@@ -172,16 +168,11 @@ module soc_system (
 		.chipselect (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_chipselect), //               .chipselect
 		.address    (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_address),    //               .address
 		.readdata   (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_readdata),   //               .readdata
-		.debug_model_loaded   (cnn_mmio_interface_0_debug_model_loaded),                //          debug.model_loaded
-		.debug_predict_done   (cnn_mmio_interface_0_debug_predict_done),                //               .predict_done
-		.debug_predict_class  (cnn_mmio_interface_0_debug_predict_class),               //               .predict_class
-		.debug_interface_error(cnn_mmio_interface_0_debug_interface_error)              //               .interface_error
+		.debug_model_loaded   (cnn_debug_model_loaded),                                   //               .debug_model_loaded
+		.debug_predict_done   (cnn_debug_predict_done),                                   //               .debug_predict_done
+		.debug_predict_class  (cnn_debug_predict_class),                                  //               .debug_predict_class
+		.debug_interface_error(cnn_debug_interface_error)                                 //               .debug_interface_error
 	);
-
-	assign cnn_debug_model_loaded   = cnn_mmio_interface_0_debug_model_loaded;
-	assign cnn_debug_predict_done   = cnn_mmio_interface_0_debug_predict_done;
-	assign cnn_debug_predict_class  = cnn_mmio_interface_0_debug_predict_class;
-	assign cnn_debug_interface_error = cnn_mmio_interface_0_debug_interface_error;
 
 	soc_system_hps_0 #(
 		.F2S_Width (2),

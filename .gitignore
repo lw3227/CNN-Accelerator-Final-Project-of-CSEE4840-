@@ -77,3 +77,12 @@ de1_soc/device_tree/build/
 # Local lab reference downloads
 lab3-hw/*.pdf
 lab3-hw/*.tar.gz
+
+# Local web demo configuration
+web_demo/demo_config.json
+web_demo/feedback_samples/
+.board_setup/
+Golden-Module/dataset_wlx_merged_gray64/
+Golden-Module/*dataset*/
+tmp_board_cpu_sync/
+tmp_web_sync/

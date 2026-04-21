@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
   uint16_t error_reg = 0;
   struct cnn_mmio_device dev;
   struct cnn_mmio_inference_case tc;
+  struct cnn_mmio_profile profile;
 
   if (argc < 3 || argc > 4) {
     fprintf(stderr,
@@ -46,10 +47,19 @@ int main(int argc, char **argv) {
   }
 
   error_reg = cnn_mmio_read_error(dev.mmio_base);
+  cnn_mmio_read_profile(dev.mmio_base, &profile);
   printf("expected_class=%d\n", tc.expected_class);
   printf("predict_class=%u\n", (unsigned)cnn_mmio_pack_status_predict(status));
   printf("status=0x%04x\n", status);
   printf("error=0x%04x\n", error_reg);
+  printf("l1_cycles=%u\n", profile.l1_cycles);
+  printf("l2_p0_cycles=%u\n", profile.l2_p0_cycles);
+  printf("l2_p1_cycles=%u\n", profile.l2_p1_cycles);
+  printf("l3_p0_cycles=%u\n", profile.l3_p0_cycles);
+  printf("l3_p1_cycles=%u\n", profile.l3_p1_cycles);
+  printf("fc_cycles=%u\n", profile.fc_cycles);
+  printf("argmax_cycles=%u\n", profile.argmax_cycles);
+  printf("total_cycles=%u\n", profile.total_cycles);
 
   cnn_mmio_close(&dev);
   return ((int)cnn_mmio_pack_status_predict(status) == tc.expected_class && error_reg == 0)

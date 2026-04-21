@@ -31,6 +31,17 @@ struct cnn_mmio_device {
   uintptr_t csr_base;
 };
 
+struct cnn_mmio_profile {
+  uint32_t l1_cycles;
+  uint32_t l2_p0_cycles;
+  uint32_t l2_p1_cycles;
+  uint32_t l3_p0_cycles;
+  uint32_t l3_p1_cycles;
+  uint32_t fc_cycles;
+  uint32_t argmax_cycles;
+  uint32_t total_cycles;
+};
+
 int cnn_mmio_load_preload_bundle(const char *preload_root, struct cnn_mmio_preload_bundle *bundle);
 int cnn_mmio_load_inference_case(const char *case_root, struct cnn_mmio_inference_case *tc);
 
@@ -44,6 +55,7 @@ void cnn_mmio_write_inference_case(volatile uint16_t *mmio_base, const struct cn
 uint16_t cnn_mmio_read_status(volatile uint16_t *mmio_base);
 uint16_t cnn_mmio_read_error(volatile uint16_t *mmio_base);
 uint16_t cnn_mmio_read_predict(volatile uint16_t *mmio_base);
+void cnn_mmio_read_profile(volatile uint16_t *mmio_base, struct cnn_mmio_profile *profile);
 
 void cnn_mmio_clear_status(volatile uint16_t *mmio_base);
 void cnn_mmio_start_model_load(volatile uint16_t *mmio_base);

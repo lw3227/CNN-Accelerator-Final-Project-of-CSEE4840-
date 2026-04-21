@@ -278,6 +278,20 @@ uint16_t cnn_mmio_read_predict(volatile uint16_t *mmio_base) {
   return (uint16_t)cnn_mmio_pack_status_predict(cnn_mmio_read_status(mmio_base));
 }
 
+void cnn_mmio_read_profile(volatile uint16_t *mmio_base, struct cnn_mmio_profile *profile) {
+  if (!profile)
+    return;
+
+  profile->l1_cycles = (uint32_t)mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_PROFILE_L1_HI);
+  profile->l2_p0_cycles = (uint32_t)mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_PROFILE_L2_P0_HI);
+  profile->l2_p1_cycles = (uint32_t)mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_PROFILE_L2_P1_HI);
+  profile->l3_p0_cycles = (uint32_t)mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_PROFILE_L3_P0_HI);
+  profile->l3_p1_cycles = (uint32_t)mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_PROFILE_L3_P1_HI);
+  profile->fc_cycles = (uint32_t)mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_PROFILE_FC_HI);
+  profile->argmax_cycles = (uint32_t)mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_PROFILE_ARGMAX_HI);
+  profile->total_cycles = (uint32_t)mmio_read_cfg_odd(mmio_base, CNN_MMIO_REG_PROFILE_TOTAL_HI);
+}
+
 void cnn_mmio_clear_status(volatile uint16_t *mmio_base) {
   mmio_write_cfg_control(mmio_base, CNN_MMIO_CTRL_CLEAR_STATUS);
 }
