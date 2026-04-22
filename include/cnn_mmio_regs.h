@@ -56,6 +56,34 @@
 #define CNN_MMIO_STATUS_PREDICT_DONE_SHIFT 3u
 #define CNN_MMIO_STATUS_PREDICT_SHIFT      4u
 
+/*
+ * Default staged memory layout for the current 64x64x1 -> 10-class model.
+ *
+ * All *_WORDS values count 32-bit host words. All *_BASE_HW values are
+ * 16-bit halfword addresses because the MMIO scratchpad is halfword-indexed.
+ *
+ * Model structure behind these constants:
+ *   - L1 conv: 3x3x1  -> DOT_K = 9
+ *   - L2 conv: 3x3x4  -> DOT_K = 36, split into pass0/pass1
+ *   - L3 conv: 3x3x8  -> DOT_K = 72, split into pass0/pass1
+ *   - FC: 6x6x8 = 288 inputs -> 10 outputs
+ *
+ * Derived word counts:
+ *   - CONV_CFG_WORDS = 5 passes x 9 cfg words/pass = 45
+ *     (L1, L2p0, L2p1, L3p0, L3p1)
+ *   - CONV_WT_WORDS  = 9 + 36 + 36 + 72 + 72 = 225
+ *   - FC_BIAS_WORDS  = 10 output classes = 10
+ *   - FCW_WORDS      = 288 FC positions x 3 host words/position = 864
+ *     Each FC position stores 10x8b = 80b of weights, packed from 3x32b.
+ *   - IMAGE_WORDS    = 64x64x1 int8 pixels / 4 pixels per 32-bit word = 1024
+ *
+ * Base addresses are packed contiguously in halfword units:
+ *   conv_cfg @   0
+ *   conv_wt  @   0 + 45*2   = 90
+ *   fc_bias  @  90 + 225*2  = 540
+ *   fcw      @ 540 + 10*2   = 560
+ *   image    @ 560 + 864*2  = 2288
+ */
 #define CNN_MMIO_DEFAULT_CONV_CFG_BASE_HW 0u
 #define CNN_MMIO_DEFAULT_CONV_CFG_WORDS   45u
 #define CNN_MMIO_DEFAULT_CONV_WT_BASE_HW  90u
