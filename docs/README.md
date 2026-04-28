@@ -15,6 +15,10 @@ Core teammate-facing docs also have Chinese companion versions under:
 
 - [zh/README.md](zh/README.md)
 
+The Chinese set also includes a short teammate-forwardable timing summary:
+
+- [zh/FMAX_TEAMMATE_BRIEF.md](zh/FMAX_TEAMMATE_BRIEF.md)
+
 Use the Chinese set for onboarding and design explanation. Use the English
 files as the canonical command/reference set if you need to cross-check wording.
 

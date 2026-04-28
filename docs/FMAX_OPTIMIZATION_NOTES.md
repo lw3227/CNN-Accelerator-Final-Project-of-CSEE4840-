@@ -55,6 +55,26 @@ The branch timing work mainly attacked three kinds of problems:
 2. data reordering happening in active datapaths instead of at storage
 3. wide one-cycle combinational decisions sitting on the critical path
 
+## 3A. What "Structural Optimization" Means Here
+
+In this branch, "structural optimization" does **not** mean changing the model,
+kernel sizes, or channel counts.
+
+It means changing things such as:
+
+- where register boundaries sit
+- whether control launch and start pulse happen in the same cycle
+- whether a consumer sees a same-cycle combinational bundle or a registered one
+- whether data reordering happens on an active read path or inside memory layout
+
+In short:
+
+> the work was about reducing how much logic had to settle in one cycle
+
+That is why many of the changes look small in code but are significant in
+timing shape: a single extra register, buffer, or FSM phase can cut a long
+cross-module combinational chain into two short ones.
+
 ## 3. Timing Evidence That Motivated The Changes
 
 Historical fabric-only timing snapshots are kept in:
@@ -160,6 +180,33 @@ This is a good example of:
 
 `trade a few cycles for a much shorter worst-case combinational path`
 
+## 5A. Why Total Cycle Count Can Still Go Down
+
+It is easy to assume that once the branch adds extra sequencing, the total
+inference cycle count must go up. That is not always true.
+
+The reason is that the branch does **two different things at once**:
+
+1. it adds a few deliberate stages
+2. it removes longer-path stalls, bubbles, and active-path complexity elsewhere
+
+Examples in this branch:
+
+- `runner_prepared` adds a clean preparation cycle before launch
+- the conv-side register cut reduces pressure at the SA boundary
+- the FC-order buffer removes active read-side reordering logic
+- the iterative argmax removes a dense tail-end compare tree
+
+So the final result can be:
+
+- a few places spend one more cycle locally
+- the full inference path spends fewer cycles overall
+
+That is consistent with the way `profile_total_cycles` is counted in
+[`../input/RTL/fsm/top_fsm.v`](../input/RTL/fsm/top_fsm.v): it measures active
+inference-state residency, not abstract algorithmic work or board-level wall
+clock time.
+
 ## 6. `conv_top.v`: Register Layer-Dependent Configuration Near The Consumer
 
 File:
@@ -211,6 +258,20 @@ interface, which:
 - gives the SA boundary a more regular, pipeline-like contract
 
 This is the most important datapath-side timing cleanup in the branch.
+
+Another way to say it:
+
+```text
+old:
+  upstream selection/buffering -> same-cycle SA-facing consume
+
+new:
+  upstream selection/buffering -> local conv_top registers
+  next cycle                   -> SA-facing consume
+```
+
+So the array no longer has to absorb a long same-cycle chain from several
+upstream blocks.
 
 ## 7. `conv_top.v`: Clean Up Frame Rearm And Backend Idle Boundaries
 
@@ -280,6 +341,15 @@ Instead of:
 store in pass order
   -> reconstruct desired FC order while reading
 ```
+
+The important point is not that interleave information disappeared. It did not.
+It moved from:
+
+- "reconstruct on the FC read path"
+
+to:
+
+- "encode the desired FC order while writing the mirror buffer"
 
 ### Why this helps
 
