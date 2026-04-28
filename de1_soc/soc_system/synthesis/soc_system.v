@@ -151,11 +151,12 @@ module soc_system (
 	wire         hps_0_h2f_lw_axi_master_awvalid;                                  // hps_0:h2f_lw_AWVALID -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awvalid
 	wire         hps_0_h2f_lw_axi_master_rvalid;                                   // mm_interconnect_0:hps_0_h2f_lw_axi_master_rvalid -> hps_0:h2f_lw_RVALID
 	wire         mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_chipselect; // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_chipselect -> cnn_mmio_interface_0:chipselect
-	wire  [15:0] mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_readdata;   // cnn_mmio_interface_0:readdata -> mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_readdata
-	wire  [19:0] mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_address;    // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_address -> cnn_mmio_interface_0:address
+	wire  [31:0] mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_readdata;   // cnn_mmio_interface_0:readdata -> mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_readdata
+	wire  [18:0] mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_address;    // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_address -> cnn_mmio_interface_0:address
 	wire         mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_read;       // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_read -> cnn_mmio_interface_0:read
+	wire   [3:0] mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_byteenable; // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_byteenable -> cnn_mmio_interface_0:byteenable
 	wire         mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_write;      // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_write -> cnn_mmio_interface_0:write
-	wire  [15:0] mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_writedata;  // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_writedata -> cnn_mmio_interface_0:writedata
+	wire  [31:0] mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_writedata;  // mm_interconnect_0:cnn_mmio_interface_0_avalon_slave_0_writedata -> cnn_mmio_interface_0:writedata
 	wire         rst_controller_reset_out_reset;                                   // rst_controller:reset_out -> [cnn_mmio_interface_0:reset, mm_interconnect_0:cnn_mmio_interface_0_reset_reset_bridge_in_reset_reset]
 	wire         rst_controller_001_reset_out_reset;                               // rst_controller_001:reset_out -> mm_interconnect_0:hps_0_h2f_axi_master_agent_clk_reset_reset_bridge_in_reset_reset
 
@@ -163,6 +164,7 @@ module soc_system (
 		.clk        (clk_clk),                                                          //          clock.clk
 		.reset      (rst_controller_reset_out_reset),                                   //          reset.reset
 		.writedata  (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_writedata),  // avalon_slave_0.writedata
+		.byteenable (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_byteenable), //               .byteenable
 		.write      (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_write),      //               .write
 		.read       (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_read),       //               .read
 		.chipselect (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_chipselect), //               .chipselect
@@ -477,6 +479,7 @@ module soc_system (
 		.cnn_mmio_interface_0_avalon_slave_0_read                         (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_read),       //                                                           .read
 		.cnn_mmio_interface_0_avalon_slave_0_readdata                     (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_readdata),   //                                                           .readdata
 		.cnn_mmio_interface_0_avalon_slave_0_writedata                    (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_writedata),  //                                                           .writedata
+		.cnn_mmio_interface_0_avalon_slave_0_byteenable                   (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_byteenable), //                                                           .byteenable
 		.cnn_mmio_interface_0_avalon_slave_0_chipselect                   (mm_interconnect_0_cnn_mmio_interface_0_avalon_slave_0_chipselect)  //                                                           .chipselect
 	);
 

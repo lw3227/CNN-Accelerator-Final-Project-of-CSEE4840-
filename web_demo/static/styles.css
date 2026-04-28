@@ -495,6 +495,12 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.prediction-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -539,6 +545,97 @@ button:disabled {
   padding: 16px;
   background: rgba(255, 255, 255, 0.65);
   min-width: 0;
+}
+
+.confidence-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.65);
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.confidence-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.confidence-head h3 {
+  margin: 0;
+}
+
+.confidence-note {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.confidence-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.confidence-metric {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(245, 176, 0, 0.07);
+}
+
+.confidence-metric span {
+  display: block;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.confidence-metric strong {
+  font-size: 1rem;
+}
+
+.cpu-top-channels {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.channel-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.channel-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 64px 58px;
+  align-items: center;
+  gap: 10px;
+}
+
+.channel-label,
+.channel-score,
+.channel-prob {
+  font-size: 0.9rem;
+}
+
+.channel-score,
+.channel-prob {
+  text-align: right;
+  color: var(--muted);
+}
+
+.channel-track {
+  height: 12px;
+  border-radius: 999px;
+  background: #ebe2d3;
+  overflow: hidden;
+}
+
+.channel-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2b4d3d, #75a082);
+  border-radius: 999px;
 }
 
 .profile-head {
@@ -709,7 +806,15 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
+  .confidence-summary {
+    grid-template-columns: 1fr;
+  }
+
   .metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .prediction-strip {
     grid-template-columns: 1fr;
   }
 

@@ -13,7 +13,7 @@ static double cycles_to_us(uint32_t cycles, double fabric_mhz) {
 int main(int argc, char **argv) {
   const char *devmem_path = "/dev/mem";
   uintptr_t csr_base;
-  double fabric_mhz = 25.0;
+  double fabric_mhz = CNN_MMIO_DEFAULT_FABRIC_MHZ;
   struct cnn_mmio_device dev;
   struct cnn_mmio_profile profile;
 

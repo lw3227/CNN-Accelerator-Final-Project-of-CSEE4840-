@@ -1,5 +1,9 @@
 # Model Diagnostics
 
+This is a point-in-time diagnostic note, not the main bring-up guide. Start
+with [README.md](README.md) if you are orienting to the repo for the first
+time.
+
 This note records the current findings from the web-demo validation path.
 
 ## Current Built-In Suite Result

@@ -3,8 +3,17 @@
 import argparse
 import sys
 import time
+import uuid
 
 import serial
+
+
+def write_text(ser, text, delay_s=0.08):
+    for line in text.splitlines(True):
+        data = line.encode("utf-8")
+        ser.write(data)
+        ser.flush()
+        time.sleep(delay_s)
 
 
 def read_until(ser, patterns, timeout_s):
@@ -21,7 +30,8 @@ def read_until(ser, patterns, timeout_s):
 
 
 def login(ser, username, password):
-    ser.write(b"\r\n")
+    ser.write(b"\x03\r\n")
+    ser.flush()
     time.sleep(0.3)
     buf = read_until(ser, ["login:", "Password:", "# ", "$ "], 2.0)
 
@@ -37,34 +47,36 @@ def login(ser, username, password):
 
 
 def run_command(ser, command, settle_s):
-    start_marker = "__CNN_ACC_EXEC_START__"
-    end_marker = "__CNN_ACC_EXEC_END__"
+    nonce = uuid.uuid4().hex[:8].upper()
+    start_marker = f"CNNACCSTART{nonce}"
+    end_marker = f"CNNACCEND{nonce}"
     ser.reset_input_buffer()
     wrapped = "\n".join(
         [
             f"echo {start_marker}",
             command.rstrip("\n"),
             "status=$?",
-            f"echo {end_marker}$status",
+            f"echo {end_marker}",
+            "echo $status",
         ]
     )
-    ser.write((wrapped + "\n").encode("utf-8"))
-    ser.flush()
+    write_text(ser, wrapped.replace("\n", "\r\n") + "\r\n")
     out = read_until(ser, [end_marker], settle_s)
 
     start = out.find(start_marker)
     end = out.find(end_marker)
     status = None
     if end != -1:
-        line_end = out.find("\n", end)
-        if line_end == -1:
-            line_end = len(out)
-        status_field = out[end:line_end]
-        if status_field.startswith(end_marker):
+        tail = out[end + len(end_marker) :]
+        for line in tail.splitlines():
+            field = line.strip()
+            if not field:
+                continue
             try:
-                status = int(status_field[len(end_marker) :].strip())
+                status = int(field)
+                break
             except ValueError:
-                status = None
+                continue
     if start != -1 and end != -1:
         out = out[start + len(start_marker) : end]
     return out.strip(), status

@@ -16,7 +16,8 @@ int main(int argc, char **argv) {
 
   if (argc < 3 || argc > 4) {
     fprintf(stderr,
-            "usage: %s <csr_base_hex> <case_root> [devmem_path]\n",
+            "usage: %s <csr_base_hex> <case_root> [devmem_path]\n"
+            "       model must already be loaded via hps_mmio_load_model\n",
             argv[0]);
     return 1;
   }
@@ -31,7 +32,15 @@ int main(int argc, char **argv) {
   if (cnn_mmio_open(&dev, csr_base, devmem_path) != 0)
     return 1;
 
-  cnn_mmio_program_default_registers(dev.mmio_base);
+  status = cnn_mmio_read_status(dev.mmio_base);
+  if (!cnn_mmio_status_model_loaded(status)) {
+    fprintf(stderr,
+            "model is not loaded (status=0x%04x); run hps_mmio_load_model first\n",
+            status);
+    cnn_mmio_close(&dev);
+    return 1;
+  }
+
   cnn_mmio_write_inference_case(dev.mmio_base, &tc);
   cnn_mmio_start_infer(dev.mmio_base);
 

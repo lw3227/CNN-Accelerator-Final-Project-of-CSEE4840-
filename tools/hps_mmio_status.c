@@ -29,8 +29,8 @@ int main(int argc, char **argv) {
   error_reg = cnn_mmio_read_error(dev.mmio_base);
 
   printf("status=0x%04x\n", status);
-  printf("model_loaded=%u\n", (unsigned)((status >> CNN_MMIO_STATUS_MODEL_LOADED_SHIFT) & 0x1));
-  printf("predict_done=%u\n", (unsigned)((status >> CNN_MMIO_STATUS_PREDICT_DONE_SHIFT) & 0x1));
+  printf("model_loaded=%u\n", (unsigned)cnn_mmio_status_model_loaded(status));
+  printf("predict_done=%u\n", (unsigned)cnn_mmio_status_predict_done(status));
   printf("predict_class=%u\n", (unsigned)(predict & 0xF));
   printf("error=0x%04x\n", error_reg);
 

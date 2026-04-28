@@ -45,6 +45,7 @@ function setModelWarning(message) {
 function resetResults() {
   lastResult = null;
   document.getElementById("predicted-class").textContent = "-";
+  document.getElementById("cpu-predicted-class").textContent = "-";
   document.getElementById("cpu-time").textContent = "-";
   document.getElementById("fpga-time").textContent = "-";
   document.getElementById("fpga-rtl-time").textContent = "-";
@@ -64,6 +65,12 @@ function resetResults() {
   document.getElementById("fpga-bar").style.width = "0%";
   document.getElementById("cpu-bar-label").textContent = "-";
   document.getElementById("fpga-bar-label").textContent = "-";
+  document.getElementById("cpu-top-class").textContent = "-";
+  document.getElementById("cpu-confidence").textContent = "-";
+  document.getElementById("cpu-margin").textContent = "-";
+  document.getElementById("cpu-top-channels").textContent = "Top channels will appear after one run.";
+  document.getElementById("confidence-note").textContent = "Waiting for one run.";
+  document.getElementById("channel-grid").innerHTML = "";
   branchDiagnosticsBox.textContent = "Branch diagnostics will appear after one run.";
   processedPreview.removeAttribute("src");
   processedPreview.style.display = "none";
@@ -81,9 +88,50 @@ function renderBranchDiagnostics(rows, chosenMode) {
   }
   const parts = rows.map((row) => {
     const chosenTag = row.mode === chosenMode ? " [chosen]" : "";
-    return `${row.mode}: pred ${row.predicted_label}, margin ${row.margin.toFixed(1)}, top ${row.top_score.toFixed(1)}${chosenTag}`;
+    const topSummary = (row.top_channels || [])
+      .slice(0, 2)
+      .map((entry) => `${entry.label}:${entry.raw_score.toFixed(1)}`)
+      .join(", ");
+    return `${row.mode}: pred ${row.predicted_label}, margin ${row.margin.toFixed(1)}, top ${row.top_score.toFixed(1)}${topSummary ? `, leaders ${topSummary}` : ""}${chosenTag}`;
   });
   branchDiagnosticsBox.textContent = parts.join(" | ");
+}
+
+function renderCpuScoreReport(report) {
+  if (!report) {
+    document.getElementById("cpu-top-class").textContent = "-";
+    document.getElementById("cpu-confidence").textContent = "-";
+    document.getElementById("cpu-margin").textContent = "-";
+    document.getElementById("cpu-top-channels").textContent = "Top channels will appear after one run.";
+    document.getElementById("confidence-note").textContent = "Waiting for one run.";
+    document.getElementById("channel-grid").innerHTML = "";
+    return;
+  }
+
+  document.getElementById("cpu-top-class").textContent = report.predicted_label;
+  document.getElementById("cpu-confidence").textContent = `${report.confidence_pct.toFixed(1)}%`;
+  document.getElementById("cpu-margin").textContent = report.margin.toFixed(1);
+  document.getElementById("confidence-note").textContent = report.note || "";
+
+  const topSummary = (report.top_channels || [])
+    .map((entry) => `${entry.label}: raw ${entry.raw_score.toFixed(1)}, conf ${entry.probability_pct.toFixed(1)}%`)
+    .join(" | ");
+  document.getElementById("cpu-top-channels").textContent =
+    topSummary || "Top channels unavailable.";
+
+  const grid = document.getElementById("channel-grid");
+  grid.innerHTML = "";
+  for (const channel of report.channels || []) {
+    const row = document.createElement("div");
+    row.className = "channel-row";
+    row.innerHTML = `
+      <span class="channel-label">${channel.label}</span>
+      <div class="channel-track"><div class="channel-fill" style="width:${channel.probability_pct.toFixed(2)}%"></div></div>
+      <span class="channel-score">${channel.raw_score.toFixed(1)}</span>
+      <span class="channel-prob">${channel.probability_pct.toFixed(1)}%</span>
+    `;
+    grid.appendChild(row);
+  }
 }
 
 function formatProfileRow(stage) {
@@ -279,6 +327,7 @@ runBtn.addEventListener("click", async () => {
 
     lastResult = payload;
     document.getElementById("predicted-class").textContent = payload.predicted_label;
+    document.getElementById("cpu-predicted-class").textContent = payload.cpu_predicted_label;
     document.getElementById("cpu-time").textContent = `${payload.cpu_time_ms.toFixed(2)} ms`;
     document.getElementById("fpga-time").textContent = `${payload.fpga_time_ms.toFixed(2)} ms`;
     document.getElementById("fpga-rtl-time").textContent = `${payload.fpga_rtl_time_ms.toFixed(3)} ms`;
@@ -292,6 +341,7 @@ runBtn.addEventListener("click", async () => {
     renderChart(payload.cpu_time_ms, payload.fpga_time_ms);
     renderProfile(payload.fpga_profile);
     renderBranchDiagnostics(payload.branch_diagnostics, payload.preprocess_mode);
+    renderCpuScoreReport(payload.cpu_score_report);
     if (payload.preprocessed_preview_url) {
       processedPreview.src = payload.preprocessed_preview_url;
       processedPreview.style.display = "block";

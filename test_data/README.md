@@ -10,7 +10,7 @@ for the whole project task definition.
 
 For the current active lane, these case names should be read as **gesture class
 IDs** in a 10-class sign-language gesture task. See
-[DATASET_GUIDE.md](../DATASET_GUIDE.md).
+[DATASET_GUIDE.md](../docs/DATASET_GUIDE.md).
 
 ## Real data locations
 

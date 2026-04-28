@@ -57,18 +57,10 @@ module soc_system_top (
     input  wire        HPS_DDR3_RZQ,
     output wire        HPS_DDR3_WE_N
 );
-
-    // Temporary timing workaround: run the FPGA fabric at 25 MHz by dividing
-    // the board's 50 MHz oscillator in half before feeding the Qsys system.
-    (* preserve *) reg fabric_clk_div2 = 1'b0;
     wire [3:0] predict_class_dbg;
     wire       predict_done_dbg;
     wire       model_loaded_dbg;
     wire [15:0] interface_error_dbg;
-
-    always @(posedge CLOCK_50) begin
-        fabric_clk_div2 <= ~fabric_clk_div2;
-    end
 
     localparam [6:0] SEVEN_SEG_BLANK = 7'b1111111;
 
@@ -97,7 +89,7 @@ module soc_system_top (
     endfunction
 
     soc_system u_soc_system (
-        .clk_clk            (fabric_clk_div2),
+        .clk_clk            (CLOCK_50),
         .cnn_debug_model_loaded(model_loaded_dbg),
         .cnn_debug_predict_done(predict_done_dbg),
         .cnn_debug_predict_class(predict_class_dbg),

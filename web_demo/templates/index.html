@@ -117,11 +117,18 @@
             <h2>Results</h2>
             <p class="panel-copy">This panel compares the board-side HPS CPU software baseline against the existing board-side HPS + MMIO + FPGA path for the active 10-class gesture model line.</p>
 
-            <div class="metrics">
+            <div class="prediction-strip">
               <div class="metric">
                 <span class="metric-label">Predicted Gesture ID</span>
                 <strong id="predicted-class">-</strong>
               </div>
+              <div class="metric">
+                <span class="metric-label">Board CPU Gesture ID</span>
+                <strong id="cpu-predicted-class">-</strong>
+              </div>
+            </div>
+
+            <div class="metrics">
               <div class="metric">
                 <span class="metric-label">Board CPU Time</span>
                 <strong id="cpu-time">-</strong>
@@ -142,6 +149,29 @@
 
             <div class="timing-note">
               <span id="timing-note">Board CPU and FPGA wait time are now same-platform metrics. Remote request time is reported separately.</span>
+            </div>
+
+            <div class="confidence-card">
+              <div class="confidence-head">
+                <h3>CPU Confidence And Channel Scores</h3>
+                <span id="confidence-note" class="confidence-note">Waiting for one run.</span>
+              </div>
+              <div class="confidence-summary">
+                <div class="confidence-metric">
+                  <span>Top Class</span>
+                  <strong id="cpu-top-class">-</strong>
+                </div>
+                <div class="confidence-metric">
+                  <span>Normalized Confidence</span>
+                  <strong id="cpu-confidence">-</strong>
+                </div>
+                <div class="confidence-metric">
+                  <span>Margin</span>
+                  <strong id="cpu-margin">-</strong>
+                </div>
+              </div>
+              <div id="cpu-top-channels" class="cpu-top-channels">Top channels will appear after one run.</div>
+              <div id="channel-grid" class="channel-grid"></div>
             </div>
 
             <div class="profile-card">

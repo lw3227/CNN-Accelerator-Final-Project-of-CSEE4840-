@@ -10,7 +10,7 @@ import serial
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_REMOTE_REPO = "/homes/user/stud/fall25/lw3227/CNN_ACC"
+DEFAULT_REMOTE_REPO = "/root/cnn_acc_hps"
 DEFAULT_PRELOAD_ROOT = (
     "Golden-Module/matlab/hardware_aligned/debug/sram_preload"
 )
@@ -47,15 +47,16 @@ def login(ser, username, password):
 
 
 def run_remote(ser, command, timeout_s):
-    start_marker = "__CNN_ACC_EXEC_START__"
-    end_marker = "__CNN_ACC_EXEC_END__"
+    start_marker = "CNNACCSTART12345"
+    end_marker = "CNNACCEND12345"
     ser.reset_input_buffer()
     wrapped = "\n".join(
         [
             f"echo {start_marker}",
             command.rstrip("\n"),
             "status=$?",
-            f"echo {end_marker}$status",
+            f"echo {end_marker}",
+            "echo $status",
         ]
     )
     ser.write((wrapped + "\n").encode("utf-8"))
@@ -66,15 +67,16 @@ def run_remote(ser, command, timeout_s):
     end = out.find(end_marker)
     status = None
     if end != -1:
-        line_end = out.find("\n", end)
-        if line_end == -1:
-            line_end = len(out)
-        status_field = out[end:line_end]
-        if status_field.startswith(end_marker):
+        tail = out[end + len(end_marker) :]
+        for line in tail.splitlines():
+            field = line.strip()
+            if not field:
+                continue
             try:
-                status = int(status_field[len(end_marker) :].strip())
+                status = int(field)
+                break
             except ValueError:
-                status = None
+                continue
     if start != -1 and end != -1:
         out = out[start + len(start_marker) : end]
     return out.strip(), status
@@ -100,7 +102,7 @@ def push_file(ser, local_path: Path, remote_path: str):
 
 def run_checked(ser, command, timeout_s):
     output, status = run_remote(ser, command, timeout_s)
-    if status not in (0, None):
+    if status != 0:
         raise RuntimeError(
             "remote command failed\n"
             f"command: {command}\n"

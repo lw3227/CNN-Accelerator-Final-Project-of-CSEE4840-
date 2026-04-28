@@ -50,9 +50,17 @@ module conv_top #(
   //   L1: 4096 beats (1 byte/beat, 64*64*1 bytes)
   //   L2: 961 beats  (4 bytes/beat, 31*31 wide pixels)
   //   L3: 392 beats  (4 bytes/beat, 14*14*8/4 half-pixels)
+  reg [1:0] active_layer_sel_q;
   reg [31:0] eff_img_pixels;
+  always @(posedge clk or negedge rst_n) begin
+    if (!rst_n)
+      active_layer_sel_q <= 2'b00;
+    else
+      active_layer_sel_q <= layer_sel;
+  end
+
   always @* begin
-    case (layer_sel)
+    case (active_layer_sel_q)
       2'b01:   eff_img_pixels = 32'd961;   // 31*31
       2'b10:   eff_img_pixels = 32'd392;   // 14*14*2
       default: eff_img_pixels = 32'd4096;  // 64*64
@@ -108,7 +116,12 @@ module conv_top #(
   wire have_launchable_block = have_ready_block && weights_loaded;
   // Prevent SA launch after frame_done (avoid stale bank data between layers/passes)
   wire can_launch = have_launchable_block && !wt_fire && !frame_done;
-  wire [1:0] sa_mode_cfg = layer_sel;
+  wire [1:0] sa_mode_cfg = active_layer_sel_q;
+  reg  [1:0] sa_mode_cfg_q;
+  reg  [4:0] sa_valid_rows_cfg_q;
+  reg         sa_start_pulse_q;
+  reg  signed [ROWS*DATA_W-1:0] sa_a_in_flat_q;
+  reg  signed [COLS*DATA_W-1:0] sa_b_in_flat_q;
 
   // SA input gating.
   wire signed [ROWS*DATA_W-1:0] a_in_flat;
@@ -128,12 +141,30 @@ module conv_top #(
   // 空闲状态下用 0 门控 A 输入，避免 SA 在非发射期积分垃圾值
   assign a_in_flat = sa_a_gate ? a_in_from_bank : {ROWS*DATA_W{1'b0}};
 
+  // One-cycle input pipeline into the systolic array. This cuts the long
+  // layer-select-dependent Conv_Buffer -> PE MAC path.
+  always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      sa_mode_cfg_q       <= 2'b00;
+      sa_valid_rows_cfg_q <= 5'd0;
+      sa_start_pulse_q    <= 1'b0;
+      sa_a_in_flat_q      <= {ROWS*DATA_W{1'b0}};
+      sa_b_in_flat_q      <= {COLS*DATA_W{1'b0}};
+    end else begin
+      sa_mode_cfg_q       <= sa_mode_cfg;
+      sa_valid_rows_cfg_q <= rd_bank_sel ? valid_rows_B : valid_rows_A;
+      sa_start_pulse_q    <= start_pulse_r;
+      sa_a_in_flat_q      <= a_in_flat;
+      sa_b_in_flat_q      <= b_in_to_sa;
+    end
+  end
+
   input_row_aligner #(
     .W   (W),
     .DW  (DATA_W),
     .C_IN(C_IN)
   ) u_input_row_aligner (
-    .layer_sel  (layer_sel),
+    .layer_sel  (active_layer_sel_q),
     .clk        (clk),
     .rst_n      (rst_n),
     .frame_rearm(frame_rearm),
@@ -154,7 +185,7 @@ module conv_top #(
     .L2    (DOT_K + 2),
     .L3    (DOT_K + 3)
   ) u_weight_buffer (
-    .layer_sel(layer_sel),
+    .layer_sel(active_layer_sel_q),
     .clk      (clk),
     .rst_n    (rst_n),
     .ring     (wb_ring_r),
@@ -174,7 +205,7 @@ module conv_top #(
     .DOT_K (DOT_K),
     .C_IN  (C_IN)
   ) u_conv_buffer (
-    .layer_sel         (layer_sel),
+    .layer_sel         (active_layer_sel_q),
     .clk               (clk),
     .rst_n             (rst_n),
     .frame_rearm       (frame_rearm),
@@ -213,7 +244,7 @@ module conv_top #(
     .COLS (COLS),
     .ROWS (ROWS)
   ) u_conv_engine_ctrl (
-    .layer_sel         (layer_sel),
+    .layer_sel         (active_layer_sel_q),
     .clk               (clk),
     .rst_n             (rst_n),
     .wt_valid          (wt_valid),
@@ -286,11 +317,11 @@ module conv_top #(
   ) u_systolic_array_top (
     .clk        (clk),
     .rst_n      (rst_n),
-    .start_pulse(start_pulse_r),
-    .mode_cfg   (sa_mode_cfg),
-    .valid_rows_cfg(rd_bank_sel ? valid_rows_B : valid_rows_A),
-    .a_in_flat  (a_in_flat),
-    .b_in_flat  (b_in_to_sa),
+    .start_pulse(sa_start_pulse_q),
+    .mode_cfg   (sa_mode_cfg_q),
+    .valid_rows_cfg(sa_valid_rows_cfg_q),
+    .a_in_flat  (sa_a_in_flat_q),
+    .b_in_flat  (sa_b_in_flat_q),
     .c_out_flat (c_out_raw_flat),
     .done       (sa_done),
     .col_stream_data_flat(c_out_col_stream_flat),

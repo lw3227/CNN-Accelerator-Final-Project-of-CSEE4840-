@@ -25,7 +25,8 @@ localparam [1:0] SEL_DATA      = 2'd2;
 // There is no preload transaction on SRAM_B.
 // It is reused in time:
 // - L1 pooled output shares the same 31x31x4 buffer used as L2 input.
-// - L3 pooled output reuses the front part of SRAM_B as the FC input buffer.
+// - L3/FC data traffic is routed by top_sram_B into a dedicated FC-order
+//   buffer, so the FC stage no longer needs interleaved reads out of SRAM_B.
 
 localparam [ADDR_WIDTH-1:0] L1_OUT_BASE       = 10'h000;
 localparam [ADDR_WIDTH-1:0] L1_OUT_LEN        = 10'd961; // 31*31*4 bytes / 4

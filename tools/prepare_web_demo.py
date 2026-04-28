@@ -120,7 +120,7 @@ def program_sof(quartus_pgm: Path, cable: Optional[str], sof_path: Path, device_
 
 def run_serial_checked(ser: serial.Serial, command: str, timeout_s: float) -> str:
     output, status = run_command(ser, command, timeout_s)
-    if status not in (0, None):
+    if status != 0:
         raise RuntimeError(
             "serial remote command failed\n"
             f"command: {command}\n"

@@ -26,9 +26,9 @@ dataset_wlx/
 
 The clearest local references are:
 
-- [Golden-Module/pytorch/save_preprocessed_dataset.py](Golden-Module/pytorch/save_preprocessed_dataset.py)
-- [Golden-Module/pytorch/wlx_build_dataset.ipynb](Golden-Module/pytorch/wlx_build_dataset.ipynb)
-- [Golden-Module/pytorch/wlx_train_cnn.ipynb](Golden-Module/pytorch/wlx_train_cnn.ipynb)
+- [../Golden-Module/pytorch/save_preprocessed_dataset.py](../Golden-Module/pytorch/save_preprocessed_dataset.py)
+- [../Golden-Module/pytorch/wlx_build_dataset.ipynb](../Golden-Module/pytorch/wlx_build_dataset.ipynb)
+- [../Golden-Module/pytorch/wlx_train_cnn.ipynb](../Golden-Module/pytorch/wlx_train_cnn.ipynb)
 
 Expected split structure:
 

@@ -30,13 +30,13 @@ The currently configured board-validated artifact path still points at:
 - `Golden-Module/matlab/hardware_aligned/debug/sram_preload/digit_0_test`
 
 That is an artifact-path naming convention, not the intended user-facing task
-name. See [DATASET_GUIDE.md](../DATASET_GUIDE.md).
+name. See [DATASET_GUIDE.md](../docs/DATASET_GUIDE.md).
 
 For the end-to-end runtime explanation, read:
 
-- [WEB_TO_FPGA_WORKFLOW.md](../WEB_TO_FPGA_WORKFLOW.md)
-- [MMIO_INTERFACE_GUIDE.md](../MMIO_INTERFACE_GUIDE.md)
-- [TEAMMATE_SETUP.md](../TEAMMATE_SETUP.md)
+- [WEB_TO_FPGA_WORKFLOW.md](../docs/WEB_TO_FPGA_WORKFLOW.md)
+- [MMIO_INTERFACE_GUIDE.md](../docs/MMIO_INTERFACE_GUIDE.md)
+- [TEAMMATE_SETUP.md](../docs/TEAMMATE_SETUP.md)
 
 ## Files
 

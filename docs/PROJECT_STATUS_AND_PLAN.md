@@ -1,5 +1,10 @@
 # Project Status And Plan
 
+This is a historical snapshot from an earlier integration stage. For the
+current validated `submission` flow, start with [README.md](README.md),
+[TEAM_RUNBOOK.md](TEAM_RUNBOOK.md), and
+[BUILD_TIMING_AND_RESOURCES.md](BUILD_TIMING_AND_RESOURCES.md).
+
 This document snapshots the repository after the DE1-SoC HPS+MMIO bring-up work
 and before the web-demo extension work starts.
 

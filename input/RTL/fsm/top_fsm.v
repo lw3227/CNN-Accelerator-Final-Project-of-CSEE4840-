@@ -100,6 +100,7 @@ module top_fsm #(
   reg       model_loaded;     // model has been loaded at least once
   reg       preload_sram_done; // latched sram_a_done during preload wait
   reg       runner_started;    // prevents repeated runner_start pulses
+  reg       runner_prepared;   // gives downstream logic one cycle to latch layer config
 
   // ---------------------------------------------------------------
   // Preload data forwarding / L1 pixel bypass
@@ -114,23 +115,13 @@ module top_fsm #(
   assign busy = (state != ST_IDLE) && (state != ST_READY);
 
   // ---------------------------------------------------------------
-  // 10-way argmax (combinational sequential reduction)
-  // Strict-greater compare: on ties the lower index wins (matches the
-  // 3-class >= convention used previously).
+  // Iterative argmax state
   // ---------------------------------------------------------------
-  reg [3:0]                  argmax_idx;
-  reg signed [ACC_W-1:0]     argmax_val;
-  integer                    ai;
-  always @(*) begin
-    argmax_idx = 4'd0;
-    argmax_val = $signed(fc_acc_vec[0 +: ACC_W]);
-    for (ai = 1; ai < OUT_CHANNELS; ai = ai + 1) begin
-      if ($signed(fc_acc_vec[ai*ACC_W +: ACC_W]) > argmax_val) begin
-        argmax_val = $signed(fc_acc_vec[ai*ACC_W +: ACC_W]);
-        argmax_idx = ai[3:0];
-      end
-    end
-  end
+  reg [3:0]              argmax_scan_idx;
+  reg [3:0]              argmax_best_idx;
+  reg signed [ACC_W-1:0] argmax_best_val;
+  wire signed [ACC_W-1:0] argmax_scan_val =
+      $signed(fc_acc_vec[argmax_scan_idx*ACC_W +: ACC_W]);
 
   // ---------------------------------------------------------------
   // FSM
@@ -160,7 +151,11 @@ module top_fsm #(
       model_loaded     <= 1'b0;
       preload_sram_done <= 1'b0;
       runner_started   <= 1'b0;
+      runner_prepared  <= 1'b0;
       pixel_stream_active <= 1'b0;
+      argmax_scan_idx  <= 4'd0;
+      argmax_best_idx  <= 4'd0;
+      argmax_best_val  <= {ACC_W{1'b0}};
     end else begin
       // Default: clear one-cycle pulses
       sram_a_start <= 1'b0;
@@ -328,82 +323,114 @@ module top_fsm #(
         // runner_started prevents repeated start pulses while waiting.
         // ---------------------------------------------------------
         ST_L1: begin
-          if (!runner_started) begin
-            runner_start     <= 1'b1;
-            runner_started   <= 1'b1;
+          if (!runner_prepared) begin
             runner_layer_sel <= 2'b00;
             runner_pass_id   <= 1'b0;
             runner_is_fc     <= 1'b0;
+            runner_prepared  <= 1'b1;
+          end else if (!runner_started) begin
+            runner_start     <= 1'b1;
+            runner_started   <= 1'b1;
             pixel_stream_active <= 1'b1;  // route load_data directly to conv
           end
           if (runner_done) begin
             state <= ST_L2_P0;
             runner_started <= 1'b0;
+            runner_prepared <= 1'b0;
             pixel_stream_active <= 1'b0;
           end
         end
 
         ST_L2_P0: begin
-          if (!runner_started) begin
-            runner_start     <= 1'b1;
-            runner_started   <= 1'b1;
+          if (!runner_prepared) begin
             runner_layer_sel <= 2'b01;
             runner_pass_id   <= 1'b0;
             runner_is_fc     <= 1'b0;
+            runner_prepared  <= 1'b1;
+          end else if (!runner_started) begin
+            runner_start     <= 1'b1;
+            runner_started   <= 1'b1;
           end
-          if (runner_done) begin state <= ST_L2_P1; runner_started <= 1'b0; end
+          if (runner_done) begin state <= ST_L2_P1; runner_started <= 1'b0; runner_prepared <= 1'b0; end
         end
 
         ST_L2_P1: begin
-          if (!runner_started) begin
-            runner_start     <= 1'b1;
-            runner_started   <= 1'b1;
+          if (!runner_prepared) begin
             runner_layer_sel <= 2'b01;
             runner_pass_id   <= 1'b1;
             runner_is_fc     <= 1'b0;
+            runner_prepared  <= 1'b1;
+          end else if (!runner_started) begin
+            runner_start     <= 1'b1;
+            runner_started   <= 1'b1;
           end
-          if (runner_done) begin state <= ST_L3_P0; runner_started <= 1'b0; end
+          if (runner_done) begin state <= ST_L3_P0; runner_started <= 1'b0; runner_prepared <= 1'b0; end
         end
 
         ST_L3_P0: begin
-          if (!runner_started) begin
-            runner_start     <= 1'b1;
-            runner_started   <= 1'b1;
+          if (!runner_prepared) begin
             runner_layer_sel <= 2'b10;
             runner_pass_id   <= 1'b0;
             runner_is_fc     <= 1'b0;
+            runner_prepared  <= 1'b1;
+          end else if (!runner_started) begin
+            runner_start     <= 1'b1;
+            runner_started   <= 1'b1;
           end
-          if (runner_done) begin state <= ST_L3_P1; runner_started <= 1'b0; end
+          if (runner_done) begin state <= ST_L3_P1; runner_started <= 1'b0; runner_prepared <= 1'b0; end
         end
 
         ST_L3_P1: begin
-          if (!runner_started) begin
-            runner_start     <= 1'b1;
-            runner_started   <= 1'b1;
+          if (!runner_prepared) begin
             runner_layer_sel <= 2'b10;
             runner_pass_id   <= 1'b1;
             runner_is_fc     <= 1'b0;
+            runner_prepared  <= 1'b1;
+          end else if (!runner_started) begin
+            runner_start     <= 1'b1;
+            runner_started   <= 1'b1;
           end
-          if (runner_done) begin state <= ST_FC; runner_started <= 1'b0; end
+          if (runner_done) begin state <= ST_FC; runner_started <= 1'b0; runner_prepared <= 1'b0; end
         end
 
         ST_FC: begin
-          if (!runner_started) begin
-            runner_start     <= 1'b1;
-            runner_started   <= 1'b1;
+          if (!runner_prepared) begin
             runner_layer_sel <= 2'b00;
             runner_pass_id   <= 1'b0;
             runner_is_fc     <= 1'b1;
+            runner_prepared  <= 1'b1;
+          end else if (!runner_started) begin
+            runner_start     <= 1'b1;
+            runner_started   <= 1'b1;
           end
-          if (runner_done) begin state <= ST_ARGMAX; runner_started <= 1'b0; end
+          if (runner_done) begin
+            state           <= ST_ARGMAX;
+            runner_started  <= 1'b0;
+            runner_prepared <= 1'b0;
+            argmax_scan_idx <= 4'd1;
+            argmax_best_idx <= 4'd0;
+            argmax_best_val <= $signed(fc_acc_vec[0 +: ACC_W]);
+          end
         end
 
         // ---------------------------------------------------------
         ST_ARGMAX: begin
-          // 10-way argmax: strict-greater wins, so lower index wins on tie.
-          predict_class <= argmax_idx;
-          predict_valid <= 1'b1;
-          state         <= ST_READY;
+          // Compare one class per cycle. This removes the long 10-way
+          // comparator chain from the fabric critical path.
+          if (argmax_scan_val > argmax_best_val) begin
+            argmax_best_val <= argmax_scan_val;
+            argmax_best_idx <= argmax_scan_idx;
+          end
+
+          if (argmax_scan_idx == OUT_CHANNELS - 1) begin
+            predict_class <= (argmax_scan_val > argmax_best_val)
+                                 ? argmax_scan_idx
+                                 : argmax_best_idx;
+            predict_valid <= 1'b1;
+            state         <= ST_READY;
+          end else begin
+            argmax_scan_idx <= argmax_scan_idx + 4'd1;
+          end
         end
 
         default: state <= ST_IDLE;

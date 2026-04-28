@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -55,9 +56,53 @@ class ComparisonDemoService:
             scored.append((variant, cpu_result))
         return scored
 
+    def _softmax_probabilities(self, scores: List[float]) -> List[float]:
+        if not scores:
+            return []
+        max_score = max(scores)
+        exp_scores = [math.exp(score - max_score) for score in scores]
+        total = sum(exp_scores)
+        if total <= 0:
+            return [0.0 for _ in scores]
+        return [value / total for value in exp_scores]
+
+    def _build_cpu_score_report(self, cpu_result) -> Dict[str, object]:
+        probabilities = self._softmax_probabilities(cpu_result.scores)
+        channels = []
+        for idx, (score, probability) in enumerate(zip(cpu_result.scores, probabilities)):
+            channels.append(
+                {
+                    "class_id": idx,
+                    "label": self.labels.label_for(idx),
+                    "raw_score": float(score),
+                    "probability": float(probability),
+                    "probability_pct": float(probability * 100.0),
+                }
+            )
+
+        top_channels = sorted(channels, key=lambda row: row["raw_score"], reverse=True)[:3]
+        note = ""
+        if len(top_channels) >= 2 and abs(top_channels[0]["raw_score"] - top_channels[1]["raw_score"]) < 1e-6:
+            note = "Top classes are tied, so this sample is currently low-confidence."
+        elif float(cpu_result.margin) < 5.0:
+            note = "Top classes are close, so this sample is currently low-confidence."
+
+        return {
+            "predicted_class": int(cpu_result.predicted_class),
+            "predicted_label": self.labels.label_for(int(cpu_result.predicted_class)),
+            "top_score": float(cpu_result.top_score),
+            "margin": float(cpu_result.margin),
+            "confidence": float(top_channels[0]["probability"]) if top_channels else 0.0,
+            "confidence_pct": float(top_channels[0]["probability_pct"]) if top_channels else 0.0,
+            "top_channels": top_channels,
+            "channels": channels,
+            "note": note,
+        }
+
     def _build_branch_diagnostics(self, scored) -> List[Dict[str, object]]:
         diagnostics = []
         for variant, cpu_result in scored:
+            top_channels = self._build_cpu_score_report(cpu_result)["top_channels"]
             diagnostics.append(
                 {
                     "mode": variant.mode,
@@ -65,6 +110,7 @@ class ComparisonDemoService:
                     "predicted_label": self.labels.label_for(int(cpu_result.predicted_class)),
                     "margin": float(cpu_result.margin),
                     "top_score": float(cpu_result.top_score),
+                    "top_channels": top_channels,
                 }
             )
         return diagnostics
@@ -152,6 +198,8 @@ class ComparisonDemoService:
         else:
             best_variant, best_cpu_result = choose_best_variant(scored)
 
+        cpu_score_report = self._build_cpu_score_report(best_cpu_result)
+
         with tempfile.TemporaryDirectory(prefix="cnn_acc_case_") as tmp_dir:
             case_root = Path(tmp_dir) / "gesture_upload_case"
             write_inference_case(case_root, best_variant.values, case_name="gesture_upload", expected_class=-1)
@@ -191,6 +239,7 @@ class ComparisonDemoService:
             "preprocessed_preview_url": f"data:image/png;base64,{best_variant.preview_b64}",
             "preprocess_mode": best_variant.mode,
             "cpu_confidence_margin": best_cpu_result.margin,
+            "cpu_score_report": cpu_score_report,
         }
 
     def compare_image_path(self, image_path: Path) -> Dict[str, object]:

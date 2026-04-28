@@ -63,7 +63,7 @@ Error: border: Error during execution of script generate_hps_sdram.tcl: seq: Inf
 Error: border: Error during execution of script generate_hps_sdram.tcl: seq: child process exited abnormally
 Error: border: Error during execution of script generate_hps_sdram.tcl: Generation stopped, 3 or more modules remaining
 Error: border: Execution of script generate_hps_sdram.tcl failed
-Error: border: 2026.04.20.13:45:51 Info:
+Error: border: 2026.04.28.11:09:56 Info:
 Error: border: ********************************************************************************************************************
 Error: border: 
 Error: border: Use qsys-generate for a simpler command-line interface for generating IP.
@@ -71,44 +71,44 @@ Error: border:
 Error: border: Run ip-generate with switch --remove-qsys-generate-warning to prevent this notice from appearing in subsequent runs.
 Error: border: 
 Error: border: ********************************************************************************************************************
-Error: border: 2026.04.20.13:45:53 Warning: Ignored parameter assignment device=5CSEMA5F31C6
-Error: border: 2026.04.20.13:45:53 Warning: Ignored parameter assignment extended_family_support=true
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram: ODT is disabled. Enabling ODT (Mode Register 1) may improve signal integrity
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram: 'Quick' simulation modes are NOT timing accurate. Some simulation memory models may issue warnings or errors
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram.seq: This module has no ports or interfaces
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram.c0: ODT is disabled. Enabling ODT (Mode Register 1) may improve signal integrity
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram.p0: p0.scc must be exported, or connected to a matching conduit.
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram.as: as.afi_init_cal_req must be exported, or connected to a matching conduit.
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram.as: as.tracking must be exported, or connected to a matching conduit.
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram.c0: c0.status must be exported, or connected to a matching conduit.
-Error: border: 2026.04.20.13:45:54 Warning: hps_sdram.p0: p0.avl must be connected to an Avalon-MM master
-Error: border: 2026.04.20.13:45:54 Info: hps_sdram: Generating altera_mem_if_hps_emif "hps_sdram" for QUARTUS_SYNTH
-Error: border: 2026.04.20.13:45:56 Info: pll: "hps_sdram" instantiated altera_mem_if_hps_pll "pll"
-Error: border: 2026.04.20.13:45:56 Info: p0: Generating clock pair generator
-Error: border: 2026.04.20.13:45:57 Info: p0: Generating hps_sdram_p0_altdqdqs
-Error: border: 2026.04.20.13:45:59 Info: p0:
-Error: border: 2026.04.20.13:45:59 Info: p0: *****************************
-Error: border: 2026.04.20.13:45:59 Info: p0:
-Error: border: 2026.04.20.13:45:59 Info: p0: Remember to run the hps_sdram_p0_pin_assignments.tcl
-Error: border: 2026.04.20.13:45:59 Info: p0: script after running Synthesis and before Fitting.
-Error: border: 2026.04.20.13:45:59 Info: p0:
-Error: border: 2026.04.20.13:45:59 Info: p0: *****************************
-Error: border: 2026.04.20.13:45:59 Info: p0:
-Error: border: 2026.04.20.13:45:59 Info: p0: "hps_sdram" instantiated altera_mem_if_ddr3_hard_phy_core "p0"
-Error: border: 2026.04.20.13:46:03 Error: seq: Error during execution of "{F:/intelfpga_lite/21.1/quartus/../nios2eds/Nios II Command Shell.bat} make all 2>> stderr.txt": child process exited abnormally
-Error: border: 2026.04.20.13:46:03 Error: seq: Execution of command "{F:/intelfpga_lite/21.1/quartus/../nios2eds/Nios II Command Shell.bat} make all 2>> stderr.txt" failed
-Error: border: 2026.04.20.13:46:03 Error: seq: /mnt/f/intelfpga_lite/21.1/quartus/bin64/uniphy_mcc.exe -ac_code sequencer_mc/ac_rom.s -inst_code sequencer_mc/inst_rom.s -ac_rom ../hps_AC_ROM.hex -inst_rom ../hps_inst_ROM.hex -header sequencer/sequencer_auto.h -vheader ../sequencer_auto_h.sv -ac_rom_init sequencer/sequencer_auto_ac_init.c -inst_rom_init sequencer/sequencer_auto_inst_init.c -DAC_ROM_USER_ADD_0=0_0000_0000_0000 -DAC_ROM_USER_ADD_1=0_0000_0000_1000 -DAC_ROM_MR0=0001000110001 -DAC_ROM_MR0_CALIB= -DAC_ROM_MR0_DLL_RESET=0001100110000 -DAC_ROM_MR1=0000000000000 -DAC_ROM_MR1_OCD_ENABLE= -DAC_ROM_MR2=0000000001000 -DAC_ROM_MR3=0000000000000 -DAC_ROM_MR0_MIRR=0001001001001 -DAC_ROM_MR0_DLL_RESET_MIRR=0001011001000 -DAC_ROM_MR1_MIRR=0000000000000 -DAC_ROM_MR2_MIRR=0000000010000 -DAC_ROM_MR3_MIRR=0000000000000 -DQUARTER_RATE=0 -DHALF_RATE=0 -DFULL_RATE=1 -DNON_DES_CAL=0 -DAP_MODE=0 -DGUARANTEED_READ_BRINGUP_TEST=0 -DMEM_ADDR_WIDTH=13 -DHARD_PHY=1
-Error: border: 2026.04.20.13:46:03 Error: seq: UniPHY Sequencer Microcode Compiler
-Error: border: 2026.04.20.13:46:03 Error: seq: Copyright (C) 2021  Intel Corporation. All rights reserved.
-Error: border: 2026.04.20.13:46:03 Error: seq: Info: Reading sequencer_mc/ac_rom.s ...
-Error: border: 2026.04.20.13:46:03 Error: seq: Info: Reading sequencer_mc/inst_rom.s ...
-Error: border: 2026.04.20.13:46:03 Error: seq: Info: Writing ../hps_AC_ROM.hex ...
-Error: border: 2026.04.20.13:46:03 Error: seq: Info: Writing ../hps_inst_ROM.hex ...
-Error: border: 2026.04.20.13:46:03 Error: seq: Info: Writing sequencer/sequencer_auto_ac_init.c ...
-Error: border: 2026.04.20.13:46:03 Error: seq: child process exited abnormally
-Error: border: 2026.04.20.13:46:04 Info: seq: "hps_sdram" instantiated altera_mem_if_hhp_ddr3_qseq "seq"
-Error: border: 2026.04.20.13:46:04 Error: Generation stopped, 3 or more modules remaining
-Error: border: 2026.04.20.13:46:04 Info: hps_sdram: Done "hps_sdram" with 7 modules, 38 files
+Error: border: 2026.04.28.11:09:58 Warning: Ignored parameter assignment device=5CSEMA5F31C6
+Error: border: 2026.04.28.11:09:58 Warning: Ignored parameter assignment extended_family_support=true
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram: ODT is disabled. Enabling ODT (Mode Register 1) may improve signal integrity
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram: 'Quick' simulation modes are NOT timing accurate. Some simulation memory models may issue warnings or errors
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram.seq: This module has no ports or interfaces
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram.c0: ODT is disabled. Enabling ODT (Mode Register 1) may improve signal integrity
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram.p0: p0.scc must be exported, or connected to a matching conduit.
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram.as: as.afi_init_cal_req must be exported, or connected to a matching conduit.
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram.as: as.tracking must be exported, or connected to a matching conduit.
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram.c0: c0.status must be exported, or connected to a matching conduit.
+Error: border: 2026.04.28.11:10:00 Warning: hps_sdram.p0: p0.avl must be connected to an Avalon-MM master
+Error: border: 2026.04.28.11:10:00 Info: hps_sdram: Generating altera_mem_if_hps_emif "hps_sdram" for QUARTUS_SYNTH
+Error: border: 2026.04.28.11:10:02 Info: pll: "hps_sdram" instantiated altera_mem_if_hps_pll "pll"
+Error: border: 2026.04.28.11:10:02 Info: p0: Generating clock pair generator
+Error: border: 2026.04.28.11:10:03 Info: p0: Generating hps_sdram_p0_altdqdqs
+Error: border: 2026.04.28.11:10:07 Info: p0:
+Error: border: 2026.04.28.11:10:07 Info: p0: *****************************
+Error: border: 2026.04.28.11:10:07 Info: p0:
+Error: border: 2026.04.28.11:10:07 Info: p0: Remember to run the hps_sdram_p0_pin_assignments.tcl
+Error: border: 2026.04.28.11:10:07 Info: p0: script after running Synthesis and before Fitting.
+Error: border: 2026.04.28.11:10:07 Info: p0:
+Error: border: 2026.04.28.11:10:07 Info: p0: *****************************
+Error: border: 2026.04.28.11:10:07 Info: p0:
+Error: border: 2026.04.28.11:10:07 Info: p0: "hps_sdram" instantiated altera_mem_if_ddr3_hard_phy_core "p0"
+Error: border: 2026.04.28.11:10:11 Error: seq: Error during execution of "{F:/intelfpga_lite/21.1/quartus/../nios2eds/Nios II Command Shell.bat} make all 2>> stderr.txt": child process exited abnormally
+Error: border: 2026.04.28.11:10:11 Error: seq: Execution of command "{F:/intelfpga_lite/21.1/quartus/../nios2eds/Nios II Command Shell.bat} make all 2>> stderr.txt" failed
+Error: border: 2026.04.28.11:10:11 Error: seq: /mnt/f/intelfpga_lite/21.1/quartus/bin64/uniphy_mcc.exe -ac_code sequencer_mc/ac_rom.s -inst_code sequencer_mc/inst_rom.s -ac_rom ../hps_AC_ROM.hex -inst_rom ../hps_inst_ROM.hex -header sequencer/sequencer_auto.h -vheader ../sequencer_auto_h.sv -ac_rom_init sequencer/sequencer_auto_ac_init.c -inst_rom_init sequencer/sequencer_auto_inst_init.c -DAC_ROM_USER_ADD_0=0_0000_0000_0000 -DAC_ROM_USER_ADD_1=0_0000_0000_1000 -DAC_ROM_MR0=0001000110001 -DAC_ROM_MR0_CALIB= -DAC_ROM_MR0_DLL_RESET=0001100110000 -DAC_ROM_MR1=0000000000000 -DAC_ROM_MR1_OCD_ENABLE= -DAC_ROM_MR2=0000000001000 -DAC_ROM_MR3=0000000000000 -DAC_ROM_MR0_MIRR=0001001001001 -DAC_ROM_MR0_DLL_RESET_MIRR=0001011001000 -DAC_ROM_MR1_MIRR=0000000000000 -DAC_ROM_MR2_MIRR=0000000010000 -DAC_ROM_MR3_MIRR=0000000000000 -DQUARTER_RATE=0 -DHALF_RATE=0 -DFULL_RATE=1 -DNON_DES_CAL=0 -DAP_MODE=0 -DGUARANTEED_READ_BRINGUP_TEST=0 -DMEM_ADDR_WIDTH=13 -DHARD_PHY=1
+Error: border: 2026.04.28.11:10:11 Error: seq: UniPHY Sequencer Microcode Compiler
+Error: border: 2026.04.28.11:10:11 Error: seq: Copyright (C) 2021  Intel Corporation. All rights reserved.
+Error: border: 2026.04.28.11:10:11 Error: seq: Info: Reading sequencer_mc/ac_rom.s ...
+Error: border: 2026.04.28.11:10:11 Error: seq: Info: Reading sequencer_mc/inst_rom.s ...
+Error: border: 2026.04.28.11:10:11 Error: seq: Info: Writing ../hps_AC_ROM.hex ...
+Error: border: 2026.04.28.11:10:11 Error: seq: Info: Writing ../hps_inst_ROM.hex ...
+Error: border: 2026.04.28.11:10:11 Error: seq: Info: Writing sequencer/sequencer_auto_ac_init.c ...
+Error: border: 2026.04.28.11:10:11 Error: seq: child process exited abnormally
+Error: border: 2026.04.28.11:10:11 Info: seq: "hps_sdram" instantiated altera_mem_if_hhp_ddr3_qseq "seq"
+Error: border: 2026.04.28.11:10:11 Error: Generation stopped, 3 or more modules remaining
+Error: border: 2026.04.28.11:10:11 Info: hps_sdram: Done "hps_sdram" with 7 modules, 38 files
 Info: border: "hps_io" instantiated altera_interface_generator "border"
 Error: Generation stopped, 1 or more modules remaining
 Info: soc_system: Done "soc_system" with 23 modules, 110 files

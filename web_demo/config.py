@@ -75,6 +75,15 @@ def _read_json_config(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _resolve_repo_path(value: Optional[str]) -> Optional[Path]:
+    if not value:
+        return None
+    raw = Path(value)
+    if raw.is_absolute():
+        return raw
+    return (REPO_ROOT / raw).resolve()
+
+
 def load_demo_config(path: Optional[Path] = None) -> DemoConfig:
     cfg_path = path or DEFAULT_CONFIG_PATH
     raw = _read_json_config(cfg_path)
@@ -89,13 +98,16 @@ def load_demo_config(path: Optional[Path] = None) -> DemoConfig:
     ssh_bind_address = raw.get("ssh_bind_address") or os.environ.get("CNN_ACC_SSH_BIND_ADDRESS")
 
     return DemoConfig(
-        cpu_model=Path(raw.get("cpu_model") or os.environ.get("CNN_ACC_CPU_MODEL", str(DEFAULT_MODEL))),
+        cpu_model=_resolve_repo_path(
+            raw.get("cpu_model") or os.environ.get("CNN_ACC_CPU_MODEL", str(DEFAULT_MODEL))
+        )
+        or DEFAULT_MODEL,
         labels=label_list,
         board_host=raw.get("board_host") or os.environ.get("CNN_ACC_BOARD_HOST", "192.168.0.2"),
         board_user=raw.get("board_user") or os.environ.get("CNN_ACC_BOARD_USER", "root"),
         board_port=int(raw.get("board_port") or os.environ.get("CNN_ACC_BOARD_PORT", "22")),
-        ssh_key=Path(ssh_key) if ssh_key else None,
-        ssh_known_hosts=Path(ssh_known_hosts) if ssh_known_hosts else None,
+        ssh_key=_resolve_repo_path(ssh_key),
+        ssh_known_hosts=_resolve_repo_path(ssh_known_hosts),
         ssh_bind_address=ssh_bind_address or None,
         remote_repo=raw.get("remote_repo") or os.environ.get("CNN_ACC_REMOTE_REPO", "/root/cnn_acc_hps"),
         remote_preload_root=raw.get("remote_preload_root")
@@ -109,7 +121,7 @@ def load_demo_config(path: Optional[Path] = None) -> DemoConfig:
             "Golden-Module/matlab/hardware_aligned/debug/txt_cases/digit_0_test",
         ),
         csr_base=raw.get("csr_base") or os.environ.get("CNN_ACC_CSR_BASE", "0xff200000"),
-        fabric_mhz=float(raw.get("fabric_mhz") or os.environ.get("CNN_ACC_FABRIC_MHZ", "25")),
+        fabric_mhz=float(raw.get("fabric_mhz") or os.environ.get("CNN_ACC_FABRIC_MHZ", "50")),
         local_host=raw.get("local_host") or os.environ.get("HOST", "127.0.0.1"),
         local_port=int(raw.get("local_port") or os.environ.get("PORT", "5000")),
         debug=bool(raw.get("debug", os.environ.get("FLASK_DEBUG", "1") not in ("0", "false", "False"))),

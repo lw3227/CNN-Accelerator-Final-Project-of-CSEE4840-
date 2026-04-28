@@ -15,8 +15,10 @@
 
 static void usage(const char *argv0) {
   fprintf(stderr,
-          "usage: %s <csr_base_hex> read <halfword_addr_hex> [devmem_path]\n"
-          "       %s <csr_base_hex> write <halfword_addr_hex> <value_hex> [devmem_path]\n",
+          "usage: %s <csr_base_hex> read <map_word_index_hex> [devmem_path]\n"
+          "       %s <csr_base_hex> write <map_word_index_hex> <value_hex> [devmem_path]\n"
+          "\n"
+          "note: this tool uses a raw mmap word index, not cnn_mmio_cfg_addr()/cnn_mmio_mem_addr()\n",
           argv0, argv0);
 }
 
@@ -24,11 +26,11 @@ int main(int argc, char **argv) {
   const char *devmem_path = "/dev/mem";
   const char *op;
   uintptr_t csr_base;
-  uint32_t halfword_addr;
-  uint16_t value = 0;
+  uint32_t map_word_index;
+  uint32_t value = 0;
   int fd;
   void *map_base;
-  volatile uint16_t *mmio_base;
+  volatile uint32_t *mmio_base;
 
   if (argc < 4) {
     usage(argv[0]);
@@ -37,10 +39,10 @@ int main(int argc, char **argv) {
 
   csr_base = (uintptr_t)strtoull(argv[1], NULL, 0);
   op = argv[2];
-  halfword_addr = (uint32_t)strtoul(argv[3], NULL, 0);
+  map_word_index = (uint32_t)strtoul(argv[3], NULL, 0);
 
-  if (halfword_addr >= (CNN_MMIO_MAP_SPAN_BYTES / 2u)) {
-    fprintf(stderr, "halfword address 0x%08" PRIx32 " is out of range\n", halfword_addr);
+  if (map_word_index >= (CNN_MMIO_MAP_SPAN_BYTES / 4u)) {
+    fprintf(stderr, "map word index 0x%08" PRIx32 " is out of range\n", map_word_index);
     return 1;
   }
 
@@ -49,7 +51,7 @@ int main(int argc, char **argv) {
       usage(argv[0]);
       return 1;
     }
-    value = (uint16_t)strtoul(argv[4], NULL, 0);
+    value = (uint32_t)strtoul(argv[4], NULL, 0);
     if (argc == 6)
       devmem_path = argv[5];
   } else if (op[0] == 'r') {
@@ -78,14 +80,14 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  mmio_base = (volatile uint16_t *)map_base;
+  mmio_base = (volatile uint32_t *)map_base;
 
   if (op[0] == 'w') {
-    mmio_base[halfword_addr] = value;
-    printf("write[0x%08" PRIx32 "] = 0x%04x\n", halfword_addr, value);
+    mmio_base[map_word_index] = value;
+    printf("write_raw[0x%08" PRIx32 "] = 0x%08" PRIx32 "\n", map_word_index, value);
   } else {
-    value = mmio_base[halfword_addr];
-    printf("read[0x%08" PRIx32 "] = 0x%04x\n", halfword_addr, value);
+    value = mmio_base[map_word_index];
+    printf("read_raw[0x%08" PRIx32 "] = 0x%08" PRIx32 "\n", map_word_index, value);
   }
 
   munmap(map_base, CNN_MMIO_MAP_SPAN_BYTES);

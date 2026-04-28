@@ -113,7 +113,7 @@ set_interface_property avalon_slave_0 holdTime 0
 set_interface_property avalon_slave_0 linewrapBursts false
 set_interface_property avalon_slave_0 maximumPendingReadTransactions 0
 set_interface_property avalon_slave_0 maximumPendingWriteTransactions 0
-set_interface_property avalon_slave_0 readLatency 1
+set_interface_property avalon_slave_0 readLatency 2
 set_interface_property avalon_slave_0 readWaitTime 0
 set_interface_property avalon_slave_0 setupTime 0
 set_interface_property avalon_slave_0 timingUnits Cycles
@@ -123,11 +123,13 @@ set_interface_property avalon_slave_0 EXPORT_OF ""
 set_interface_property avalon_slave_0 PORT_NAME_MAP ""
 set_interface_property avalon_slave_0 CMSIS_SVD_VARIABLES ""
 set_interface_property avalon_slave_0 SVD_ADDRESS_GROUP ""
-add_interface_port avalon_slave_0 writedata writedata Input 16
+add_interface_port avalon_slave_0 writedata writedata Input 32
+add_interface_port avalon_slave_0 byteenable byteenable Input 4
 add_interface_port avalon_slave_0 write write Input 1
+add_interface_port avalon_slave_0 read read Input 1
 add_interface_port avalon_slave_0 chipselect chipselect Input 1
-add_interface_port avalon_slave_0 address address Input 20
-add_interface_port avalon_slave_0 readdata readdata Output 16
+add_interface_port avalon_slave_0 address address Input 19
+add_interface_port avalon_slave_0 readdata readdata Output 32
 set_interface_assignment avalon_slave_0 embeddedsw.configuration.isFlash 0
 set_interface_assignment avalon_slave_0 embeddedsw.configuration.isMemoryDevice 0
 set_interface_assignment avalon_slave_0 embeddedsw.configuration.isNonVolatileStorage 0

@@ -21,10 +21,16 @@ Use this runbook together with:
 
 - [TEAMMATE_SETUP.md](TEAMMATE_SETUP.md)
   for cross-platform host-role guidance
+- [ARCHITECTURE_AND_FILE_MAP.md](ARCHITECTURE_AND_FILE_MAP.md)
+  for "which file owns what" across RTL, Quartus, host tools, and web runtime
 - [WEB_TO_FPGA_WORKFLOW.md](WEB_TO_FPGA_WORKFLOW.md)
   for the detailed browser -> host -> board -> FPGA runtime path
 - [MMIO_INTERFACE_GUIDE.md](MMIO_INTERFACE_GUIDE.md)
   for the shared register map, scratchpad layout, and host helper API
+- [BUILD_TIMING_AND_RESOURCES.md](BUILD_TIMING_AND_RESOURCES.md)
+  for current model size, fit summary, and timing report locations
+- [FMAX_OPTIMIZATION_NOTES.md](FMAX_OPTIMIZATION_NOTES.md)
+  for the RTL changes that moved the validated build back to direct 50 MHz
 
 This file stays focused on staged bring-up, recovery, and practical commands.
 
@@ -818,7 +824,12 @@ Check:
 Check timing and the currently programmed bitstream.
 
 This project previously had timing concerns at 50 MHz. The current validated
-build uses a reduced fabric clock strategy to improve timing safety.
+`submission` build is back on direct `CLOCK_50` without the earlier
+`clk_div2` workaround. If timing now looks suspicious, confirm that you are
+programming the current bitstream and compare against:
+
+- [BUILD_TIMING_AND_RESOURCES.md](BUILD_TIMING_AND_RESOURCES.md)
+- [FMAX_OPTIMIZATION_NOTES.md](FMAX_OPTIMIZATION_NOTES.md)
 
 ## Part 11: Recommended Daily Workflow
 
