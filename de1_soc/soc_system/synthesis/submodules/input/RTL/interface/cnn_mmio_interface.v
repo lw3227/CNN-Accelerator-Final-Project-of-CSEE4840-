@@ -4,8 +4,8 @@
 // ------------------
 // A thin MMIO/BRAM wrapper around system_top.
 //
-// address[18] = 0 : memory space   (32-bit word BRAM)
-// address[18] = 1 : config space   (32-bit MMIO registers, low 16 bits keep
+// address[12] = 0 : memory space   (16 KiB 32-bit word BRAM)
+// address[12] = 1 : config space   (32-bit MMIO registers, low 16 bits keep
 //                                   the original control/status ABI)
 //
 // The wrapper keeps the existing accelerator datapath intact and only adds:
@@ -24,7 +24,7 @@
 //     *_LO slots are kept as zero/reserved padding for compatibility.
 
 module cnn_mmio_interface #(
-  parameter integer MEM_AW       = 13,
+  parameter integer MEM_AW       = 12,
   parameter integer MEM_WORDS    = (1 << MEM_AW)
 ) (
   input  wire        clk,
@@ -34,7 +34,7 @@ module cnn_mmio_interface #(
   input  wire        write,
   input  wire        read,
   input  wire        chipselect,
-  input  wire [18:0] address,
+  input  wire [MEM_AW:0] address,
   output reg  [31:0] readdata,
   output wire        debug_model_loaded,
   output wire        debug_predict_done,
@@ -107,13 +107,13 @@ module cnn_mmio_interface #(
   reg              mem_rd_pending_q;
   reg              mem_rd_host_q;
 
-  wire mem_sel    = chipselect && !address[18];
-  wire cfg_sel    = chipselect &&  address[18];
+  wire mem_sel    = chipselect && !address[MEM_AW];
+  wire cfg_sel    = chipselect &&  address[MEM_AW];
   wire mem_wr_req = mem_sel &&  write;
   wire mem_rd_req = mem_sel &&  read;
   wire cfg_wr_req = cfg_sel &&  write;
   wire cfg_rd_req = cfg_sel &&  read;
-  wire mem_addr_ok = (address[17:0] < MEM_WORDS);
+  wire mem_addr_ok = (address[MEM_AW-1:0] < MEM_WORDS);
   wire mem_any_byte_en = |byteenable;
   wire cfg_lo_byte_en = |byteenable[1:0];
 
