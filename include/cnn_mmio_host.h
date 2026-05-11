@@ -10,10 +10,11 @@ extern "C" {
 #endif
 
 /*
- * HPS 会 mmap 一个 4 MiB 的 lightweight bridge window。这个窗口里同时包含
- * cnn_mmio_interface.v 解码出的 scratchpad 区域和 control/status register 区域。
+ * HPS 只需要 mmap 一个较小的 page-aligned lightweight bridge window。
+ * RTL 现在使用 16 KiB scratchpad 加一小段 config/status register，
+ * 所以 64 KiB 已经足够，同时避免原来的 4 MiB 映射。
  */
-#define CNN_MMIO_MAP_SPAN_BYTES (4 * 1024 * 1024)
+#define CNN_MMIO_MAP_SPAN_BYTES (64 * 1024)
 #define CNN_MMIO_DEFAULT_TIMEOUT_MS 1000
 #define CNN_MMIO_DEFAULT_FABRIC_MHZ 50.0
 

@@ -10,15 +10,19 @@
  * bit field 或 scratchpad 地址如果改变，cnn_mmio_interface.v 里的地址解码
  * 逻辑也必须同步改变。
  *
- * The RTL uses address[18] to split the space:
- *   0x00000..0x3FFFF : 32-bit scratchpad memory space
- *   0x40000..0x4001F : 32-bit config/status register space
+ * The RTL uses address[12] to split the space:
+ *   0x0000..0x0FFF : 16 KiB 32-bit scratchpad memory space
+ *   0x1000..0x101F : 32-bit config/status register space
  *
  * Userspace/HPS code should address 32-bit words, not bytes.
  */
 
-#define CNN_MMIO_MEM_SPACE_BIT   (0u << 18)
-#define CNN_MMIO_CFG_SPACE_BIT   (1u << 18)
+#define CNN_MMIO_SCRATCHPAD_AW      12u
+#define CNN_MMIO_SCRATCHPAD_WORDS   (1u << CNN_MMIO_SCRATCHPAD_AW)
+#define CNN_MMIO_SCRATCHPAD_MASK    (CNN_MMIO_SCRATCHPAD_WORDS - 1u)
+
+#define CNN_MMIO_MEM_SPACE_BIT      (0u << CNN_MMIO_SCRATCHPAD_AW)
+#define CNN_MMIO_CFG_SPACE_BIT      (1u << CNN_MMIO_SCRATCHPAD_AW)
 
 #define CNN_MMIO_REG_CONTROL       0u
 #define CNN_MMIO_REG_STATUS        1u
@@ -103,13 +107,13 @@
 #define CNN_MMIO_DEFAULT_IMAGE_WORDS      1024u
 
 static inline uint32_t cnn_mmio_cfg_addr(uint32_t reg_idx) {
-  /* Config/status register 位于 address[18] == 1 的半边地址空间。 */
+  /* Config/status register 位于 address[12] == 1 的半边地址空间。 */
   return CNN_MMIO_CFG_SPACE_BIT | (reg_idx & 0x1Fu);
 }
 
 static inline uint32_t cnn_mmio_mem_addr(uint32_t word_addr) {
   /* Scratchpad 地址以 32-bit word 为单位，由 HPS 写入。 */
-  return CNN_MMIO_MEM_SPACE_BIT | (word_addr & 0x3FFFFu);
+  return CNN_MMIO_MEM_SPACE_BIT | (word_addr & CNN_MMIO_SCRATCHPAD_MASK);
 }
 
 static inline uint32_t cnn_mmio_pack_status_predict(uint16_t status_word) {
