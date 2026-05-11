@@ -1,0 +1,234 @@
+% =========================================================
+% Appendix helper setup
+% Put the package lines in the preamble if they are not already present.
+% In final_report.tex, these must appear before \begin{document}.
+% =========================================================
+\usepackage[final]{listings}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{xurl}
+
+\lstdefinestyle{appendixcode}{
+  basicstyle=\scriptsize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=6pt,
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b
+}
+
+\newcommand{\codepath}[1]{\begingroup\small\ttfamily\path{#1}\endgroup}
+
+\newcommand{\codedlisting}[3]{%
+  \subsubsection{#1}%
+  \noindent\textit{\detokenize{#2}}\par\vspace{0.25em}%
+  \lstinputlisting[
+    style=appendixcode,
+    caption={\texttt{\detokenize{#3}}}
+  ]{#3}%
+}
+
+% =========================================================
+% Appendix body
+% Put this part before \end{document}.
+% =========================================================
+\clearpage
+\appendix
+
+\section{Web-To-Board Runtime Listings}
+
+This appendix lists the source files directly used by the implemented
+web-to-board demonstration path. It focuses on the Python host flow, the HPS C
+commands executed on the DE1-SoC, and the Verilog/SystemVerilog boundary that
+accepts MMIO traffic and starts the accelerator. Lower-level datapath modules,
+testbenches, generated Quartus output, generated Platform Designer output,
+model-export utilities, MATLAB reference scripts, debug-only tools, image
+samples, and git history are kept in the machine-readable archive when needed
+but are not repeated in this printed appendix.
+
+\subsection{Focused Source Tree}
+
+\begin{verbatim}
+code/
+|-- web_demo/
+|   |-- app.py
+|   `-- config.py
+|-- gesture_runtime/
+|   |-- board_transport.py
+|   |-- case_export.py
+|   |-- cpu_inference.py
+|   |-- demo_compare.py
+|   |-- fpga_service.py
+|   |-- preprocess.py
+|   |-- preprocess_selection.py
+|   |-- quantization.py
+|   `-- ssh_transport.py
+|-- include/
+|   |-- cnn_mmio_host.h
+|   `-- cnn_mmio_regs.h
+|-- tools/
+|   |-- cnn_mmio_host.c
+|   |-- hps_cpu_reference.c
+|   |-- hps_mmio_load_model.c
+|   |-- hps_mmio_predict.c
+|   `-- hps_mmio_status.c
+|-- de1_soc/
+|   `-- soc_system_top.sv
+`-- input/RTL/
+    |-- system_top.v
+    |-- interface/
+    |   `-- cnn_mmio_interface.v
+    `-- fsm/
+        |-- layer_runner_fsm.v
+        `-- top_fsm.v
+\end{verbatim}
+
+\subsection{Included Source Overview}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Source groups printed in this appendix.}
+\begin{tabularx}{\textwidth}{p{3.2cm}p{3.2cm}X}
+\toprule
+Group & Main language & Role in the web-to-board path \\
+\midrule
+Web and host runtime & Python &
+Receives browser uploads, preprocesses images, exports board cases, chooses
+preprocessing mode, runs host CPU comparison, and calls the FPGA board service. \\
+HPS board runtime & C &
+Maps the FPGA control window through \codepath{/dev/mem}, writes preload and
+image data, triggers model load or inference, polls status, and prints results
+for the web server. \\
+FPGA board boundary & SystemVerilog / Verilog &
+Connects the HPS Platform Designer system to the custom MMIO wrapper and passes
+the replayed model/image stream into the accelerator top-level control logic. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Python files used by the web and host-side runtime.}
+\begin{tabularx}{\textwidth}{p{5.8cm}X}
+\toprule
+Source file & Function \\
+\midrule
+\codepath{code/web_demo/app.py} & Flask routes, service construction, upload endpoint, inference endpoint, and JSON response path. \\
+\codepath{code/web_demo/config.py} & Board SSH settings, CSR base address, model paths, label names, and fabric-clock configuration. \\
+\codepath{code/gesture_runtime/demo_compare.py} & End-to-end comparison flow combining preprocessing, host CPU scoring, HPS CPU baseline, FPGA run, and result formatting. \\
+\codepath{code/gesture_runtime/fpga_service.py} & Board orchestration layer that copies cases, loads the model when needed, runs HPS commands, and parses command output. \\
+\codepath{code/gesture_runtime/ssh_transport.py} & SSH/SCP command execution and directory transfer implementation. \\
+\codepath{code/gesture_runtime/board_transport.py} & Transport interface shared by the FPGA service and any concrete board transport. \\
+\codepath{code/gesture_runtime/case_export.py} & Exports the preprocessed tensor into the case directory consumed by board-side commands. \\
+\codepath{code/gesture_runtime/preprocess.py} & Converts uploaded image bytes into the 64-by-64 INT8 input tensor and preview image. \\
+\codepath{code/gesture_runtime/preprocess_selection.py} & Selects the preprocessing branch used by automatic mode. \\
+\codepath{code/gesture_runtime/quantization.py} & INT8 helper routines used by preprocessing and export. \\
+\codepath{code/gesture_runtime/cpu_inference.py} & Host-side TFLite inference used for confidence reporting and preprocessing selection. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{C files used by the HPS board runtime.}
+\begin{tabularx}{\textwidth}{p{5.8cm}X}
+\toprule
+Source file & Function \\
+\midrule
+\codepath{code/include/cnn_mmio_regs.h} & Register ABI shared by C and RTL: offsets, bit fields, control flags, status flags, and scratchpad layout. \\
+\codepath{code/include/cnn_mmio_host.h} & Shared C structs and function declarations for board-side MMIO commands. \\
+\codepath{code/tools/cnn_mmio_host.c} & Common implementation for memory mapping, scratchpad writes, control writes, polling, and profile readback. \\
+\codepath{code/tools/hps_mmio_status.c} & Lightweight health check used by the web service before deciding whether to reload the model. \\
+\codepath{code/tools/hps_mmio_load_model.c} & Loads the preload bundle into the scratchpad and starts model replay through the MMIO control register. \\
+\codepath{code/tools/hps_mmio_predict.c} & Writes one image case, starts FPGA inference, waits for completion, and prints machine-readable prediction output. \\
+\codepath{code/tools/hps_cpu_reference.c} & HPS ARM software baseline used for web-demo comparison against FPGA output. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Verilog/SystemVerilog files at the FPGA board boundary.}
+\begin{tabularx}{\textwidth}{p{5.8cm}X}
+\toprule
+Source file & Function \\
+\midrule
+\codepath{code/de1_soc/soc_system_top.sv} & DE1-SoC board wrapper connecting the generated HPS system, board pins, clocks, resets, and seven-segment display. \\
+\codepath{code/input/RTL/interface/cnn_mmio_interface.v} & Avalon-MM slave wrapper containing the software-visible register file, scratchpad, replay FSM, status readback, and profile readback. \\
+\codepath{code/input/RTL/system_top.v} & Accelerator top-level connecting model load, CNN layer sequencing, SRAM datapath, FC classifier, argmax, and profiling outputs. \\
+\codepath{code/input/RTL/fsm/top_fsm.v} & Network-level FSM for model load and inference scheduling across convolution, FC, and argmax phases. \\
+\codepath{code/input/RTL/fsm/layer_runner_fsm.v} & Per-layer FSM that sequences layer configuration, weights, input data, output writes, and completion. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Web And Host Python Runtime}
+
+\codedlisting{Flask Web Entry Point}{Defines the web routes, service construction, image upload endpoint, and JSON response path.}{code/web_demo/app.py}
+
+\codedlisting{Web Demo Configuration}{Loads board SSH settings, CSR base address, model paths, labels, and fabric-clock configuration.}{code/web_demo/config.py}
+
+\codedlisting{CPU-vs-FPGA Comparison Flow}{Coordinates preprocessing, CPU scoring, board CPU reference execution, FPGA execution, and result formatting.}{code/gesture_runtime/demo_compare.py}
+
+\codedlisting{FPGA Board Service}{Uses SSH/SCP to load the model when needed, copy an exported case to the board, run HPS tools, and parse key-value output.}{code/gesture_runtime/fpga_service.py}
+
+\codedlisting{SSH Transport}{Implements the command execution and directory transfer layer used by the board service.}{code/gesture_runtime/ssh_transport.py}
+
+\codedlisting{Board Transport Interface}{Defines the abstract transport contract shared by SSH and other possible board transports.}{code/gesture_runtime/board_transport.py}
+
+\codedlisting{Inference Case Export}{Writes a preprocessed image into the hardware-aligned case directory consumed by the HPS tools.}{code/gesture_runtime/case_export.py}
+
+\codedlisting{Image Preprocessing}{Converts uploaded image bytes into the 64-by-64 INT8 input tensor and preview image used by the demo.}{code/gesture_runtime/preprocess.py}
+
+\codedlisting{Preprocess Mode Selection}{Chooses the preprocessing branch used by auto mode based on CPU-side scoring.}{code/gesture_runtime/preprocess_selection.py}
+
+\codedlisting{INT8 Quantization Helpers}{Contains the small quantization helpers used by preprocessing and export.}{code/gesture_runtime/quantization.py}
+
+\codedlisting{Host CPU Classifier}{Runs the TFLite CPU model on the host side for comparison and preprocessing selection.}{code/gesture_runtime/cpu_inference.py}
+
+\subsection{HPS Board C Runtime}
+
+\codedlisting{MMIO Register ABI}{Defines the software-visible register numbers, bit fields, control flags, and default scratchpad layout.}{code/include/cnn_mmio_regs.h}
+
+\codedlisting{HPS MMIO Helper API}{Declares the shared C structs and helper functions used by all board-side MMIO commands.}{code/include/cnn_mmio_host.h}
+
+\codedlisting{Common MMIO Implementation}{Maps /dev/mem, writes preload/image words, starts model load or inference, polls status, and reads profile counters.}{code/tools/cnn_mmio_host.c}
+
+\codedlisting{Status Probe Command}{Reads STATUS, PREDICT, IF_ERROR, and profile registers for health checks before web requests.}{code/tools/hps_mmio_status.c}
+
+\codedlisting{Model Load Command}{Loads the preload bundle into the scratchpad and triggers CONTROL[0] model replay.}{code/tools/hps_mmio_load_model.c}
+
+\codedlisting{FPGA Prediction Command}{Writes one exported image case, triggers CONTROL[1] inference, waits for predict_done, and prints web-readable key-value output.}{code/tools/hps_mmio_predict.c}
+
+\codedlisting{Board CPU Baseline}{Runs the same exported case on the HPS CPU baseline so the web demo can compare CPU and FPGA results.}{code/tools/hps_cpu_reference.c}
+
+\subsection{FPGA Board Boundary And Accelerator Top}
+
+\codedlisting{DE1-SoC Board Wrapper}{Connects the generated HPS system, board pins, clocks/resets, and seven-segment debug display.}{code/de1_soc/soc_system_top.sv}
+
+\codedlisting{Avalon-MM MMIO Wrapper}{Implements the scratchpad, register file, replay FSM, status/profile readback, and stream bridge into the accelerator.}{code/input/RTL/interface/cnn_mmio_interface.v}
+
+\codedlisting{Accelerator Top}{Integrates model-load, CNN layer sequencing, SRAM datapath, FC classifier, argmax, and profiling outputs.}{code/input/RTL/system_top.v}
+
+\codedlisting{Network-Level FSM}{Controls the high-level model-load and inference schedule across convolution, FC, and argmax phases.}{code/input/RTL/fsm/top_fsm.v}
+
+\codedlisting{Layer Runner FSM}{Sequences per-layer configuration, weights, input data, output writes, and completion for the CNN layers.}{code/input/RTL/fsm/layer_runner_fsm.v}
+
+\subsection{Submission Package Notes}
+
+The \texttt{.tar.gz} submission should contain only the source files needed to
+rebuild and run the design flow. It should exclude generated or bulky outputs
+such as \texttt{.git}, Quartus \texttt{db}, \texttt{incremental\_db},
+\texttt{output\_files}, Platform Designer generated handoff/synthesis
+directories, waveform/debug dumps, collected web feedback samples, and other
+generated data products.
