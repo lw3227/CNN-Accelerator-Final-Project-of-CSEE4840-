@@ -1,5 +1,15 @@
 #define _POSIX_C_SOURCE 200809L
 
+/*
+ * HPS 端共用 MMIO runtime。
+ *
+ * 几个小型命令行工具都会调用这里的 helper：读取文本 fixture，把 INT8 值打包
+ * 成 32-bit scratchpad word，通过 /dev/mem mmap FPGA 控制窗口，写入模型/图片
+ * 数据，写 CONTROL 寄存器，轮询完成 bit，并读回 profile counter。把这些逻辑
+ * 集中在这里可以保证 hps_mmio_load_model、hps_mmio_predict 和
+ * hps_mmio_status 使用同一套 ABI。
+ */
+
 #include "../include/cnn_mmio_host.h"
 
 #include <errno.h>
@@ -15,6 +25,7 @@
 #include <unistd.h>
 
 static int read_i32_lines(const char *path, int32_t *dst, size_t count) {
+  /* 从 MATLAB/exported fixture 中读取“一行一个 signed 32-bit 标量”。 */
   FILE *fp = fopen(path, "r");
   size_t i;
   if (!fp) {
@@ -33,6 +44,7 @@ static int read_i32_lines(const char *path, int32_t *dst, size_t count) {
 }
 
 static int read_packed_i8_words(const char *path, uint32_t *dst, size_t word_count) {
+  /* 把四个 signed INT8 文本值打包成一个 little-endian 32-bit MMIO word。 */
   FILE *fp = fopen(path, "r");
   size_t i;
   if (!fp) {
@@ -59,6 +71,7 @@ static int read_packed_i8_words(const char *path, uint32_t *dst, size_t word_cou
 }
 
 static int load_manifest_expected_class(const char *path, int *expected_class) {
+  /* manifest 主要用于 validation 和 CPU reference 的 bookkeeping。 */
   FILE *fp = fopen(path, "r");
   char line[256];
   if (!fp) {
@@ -115,6 +128,7 @@ static uint32_t mmio_read_cfg_reg(volatile uint32_t *base, uint32_t reg_idx) {
 
 static void write_word_image(volatile uint32_t *base, uint32_t start_word,
                              const uint32_t *words, size_t word_count) {
+  /* 每一次 store 都会变成一次写入 wrapper scratchpad 的 Avalon-MM write。 */
   size_t i;
 
   for (i = 0; i < word_count; ++i) {
@@ -123,6 +137,7 @@ static void write_word_image(volatile uint32_t *base, uint32_t start_word,
 }
 
 int cnn_mmio_load_preload_bundle(const char *preload_root, struct cnn_mmio_preload_bundle *bundle) {
+  /* 同时支持最终 preload 文件名和开发阶段使用的较短 alias。 */
   static const char *const conv_cfg_candidates[] = {
       "preload_conv_cfg_45w.txt",
       "conv_cfg_words.txt",
@@ -178,6 +193,7 @@ int cnn_mmio_load_inference_case(const char *case_root, struct cnn_mmio_inferenc
 }
 
 int cnn_mmio_open(struct cnn_mmio_device *dev, uintptr_t csr_base, const char *devmem_path) {
+  /* mmap Platform Designer 中选择的 lightweight bridge 物理地址。 */
   memset(dev, 0, sizeof(*dev));
   dev->fd = open(devmem_path, O_RDWR | O_SYNC);
   if (dev->fd < 0) {
@@ -213,6 +229,7 @@ void cnn_mmio_close(struct cnn_mmio_device *dev) {
 }
 
 void cnn_mmio_program_default_registers(volatile uint32_t *mmio_base) {
+  /* 告诉 RTL replay FSM 每个逻辑 segment 的起始 word 地址和长度。 */
   mmio_write_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_CFG_BASE, CNN_MMIO_DEFAULT_CONV_CFG_BASE_W);
   mmio_write_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_CFG_LEN, CNN_MMIO_DEFAULT_CONV_CFG_WORDS);
   mmio_write_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_WT_BASE, CNN_MMIO_DEFAULT_CONV_WT_BASE_W);
@@ -226,6 +243,7 @@ void cnn_mmio_program_default_registers(volatile uint32_t *mmio_base) {
 }
 
 void cnn_mmio_write_preload_bundle(volatile uint32_t *mmio_base, const struct cnn_mmio_preload_bundle *bundle) {
+  /* 把 config、conv weights、FC bias 和 FC weights 复制到 scratchpad。 */
   uint32_t conv_cfg_base = mmio_read_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_CFG_BASE);
   uint32_t conv_wt_base = mmio_read_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_WT_BASE);
   uint32_t fc_bias_base = mmio_read_cfg_reg(mmio_base, CNN_MMIO_REG_FC_BIAS_BASE);
@@ -242,6 +260,7 @@ void cnn_mmio_write_preload_bundle(volatile uint32_t *mmio_base, const struct cn
 }
 
 void cnn_mmio_write_inference_case(volatile uint32_t *mmio_base, const struct cnn_mmio_inference_case *tc) {
+  /* 图片数据位于模型 segment 后面，由 CONTROL[1] 触发 replay。 */
   uint32_t image_base = mmio_read_cfg_reg(mmio_base, CNN_MMIO_REG_IMAGE_BASE);
 
   write_word_image(mmio_base, image_base, tc->image,
@@ -261,6 +280,7 @@ uint16_t cnn_mmio_read_predict(volatile uint32_t *mmio_base) {
 }
 
 void cnn_mmio_read_profile(volatile uint32_t *mmio_base, struct cnn_mmio_profile *profile) {
+  /* RTL 把每个 32-bit counter 镜像在对应 LO/HI pair 的 HI slot。 */
   if (!profile)
     return;
 
@@ -292,6 +312,7 @@ int cnn_mmio_wait_for_status_bit(
     unsigned expected_value,
     int timeout_ms,
     uint16_t *last_status) {
+  /* 当前 demo 的推理时间很短，简单 polling 足够稳定，也更容易讲清楚。 */
   struct timespec req;
   int elapsed_ms = 0;
   if (bit_idx >= 16)

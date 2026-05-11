@@ -4,6 +4,13 @@
 
 #include "../include/cnn_mmio_host.h"
 
+/*
+ * 板端模型 preload 命令。
+ *
+ * Host web service 在推理前运行一次这个命令。它从文本文件读取导出的模型
+ * bundle，把 bundle 写入 MMIO scratchpad，清除旧状态，然后 pulse CONTROL[0]，
+ * 让 RTL replay FSM 把模型 segment 送进 accelerator。
+ */
 int main(int argc, char **argv) {
   const char *devmem_path = "/dev/mem";
   const char *preload_root;
@@ -24,6 +31,7 @@ int main(int argc, char **argv) {
   if (argc > 3)
     devmem_path = argv[3];
 
+  /* 先读取文件，确保缺少 preload bundle 时不会碰 MMIO。 */
   if (cnn_mmio_load_preload_bundle(preload_root, &preload) != 0)
     return 1;
   if (cnn_mmio_open(&dev, csr_base, devmem_path) != 0)
@@ -32,6 +40,7 @@ int main(int argc, char **argv) {
   cnn_mmio_program_default_registers(dev.mmio_base);
   cnn_mmio_write_preload_bundle(dev.mmio_base, &preload);
   cnn_mmio_clear_status(dev.mmio_base);
+  /* CONTROL[0] 是命令 pulse；完成状态通过 model_loaded bit 观察。 */
   cnn_mmio_start_model_load(dev.mmio_base);
 
   if (cnn_mmio_wait_for_status_bit(

@@ -6,6 +6,10 @@
 /*
  * Shared register/memory map for cnn_mmio_interface.
  *
+ * 这个头文件是 HPS C 程序和 FPGA RTL 之间的 ABI 契约。这里的寄存器编号、
+ * bit field 或 scratchpad 地址如果改变，cnn_mmio_interface.v 里的地址解码
+ * 逻辑也必须同步改变。
+ *
  * The RTL uses address[18] to split the space:
  *   0x00000..0x3FFFF : 32-bit scratchpad memory space
  *   0x40000..0x4001F : 32-bit config/status register space
@@ -99,14 +103,17 @@
 #define CNN_MMIO_DEFAULT_IMAGE_WORDS      1024u
 
 static inline uint32_t cnn_mmio_cfg_addr(uint32_t reg_idx) {
+  /* Config/status register 位于 address[18] == 1 的半边地址空间。 */
   return CNN_MMIO_CFG_SPACE_BIT | (reg_idx & 0x1Fu);
 }
 
 static inline uint32_t cnn_mmio_mem_addr(uint32_t word_addr) {
+  /* Scratchpad 地址以 32-bit word 为单位，由 HPS 写入。 */
   return CNN_MMIO_MEM_SPACE_BIT | (word_addr & 0x3FFFFu);
 }
 
 static inline uint32_t cnn_mmio_pack_status_predict(uint16_t status_word) {
+  /* 预测类别被 RTL 镜像到 STATUS word 的高位，方便软件一次读回。 */
   return (status_word >> CNN_MMIO_STATUS_PREDICT_SHIFT) & 0xFu;
 }
 

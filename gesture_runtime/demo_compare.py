@@ -1,4 +1,10 @@
-"""Unified CPU-vs-FPGA comparison flow for the web demo."""
+"""Web demo 的 CPU-vs-FPGA 统一对比流程。
+
+`ComparisonDemoService` 是 `/api/infer` 背后的主协调器。它接收上传图片的
+原始 bytes，生成多个预处理分支，选择更可靠的分支，导出硬件对齐的 case
+目录，然后让 HPS CPU reference 和 FPGA accelerator 处理同一个 case，最后
+返回浏览器需要的预测、计时、profile 计数器和置信度诊断信息。
+"""
 
 from __future__ import annotations
 
@@ -17,6 +23,8 @@ from .preprocess_selection import choose_best_variant
 
 @dataclass
 class DemoLabels:
+    """把数字类别转换成前端显示用 label 的小工具。"""
+
     labels: List[str]
 
     @classmethod
@@ -45,11 +53,13 @@ class ComparisonDemoService:
         self.fabric_mhz = fabric_mhz
 
     def _cycles_to_us(self, cycles: int) -> float:
+        """用 FPGA fabric 频率把 RTL cycle counter 转成微秒。"""
         if self.fabric_mhz <= 0:
             return 0.0
         return float(cycles) / self.fabric_mhz
 
     def _score_variants(self, variants):
+        """用 host 端 TFLite 模型给每个预处理分支打分。"""
         scored = []
         for variant in variants:
             cpu_result = self.cpu_classifier.predict_int8_image(variant.values)
@@ -57,6 +67,7 @@ class ComparisonDemoService:
         return scored
 
     def _softmax_probabilities(self, scores: List[float]) -> List[float]:
+        """把 CPU 原始分数稳定地转换成前端显示用概率。"""
         if not scores:
             return []
         max_score = max(scores)
@@ -67,6 +78,7 @@ class ComparisonDemoService:
         return [value / total for value in exp_scores]
 
     def _build_cpu_score_report(self, cpu_result) -> Dict[str, object]:
+        """构造前端诊断面板需要的逐类别置信度信息。"""
         probabilities = self._softmax_probabilities(cpu_result.scores)
         channels = []
         for idx, (score, probability) in enumerate(zip(cpu_result.scores, probabilities)):
@@ -100,6 +112,7 @@ class ComparisonDemoService:
         }
 
     def _build_branch_diagnostics(self, scored) -> List[Dict[str, object]]:
+        """暴露每个预处理分支在最终选择前的得分情况。"""
         diagnostics = []
         for variant, cpu_result in scored:
             top_channels = self._build_cpu_score_report(cpu_result)["top_channels"]
@@ -116,6 +129,7 @@ class ComparisonDemoService:
         return diagnostics
 
     def _build_fpga_profile(self, fpga_result: Dict[str, object]) -> Dict[str, object]:
+        """把 FPGA 原始 cycle counter 转成带标签的 timing rows。"""
         raw_profile = fpga_result.get("profile", {})
         stage_specs = [
             ("L1", "l1_cycles"),
@@ -146,8 +160,12 @@ class ComparisonDemoService:
         }
 
     def _compare_preprocessed_image(self, image_values: List[int], preview_b64: str) -> Dict[str, object]:
+        """对一个已经选好的 INT8 图片同时跑 HPS CPU 和 FPGA。"""
         cpu_result = self.cpu_classifier.predict_int8_image(image_values)
 
+        # 板端 C 工具读取的是目录，不是 Python 对象。这里创建临时 case
+        # 目录并使用硬件 testbench 的文件名，这样上传图片和固定测试样例
+        # 可以复用同一套 C loader。
         with tempfile.TemporaryDirectory(prefix="cnn_acc_case_") as tmp_dir:
             case_root = Path(tmp_dir) / "gesture_upload_case"
             write_inference_case(case_root, image_values, case_name="gesture_upload", expected_class=-1)
@@ -187,9 +205,12 @@ class ComparisonDemoService:
         }
 
     def compare_image_bytes(self, image_bytes: bytes, preferred_mode: str = "auto") -> Dict[str, object]:
+        """从上传图片 bytes 开始，跑完整流程并返回前端 JSON。"""
         variants = preprocess_image_bytes_variants(image_bytes)
         scored = self._score_variants(variants)
 
+        # auto 模式让 CPU 模型在 literal resize 和 foreground crop 之间选择。
+        # 手动模式用于演示不同预处理方式如何影响结果。
         if preferred_mode != "auto":
             matches = [(variant, cpu_result) for variant, cpu_result in scored if variant.mode == preferred_mode]
             if not matches:

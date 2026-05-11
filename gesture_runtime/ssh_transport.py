@@ -1,4 +1,9 @@
-"""SSH transport for host-to-board execution."""
+"""Host 到 board 执行命令的 SSH 传输层。
+
+这个模块刻意保持很小：上层 runtime 只需要“执行一条命令”和“复制一个目录”
+两个能力。把 SSH/SCP 封装在 `BoardTransport` 后面，可以让 demo 逻辑不依赖
+具体传输方式，同时在失败时保留 stdout/stderr 方便调试。
+"""
 
 from __future__ import annotations
 
@@ -10,6 +15,8 @@ from .board_transport import BoardTransport, TransportError
 
 
 class SshBoardTransport(BoardTransport):
+    """用系统自带的 `ssh` 和 `scp` 实现的具体 board transport。"""
+
     def __init__(
         self,
         host: str,
@@ -31,6 +38,7 @@ class SshBoardTransport(BoardTransport):
         return f"{self.user}@{self.host}"
 
     def _base_args(self) -> List[str]:
+        """构造命令执行和文件传输共用的 SSH 参数。"""
         args = [
             "-p",
             str(self.port),
@@ -46,6 +54,7 @@ class SshBoardTransport(BoardTransport):
         return args
 
     def run(self, command: str, timeout_s: float = 30.0) -> str:
+        """在 HPS Linux 上执行一条 shell 命令并返回 stdout。"""
         proc = subprocess.run(
             ["ssh", *self._base_args(), self.target, command],
             capture_output=True,
@@ -64,6 +73,7 @@ class SshBoardTransport(BoardTransport):
         return proc.stdout
 
     def put_dir(self, local_dir: Path, remote_parent: str, timeout_s: float = 30.0) -> None:
+        """递归复制一个本地 case 目录到远端板子。"""
         proc = subprocess.run(
             [
                 "scp",

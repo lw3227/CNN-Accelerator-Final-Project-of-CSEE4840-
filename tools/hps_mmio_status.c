@@ -4,6 +4,12 @@
 
 #include "../include/cnn_mmio_host.h"
 
+/*
+ * Web service 请求前使用的轻量状态探针。
+ *
+ * 它不会修改 FPGA 状态，只 mmap MMIO window，读取 status/prediction/error
+ * 寄存器，然后打印 Python 端容易解析的 key=value 文本。
+ */
 int main(int argc, char **argv) {
   const char *devmem_path = "/dev/mem";
   uintptr_t csr_base;
@@ -21,6 +27,7 @@ int main(int argc, char **argv) {
   if (argc > 2)
     devmem_path = argv[2];
 
+  /* csr_base 是 Platform Designer slave window 的物理地址。 */
   if (cnn_mmio_open(&dev, csr_base, devmem_path) != 0)
     return 1;
 

@@ -1,4 +1,10 @@
-"""Board-side FPGA inference service wrappers."""
+"""板端 FPGA 推理服务封装。
+
+Web server 不直接写 MMIO 寄存器，而是先用 SCP 把导出的 case 目录复制到
+HPS Linux，再通过 SSH 运行板子上的 C 命令。那些 C 命令负责 `/dev/mem`
+映射、scratchpad 写入、CONTROL 寄存器写入、状态轮询和 profile 读回。
+本模块就是这些板端命令外面的 Python 编排层。
+"""
 
 from __future__ import annotations
 
@@ -13,6 +19,7 @@ from .board_transport import BoardTransport
 
 
 def parse_key_value_output(text: str) -> Dict[str, str]:
+    """解析 HPS C 工具打印的 `key=value` 文本协议。"""
     result: Dict[str, str] = {}
     for raw_line in text.splitlines():
         line = raw_line.strip()
@@ -25,6 +32,8 @@ def parse_key_value_output(text: str) -> Dict[str, str]:
 
 @dataclass
 class FPGAServiceConfig:
+    """远端板子上的路径和 MMIO 地址配置。"""
+
     remote_repo: str = "/root/cnn_acc_hps"
     csr_base: str = "0xff200000"
     remote_preload_root: str = "Golden-Module/matlab/hardware_aligned/debug/sram_preload/digit_0_test"
@@ -33,12 +42,15 @@ class FPGAServiceConfig:
 
 
 class FPGABoardService:
+    """从 host 端调用 FPGA accelerator 的高层服务。"""
+
     def __init__(self, transport: BoardTransport, config: FPGAServiceConfig):
         self.transport = transport
         self.config = config
         self._model_loaded = False
 
     def _read_status(self) -> Dict[str, str]:
+        """查询 FPGA 内部模型是否已经加载完成。"""
         cmd = (
             f"cd {shlex.quote(self.config.remote_repo)} && "
             f"./tools/hps_mmio_status {shlex.quote(self.config.csr_base)}"
@@ -47,6 +59,7 @@ class FPGABoardService:
         return parse_key_value_output(output)
 
     def ensure_model_loaded(self, force: bool = False) -> None:
+        """必要时加载模型；正常情况下一次 web session 只加载一次。"""
         if not force and self._model_loaded:
             try:
                 status = self._read_status()
@@ -64,6 +77,7 @@ class FPGABoardService:
         self._model_loaded = True
 
     def predict_case_dir(self, local_case_dir: Path) -> Dict[str, object]:
+        """复制一个导出的 case 到板子上，并启动 FPGA 推理。"""
         self.ensure_model_loaded()
         self.transport.put_dir(local_case_dir, self.config.remote_case_parent, timeout_s=60.0)
 
@@ -81,6 +95,8 @@ class FPGABoardService:
             message = str(exc)
             if "timeout waiting for predict_done" not in message:
                 raise
+            # 如果 FPGA reset 或模型状态过期，第一次推理可能 timeout。
+            # 这里强制重载模型并重试一次，再把失败暴露给浏览器。
             self.ensure_model_loaded(force=True)
             output = self.transport.run(cmd, timeout_s=60.0)
         elapsed_ms = (perf_counter() - started) * 1000.0
@@ -110,11 +126,14 @@ class FPGABoardService:
 
 
 class BoardCPUReferenceService:
+    """在同一块板子的 ARM/HPS CPU 上运行软件 baseline。"""
+
     def __init__(self, transport: BoardTransport, config: FPGAServiceConfig):
         self.transport = transport
         self.config = config
 
     def predict_case_dir(self, local_case_dir: Path) -> Dict[str, object]:
+        """复制 case 到 HPS Linux 并执行 C 版 CPU reference。"""
         self.transport.put_dir(local_case_dir, self.config.remote_case_parent, timeout_s=60.0)
 
         remote_case_dir = f"{self.config.remote_case_parent}/{local_case_dir.name}"

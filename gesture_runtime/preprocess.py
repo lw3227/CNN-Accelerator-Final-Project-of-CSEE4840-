@@ -1,8 +1,14 @@
-"""Input preprocessing helpers.
+"""输入图片预处理工具。
 
-The current RTL expects a quantized 64x64x1 INT8 tensor. For hardware-aligned
-tests we support direct TXT loading; for image files we expose Pillow-based
-helpers that work both from on-disk paths and in-memory upload bytes.
+当前 RTL 期望输入为量化后的 64x64x1 INT8 tensor。对于硬件对齐测试，我们支持
+直接读取 TXT；对于浏览器上传的图片，则使用 Pillow 完成灰度化、裁剪、缩放和
+量化，并且同时支持磁盘文件和内存 bytes。
+
+Web demo 会生成两个预处理分支：
+  * `plain`：保留整张图，只做归一化/resize。
+  * `crop`：估计手势/数字前景，裁成正方形后再 resize 到硬件输入尺寸。
+
+CPU-side 模型会给两个分支打分，然后 demo 选择更安全的分支导出给板子。
 """
 
 import base64
@@ -16,12 +22,15 @@ from .quantization import quantize_u8_to_i8
 
 @dataclass
 class PreprocessedImage:
+    """一个候选输入 tensor，加上浏览器预览图。"""
+
     mode: str
     values: List[int]
     preview_b64: str
 
 
 def load_txt_int8_image(path: Path) -> List[int]:
+    """读取已经量化好的 testbench 图片文本文件。"""
     with path.open("r", encoding="utf-8") as fp:
         return [int(line.strip()) for line in fp if line.strip()]
 
@@ -33,6 +42,7 @@ def _encode_image_b64(image) -> str:
 
 
 def _otsu_threshold(arr) -> int:
+    """计算自动灰度阈值，用于前景/背景分离。"""
     import numpy as np
 
     hist = np.bincount(arr.reshape(-1), minlength=256).astype(np.float64)
@@ -50,6 +60,7 @@ def _otsu_threshold(arr) -> int:
 
 
 def _select_foreground_mask(arr):
+    """判断暗色像素还是亮色像素更像前景。"""
     import numpy as np
 
     threshold = _otsu_threshold(arr)
@@ -94,6 +105,7 @@ def _canonical_background_level(bg_level: int) -> int:
 
 
 def _largest_connected_component(mask):
+    """只保留最大的连通前景区域，去掉小噪点。"""
     import numpy as np
 
     height, width = mask.shape
@@ -145,6 +157,7 @@ def _refine_foreground_mask(mask):
 
 
 def _crop_and_square_image(image, width: int, height: int):
+    """提取前景目标，并 resize 到 RTL 需要的输入尺寸。"""
     import numpy as np
     from PIL import Image, ImageOps
 
@@ -181,16 +194,19 @@ def _crop_and_square_image(image, width: int, height: int):
 
 
 def _plain_resize_image(image, width: int, height: int):
+    """生成直接 resize 的保守分支。"""
     from PIL import ImageOps
 
     return ImageOps.autocontrast(image.convert("L")).resize((width, height))
 
 
 def _image_to_int8(image) -> List[int]:
+    """把 unsigned 灰度像素量化成 signed INT8 activation。"""
     return quantize_u8_to_i8(list(image.getdata()), zero_point=-128)
 
 
 def _preprocess_image(image, width: int, height: int, mode: str) -> PreprocessedImage:
+    """执行一个预处理分支，并打包 tensor 与预览图。"""
     if mode == "plain":
         processed = _plain_resize_image(image, width, height)
     elif mode == "crop":
@@ -201,6 +217,7 @@ def _preprocess_image(image, width: int, height: int, mode: str) -> Preprocessed
 
 
 def preprocess_image_bytes_variants(image_bytes: bytes, width: int = 64, height: int = 64) -> List[PreprocessedImage]:
+    """解码上传图片 bytes，并返回所有候选预处理分支。"""
     try:
         from PIL import Image
     except ImportError as exc:  # pragma: no cover - optional dependency
@@ -232,6 +249,7 @@ def load_image_to_int8(path: Path, width: int = 64, height: int = 64) -> List[in
 
 
 def write_txt_int8_image(path: Path, values: Iterable[int]) -> None:
+    """写出“一行一个 signed INT8 值”的文本文件，供 HPS C loader 读取。"""
     with path.open("w", encoding="utf-8") as fp:
         for value in values:
             fp.write(f"{int(value)}\n")

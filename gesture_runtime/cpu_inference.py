@@ -1,4 +1,9 @@
-"""CPU-side TFLite inference helpers for the web comparison demo."""
+"""Web 对比 demo 的 CPU-side TFLite 推理工具。
+
+浏览器同时显示 host CPU 模型分数，会让 FPGA 结果更容易解释。本模块加载导出的
+INT8 TFLite 模型，把预处理后的 INT8 图片转换成 interpreter 期望的输入 dtype，
+并返回用于置信度显示和预处理分支选择的类别分数。
+"""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -7,6 +12,7 @@ from typing import List, Optional
 
 
 def _load_interpreter(model_path: Path):
+    """优先加载轻量 tflite-runtime；如果没有，再尝试完整 TensorFlow。"""
     try:
         from tflite_runtime.interpreter import Interpreter  # type: ignore
     except ImportError:
@@ -24,6 +30,8 @@ def _load_interpreter(model_path: Path):
 
 @dataclass
 class CPUInferenceResult:
+    """Host-side classifier 返回的结果集合。"""
+
     predicted_class: int
     elapsed_ms: float
     scores: List[float]
@@ -32,6 +40,8 @@ class CPUInferenceResult:
 
 
 class TFLiteCPUClassifier:
+    """针对 64x64 INT8 图片的 TFLite interpreter 薄封装。"""
+
     def __init__(self, model_path: Path):
         self.model_path = Path(model_path)
         self.interpreter = _load_interpreter(self.model_path)
@@ -44,6 +54,7 @@ class TFLiteCPUClassifier:
         self.np = np
 
     def _prepare_input(self, image_values: List[int]):
+        """把 RTL 风格 signed INT8 像素转换成模型输入 dtype。"""
         np = self.np
         input_shape = self.input_details["shape"]
         input_dtype = self.input_details["dtype"]
@@ -64,6 +75,7 @@ class TFLiteCPUClassifier:
         return arr.astype(input_dtype)
 
     def predict_int8_image(self, image_values: List[int]) -> CPUInferenceResult:
+        """执行一次推理，并总结 top score 和 confidence margin。"""
         np = self.np
         input_tensor = self._prepare_input(image_values)
 

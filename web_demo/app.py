@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Flask app for the upload-first CPU-vs-FPGA comparison demo."""
+"""上传图片后进行 CPU-vs-FPGA 对比演示的 Flask 入口。
+
+这个文件是浏览器到板子的入口。网页把图片发到 `/api/infer`，后端负责
+预处理图片、导出临时硬件测试 case、让 DE1-SoC 板上的 HPS CPU 参考程序
+和 FPGA 加速器分别运行同一个输入，最后把预测类别、计时、profile 计数器
+和诊断信息整理成 JSON 返回给前端。
+"""
 
 from __future__ import annotations
 
@@ -24,9 +30,17 @@ from gesture_runtime.ssh_transport import SshBoardTransport
 
 
 def build_service() -> ComparisonDemoService:
+    """构造所有请求共用的服务对象。
+
+    Flask route 本身保持很薄：配置读取、TFLite CPU 模型加载、SSH 传输对象、
+    FPGA 服务和 HPS CPU baseline 服务都在这里集中创建。这样每个 HTTP 接口
+    只需要做输入检查和输出格式化。
+    """
     cfg = load_demo_config()
     labels = DemoLabels(cfg.labels) if cfg.labels else DemoLabels.default_digits()
     cpu_classifier = TFLiteCPUClassifier(cfg.cpu_model)
+    # Web server 跑在主机电脑上，真正的 MMIO 访问发生在 DE1-SoC 的 HPS
+    # Linux 里，所以这里用 SSH/SCP 作为 host 到 board 的传输层。
     transport = SshBoardTransport(
         host=cfg.board_host,
         user=cfg.board_user,
@@ -69,6 +83,7 @@ FEEDBACK_DIR = REPO_ROOT / "web_demo" / "feedback_samples"
 
 
 def get_service() -> ComparisonDemoService:
+    """懒加载服务对象，避免 import Flask app 时就立刻连接板子。"""
     global SERVICE
     if SERVICE is None:
         SERVICE = build_service()
@@ -82,6 +97,7 @@ def index():
 
 @app.get("/api/health")
 def health():
+    """返回当前 demo 配置；这个接口不访问 FPGA。"""
     cfg = load_demo_config()
     return jsonify(
         {
@@ -107,6 +123,7 @@ def health():
 
 @app.post("/api/infer")
 def infer():
+    """处理一次上传图片，并返回 CPU 与 FPGA 的对比结果。"""
     uploaded = request.files.get("image")
     if uploaded is None or not uploaded.filename:
         return jsonify({"error": "image upload is required"}), 400
@@ -114,6 +131,8 @@ def infer():
     preprocess_mode = request.form.get("preprocess_mode", "auto").strip() or "auto"
     try:
         cfg = load_demo_config()
+        # 真正的端到端流程在 service 里完成：预处理分支、临时 case 导出、
+        # 传输到板子、执行 C 命令、解析 key=value 输出。
         result = get_service().compare_image_bytes(uploaded.read(), preferred_mode=preprocess_mode)
     except Exception as exc:  # pragma: no cover - integration path
         return jsonify({"error": str(exc)}), 500
@@ -127,6 +146,7 @@ def infer():
 
 @app.post("/api/feedback")
 def save_feedback():
+    """保存一次误判样本，方便之后重新训练或调试。"""
     uploaded = request.files.get("image")
     corrected_label = request.form.get("corrected_label", "").strip()
     predicted_label = request.form.get("predicted_label", "").strip()
@@ -173,6 +193,7 @@ def save_feedback():
 
 @app.get("/api/sample-suite")
 def sample_suite():
+    """把内置 digit 样例图片跑过同一条 board path。"""
     try:
         cfg = load_demo_config()
         sample_paths = sorted(SAMPLE_IMAGE_DIR.glob("digit_*_test.png"))

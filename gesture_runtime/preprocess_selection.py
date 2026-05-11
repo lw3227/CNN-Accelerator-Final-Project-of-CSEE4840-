@@ -1,4 +1,9 @@
-"""Heuristics for choosing between preprocessing variants."""
+"""在多个预处理分支之间做选择的启发式规则。
+
+Web UI 同时支持直接 resize 和前景裁剪。用户选择 auto 时，本模块决定最终哪一个
+分支送到板子上。策略故意偏保守，因为视觉上更干净的 crop 有时也可能裁掉模型
+训练时依赖的上下文。
+"""
 
 from __future__ import annotations
 
@@ -30,11 +35,13 @@ def choose_best_variant(scored: Iterable[Tuple[Any, Any]]) -> Tuple[Any, Any]:
     second_variant, second_result = ordered[1]
 
     if best_result.predicted_class == second_result.predicted_class:
+        # 如果两个视角预测同一类，就选择置信度更高的那个。
         return best_variant, best_result
 
     plain_pair = next(((v, r) for v, r in scored if getattr(v, "mode", "") == "plain"), None)
     crop_pair = next(((v, r) for v, r in scored if getattr(v, "mode", "") == "crop"), None)
     if plain_pair is None or crop_pair is None:
+        # 将来如果加入新的预处理模式，就退回通用的分数排序逻辑。
         return best_variant, best_result
 
     plain_variant, plain_result = plain_pair

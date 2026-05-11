@@ -7,6 +7,13 @@
 
 #include "../include/cnn_mmio_host.h"
 
+/*
+ * Web demo 使用的板端 FPGA prediction 命令。
+ *
+ * Python 会把一个导出的 case 目录复制到板子上，然后运行这个程序。程序负责
+ * mmap FPGA MMIO 区域、把图片写入 scratchpad、pulse CONTROL[1]、等待
+ * predict_done，并把结果以 key=value 格式打印给 host service。
+ */
 static double monotonic_ms(void) {
   struct timespec ts;
   clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -42,6 +49,7 @@ int main(int argc, char **argv) {
 
   total_started_ms = monotonic_ms();
   case_load_started_ms = monotonic_ms();
+  /* 把导出的文本图片转换成打包的 32-bit scratchpad words。 */
   if (cnn_mmio_load_inference_case(case_root, &tc) != 0)
     return 1;
   case_load_ended_ms = monotonic_ms();
@@ -50,10 +58,12 @@ int main(int argc, char **argv) {
 
   mmio_program_started_ms = monotonic_ms();
   cnn_mmio_program_default_registers(dev.mmio_base);
+  /* 请求之间只改变 image segment；模型参数已经提前 preload。 */
   cnn_mmio_write_inference_case(dev.mmio_base, &tc);
   mmio_program_ended_ms = monotonic_ms();
 
   infer_started_ms = monotonic_ms();
+  /* CONTROL[1] 让 wrapper replay 图片并启动 inference。 */
   cnn_mmio_start_infer(dev.mmio_base);
 
   if (cnn_mmio_wait_for_status_bit(
@@ -70,6 +80,7 @@ int main(int argc, char **argv) {
 
   error_reg = cnn_mmio_read_error(dev.mmio_base);
   cnn_mmio_read_profile(dev.mmio_base, &profile);
+  /* 每一行都保持 machine-readable，供 parse_key_value_output() 解析。 */
   printf("predict_class=%u\n", (unsigned)cnn_mmio_pack_status_predict(status));
   printf("status=0x%04x\n", status);
   printf("error=0x%04x\n", error_reg);

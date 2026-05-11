@@ -1,5 +1,13 @@
 #define _POSIX_C_SOURCE 200809L
 
+/*
+ * 浏览器 demo 使用的 HPS ARM CPU reference。
+ *
+ * 这个程序在板子的 ARM CPU 上运行同一个量化网络，并且读取和 FPGA 相同的
+ * exported case 文件。这样 web UI 可以展示 same-board 软件 baseline，也能让
+ * FPGA speedup 数字更容易解释。
+ */
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -107,6 +115,7 @@ static int32_t requantize_single(int32_t mac,
                                  int32_t mult,
                                  int32_t shift,
                                  int32_t zp_out) {
+  /* 匹配 RTL quantizer 使用的 integer multiplier/shift 流程。 */
   int64_t acc = (int64_t)mac + (int64_t)eff_bias;
   int64_t prod = acc * (int64_t)mult;
   int64_t scaled;
@@ -130,6 +139,7 @@ static void conv1_forward(const int8_t *input,
                           const int32_t *mult,
                           const int32_t *shift,
                           int8_t *pool_out) {
+  /* 第一层只有一个 input channel，所以单独写成更直接的版本。 */
   int8_t requant[C1_H * C1_W * C1_OUT];
   int h, w, oc, kh, kw;
 
@@ -181,6 +191,7 @@ static void conv_generic_forward(const int8_t *input,
                                  int pool_h,
                                  int pool_w,
                                  int8_t *pool_out) {
+  /* 第二、三层共用的 convolution + requantization + 2x2 max-pool。 */
   int8_t *requant = (int8_t *)malloc((size_t)out_h * (size_t)out_w * (size_t)out_c);
   int h, w, oc, ic, kh, kw;
   if (!requant) {
@@ -227,6 +238,7 @@ static void conv_generic_forward(const int8_t *input,
 }
 
 static int fc_argmax(const int8_t *input, const int8_t *weights, const int32_t *bias) {
+  /* 最后一层分类器：288 个 INT8 输入分别和 10 行 FC weights 做 dot product。 */
   int oc, k;
   int best_idx = 0;
   int32_t best_val = 0;
@@ -271,6 +283,9 @@ int main(int argc, char **argv) {
   image_case_root = argv[1];
   reference_case_root = argv[2];
 
+  /* 上传图片来自临时 case；模型参数来自部署模型对应的 hardware-aligned
+   * reference case。
+   */
   build_path(path, sizeof(path), image_case_root, "tb_conv1_in_i8_64x64x1.txt");
   if (read_i8_lines(path, input, IMG_H * IMG_W) != 0)
     return 1;
@@ -322,6 +337,7 @@ int main(int argc, char **argv) {
     return 1;
 
   started_ms = monotonic_ms();
+  /* 按照和 RTL accelerator 相同的 layer 顺序执行，保证比较公平。 */
   conv1_forward(input, conv1_w, conv1_bias, conv1_m, conv1_sh, pool1);
   conv_generic_forward(pool1, P1_H, P1_W, C1_OUT, conv2_w, C2_OUT, conv2_bias, conv2_m, conv2_sh,
                        C2_H, C2_W, P2_H, P2_W, pool2);
