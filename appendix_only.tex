@@ -44,13 +44,13 @@
 \section{Web-To-Board Runtime Listings}
 
 This appendix lists the source files directly used by the implemented
-web-to-board demonstration path. It focuses on the Python host flow, the HPS C
-commands executed on the DE1-SoC, and the Verilog/SystemVerilog boundary that
-accepts MMIO traffic and starts the accelerator. Lower-level datapath modules,
-testbenches, generated Quartus output, generated Platform Designer output,
+web-to-board demonstration path. It includes the Python host flow, the HPS C
+commands executed on the DE1-SoC, and the synthesizable Verilog/SystemVerilog
+hardware used by the FPGA accelerator, including the lower-level SRAM,
+convolution, quantization, pooling, and fully connected datapath modules.
+Testbenches, generated Quartus output, generated Platform Designer output,
 model-export utilities, MATLAB reference scripts, debug-only tools, image
-samples, and git history are kept in the machine-readable archive when needed
-but are not repeated in this printed appendix.
+samples, and git history are kept out of this printed appendix.
 
 \subsection{Focused Source Tree}
 
@@ -84,9 +84,47 @@ code/
     |-- system_top.v
     |-- interface/
     |   `-- cnn_mmio_interface.v
-    `-- fsm/
-        |-- layer_runner_fsm.v
-        `-- top_fsm.v
+    |-- fsm/
+    |   |-- conv_data_adapter.v
+    |   |-- layer_runner_fsm.v
+    |   |-- top_fsm.v
+    |   `-- wt_prepad_inserter.v
+    |-- conv_core/
+    |   |-- Conv_Buffer.v
+    |   |-- Line_Buffer.v
+    |   |-- conv_engine_ctrl.v
+    |   |-- conv_quant_pool.v
+    |   |-- conv_top.v
+    |   |-- input_row_aligner.v
+    |   |-- sa_skew_feeder.v
+    |   |-- systolic_array_top.v
+    |   `-- weight_buffer.v
+    |-- quant_pool/
+    |   |-- integration/
+    |   |   |-- conv_quant_adapter.v
+    |   |   |-- quant_param_loader.v
+    |   |   `-- quant_pool_adapter.v
+    |   |-- quant/
+    |   |   |-- Quantization_PE.v
+    |   |   `-- Quantization_Top.v
+    |   `-- pool/
+    |       |-- pool_core.v
+    |       `-- pool_stream_top.v
+    |-- SRAM/
+    |   |-- Addr_Gen.v
+    |   |-- fcw_preload_packer.v
+    |   |-- sram_A_controller.v
+    |   |-- sram_A_wrapper.v
+    |   |-- sram_B_controller.v
+    |   |-- sram_B_wrapper.v
+    |   |-- sram_FCW_wrapper.v
+    |   |-- top_sram_A.v
+    |   `-- top_sram_B.v
+    `-- fc/
+        |-- FC.v
+        |-- fc_bias_loader.v
+        |-- fc_data_adapter.v
+        `-- mac.v
 \end{verbatim}
 
 \subsection{Included Source Overview}
@@ -106,9 +144,10 @@ HPS board runtime & C &
 Maps the FPGA control window through \codepath{/dev/mem}, writes preload and
 image data, triggers model load or inference, polls status, and prints results
 for the web server. \\
-FPGA board boundary & SystemVerilog / Verilog &
-Connects the HPS Platform Designer system to the custom MMIO wrapper and passes
-the replayed model/image stream into the accelerator top-level control logic. \\
+FPGA accelerator RTL & SystemVerilog / Verilog &
+Connects the HPS Platform Designer system to the custom MMIO wrapper, replays
+model/image data into the accelerator, and implements the CNN control and
+datapath modules used for inference. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -158,7 +197,7 @@ Source file & Function \\
 \begin{table}[H]
 \centering
 \small
-\caption{Verilog/SystemVerilog files at the FPGA board boundary.}
+\caption{Verilog/SystemVerilog files used by the FPGA accelerator.}
 \begin{tabularx}{\textwidth}{p{5.8cm}X}
 \toprule
 Source file & Function \\
@@ -168,6 +207,12 @@ Source file & Function \\
 \codepath{code/input/RTL/system_top.v} & Accelerator top-level connecting model load, CNN layer sequencing, SRAM datapath, FC classifier, argmax, and profiling outputs. \\
 \codepath{code/input/RTL/fsm/top_fsm.v} & Network-level FSM for model load and inference scheduling across convolution, FC, and argmax phases. \\
 \codepath{code/input/RTL/fsm/layer_runner_fsm.v} & Per-layer FSM that sequences layer configuration, weights, input data, output writes, and completion. \\
+\codepath{code/input/RTL/fsm/conv_data_adapter.v} & Packs and aligns convolution input data for the layer runner. \\
+\codepath{code/input/RTL/fsm/wt_prepad_inserter.v} & Inserts padding words around weight streams where the accelerator protocol requires them. \\
+\codepath{code/input/RTL/conv_core/*.v} & Convolution frontend, line buffers, input alignment, weight buffering, systolic array, and convolution control. \\
+\codepath{code/input/RTL/quant_pool/**/*.v} & Quantization parameter loading, requantization processing elements, max-pooling core, and stream adapters. \\
+\codepath{code/input/RTL/SRAM/*.v} & SRAM_A/SRAM_B controllers, wrappers, address generation, and FC-weight preload packing. \\
+\codepath{code/input/RTL/fc/*.v} & Fully connected classifier, MAC unit, bias loader, and FC data adapter. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -212,7 +257,7 @@ Source file & Function \\
 
 \codedlisting{Board CPU Baseline}{Runs the same exported case on the HPS CPU baseline so the web demo can compare CPU and FPGA results.}{code/tools/hps_cpu_reference.c}
 
-\subsection{FPGA Board Boundary And Accelerator Top}
+\subsection{FPGA Accelerator Control And Board Boundary}
 
 \codedlisting{DE1-SoC Board Wrapper}{Connects the generated HPS system, board pins, clocks/resets, and seven-segment debug display.}{code/de1_soc/soc_system_top.sv}
 
@@ -223,6 +268,74 @@ Source file & Function \\
 \codedlisting{Network-Level FSM}{Controls the high-level model-load and inference schedule across convolution, FC, and argmax phases.}{code/input/RTL/fsm/top_fsm.v}
 
 \codedlisting{Layer Runner FSM}{Sequences per-layer configuration, weights, input data, output writes, and completion for the CNN layers.}{code/input/RTL/fsm/layer_runner_fsm.v}
+
+\codedlisting{Convolution Data Adapter}{Aligns streamed image or activation data before it enters the convolution datapath.}{code/input/RTL/fsm/conv_data_adapter.v}
+
+\codedlisting{Weight Prepad Inserter}{Adds protocol padding around streamed weight data for layer replay.}{code/input/RTL/fsm/wt_prepad_inserter.v}
+
+\subsection{Convolution Datapath RTL}
+
+\codedlisting{Convolution Buffer}{Buffers convolution windows for the compute datapath.}{code/input/RTL/conv_core/Conv_Buffer.v}
+
+\codedlisting{Line Buffer}{Stores neighboring image rows for sliding-window convolution.}{code/input/RTL/conv_core/Line_Buffer.v}
+
+\codedlisting{Convolution Engine Control}{Controls convolution engine timing and data-valid sequencing.}{code/input/RTL/conv_core/conv_engine_ctrl.v}
+
+\codedlisting{Convolution Quantization Pool Wrapper}{Integrates convolution, quantization, and pooling into one layer datapath.}{code/input/RTL/conv_core/conv_quant_pool.v}
+
+\codedlisting{Convolution Top}{Top-level convolution datapath wrapper.}{code/input/RTL/conv_core/conv_top.v}
+
+\codedlisting{Input Row Aligner}{Aligns input rows before they are consumed by the convolution buffers.}{code/input/RTL/conv_core/input_row_aligner.v}
+
+\codedlisting{Systolic Array Skew Feeder}{Skews input streams into the systolic MAC array.}{code/input/RTL/conv_core/sa_skew_feeder.v}
+
+\codedlisting{Systolic Array Top}{Parallel MAC array used by the convolution datapath.}{code/input/RTL/conv_core/systolic_array_top.v}
+
+\codedlisting{Weight Buffer}{Buffers convolution weights before they enter the systolic array.}{code/input/RTL/conv_core/weight_buffer.v}
+
+\subsection{Quantization And Pooling RTL}
+
+\codedlisting{Convolution-Quantization Adapter}{Adapts convolution output into the quantization interface.}{code/input/RTL/quant_pool/integration/conv_quant_adapter.v}
+
+\codedlisting{Quantization Parameter Loader}{Loads per-channel quantization multipliers, shifts, and bias terms.}{code/input/RTL/quant_pool/integration/quant_param_loader.v}
+
+\codedlisting{Quantization-Pooling Adapter}{Adapts requantized output into the pooling stream interface.}{code/input/RTL/quant_pool/integration/quant_pool_adapter.v}
+
+\codedlisting{Quantization Processing Element}{Single requantization processing element.}{code/input/RTL/quant_pool/quant/Quantization_PE.v}
+
+\codedlisting{Quantization Top}{Parallel quantization datapath for layer outputs.}{code/input/RTL/quant_pool/quant/Quantization_Top.v}
+
+\codedlisting{Pooling Core}{Streaming max-pooling core.}{code/input/RTL/quant_pool/pool/pool_core.v}
+
+\codedlisting{Pooling Stream Top}{Top-level pooling stream wrapper.}{code/input/RTL/quant_pool/pool/pool_stream_top.v}
+
+\subsection{SRAM And Fully Connected RTL}
+
+\codedlisting{SRAM Address Generator}{Generates SRAM addresses for feature maps and layer transfers.}{code/input/RTL/SRAM/Addr_Gen.v}
+
+\codedlisting{FC Weight Preload Packer}{Packs streamed preload words into the FC weight memory format.}{code/input/RTL/SRAM/fcw_preload_packer.v}
+
+\codedlisting{SRAM A Controller}{Controls read/write access to SRAM_A.}{code/input/RTL/SRAM/sram_A_controller.v}
+
+\codedlisting{SRAM A Wrapper}{Memory wrapper for SRAM_A.}{code/input/RTL/SRAM/sram_A_wrapper.v}
+
+\codedlisting{SRAM B Controller}{Controls read/write access to SRAM_B.}{code/input/RTL/SRAM/sram_B_controller.v}
+
+\codedlisting{SRAM B Wrapper}{Memory wrapper for SRAM_B.}{code/input/RTL/SRAM/sram_B_wrapper.v}
+
+\codedlisting{FC Weight SRAM Wrapper}{Dedicated memory wrapper for fully connected weights.}{code/input/RTL/SRAM/sram_FCW_wrapper.v}
+
+\codedlisting{Top SRAM A}{Integrates SRAM_A routing for CNN layers and FC weight preload.}{code/input/RTL/SRAM/top_sram_A.v}
+
+\codedlisting{Top SRAM B}{Integrates SRAM_B routing for CNN layers and FC input buffering.}{code/input/RTL/SRAM/top_sram_B.v}
+
+\codedlisting{Fully Connected Classifier}{Fully connected output classifier.}{code/input/RTL/fc/FC.v}
+
+\codedlisting{FC Bias Loader}{Loads bias values for the fully connected classifier.}{code/input/RTL/fc/fc_bias_loader.v}
+
+\codedlisting{FC Data Adapter}{Adapts SRAM output into the FC classifier input stream.}{code/input/RTL/fc/fc_data_adapter.v}
+
+\codedlisting{Multiply-Accumulate Unit}{MAC primitive used by the fully connected classifier.}{code/input/RTL/fc/mac.v}
 
 \subsection{Submission Package Notes}
 
