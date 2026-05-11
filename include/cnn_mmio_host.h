@@ -10,11 +10,11 @@ extern "C" {
 #endif
 
 /*
- * The HPS maps a 4 MiB lightweight bridge window that contains both the
- * scratchpad address range and the control/status register range decoded by
- * cnn_mmio_interface.v.
+ * The HPS maps one small page-aligned lightweight-bridge window. The RTL only
+ * needs 16 KiB of scratchpad plus a tiny config/status range, so 64 KiB leaves
+ * comfortable room while avoiding the previous 4 MiB mapping.
  */
-#define CNN_MMIO_MAP_SPAN_BYTES (4 * 1024 * 1024)
+#define CNN_MMIO_MAP_SPAN_BYTES (64 * 1024)
 #define CNN_MMIO_DEFAULT_TIMEOUT_MS 1000
 #define CNN_MMIO_DEFAULT_FABRIC_MHZ 50.0
 
