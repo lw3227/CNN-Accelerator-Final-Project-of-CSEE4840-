@@ -1,5 +1,15 @@
 #define _POSIX_C_SOURCE 200809L
 
+/*
+ * Shared HPS-side MMIO runtime.
+ *
+ * The small command-line tools call these helpers to load text fixtures, pack
+ * INT8 values into 32-bit scratchpad words, map the FPGA control window through
+ * /dev/mem, write model/image data, pulse control registers, poll completion
+ * bits, and read profile counters. Keeping that logic here makes
+ * hps_mmio_load_model, hps_mmio_predict, and hps_mmio_status consistent.
+ */
+
 #include "../include/cnn_mmio_host.h"
 
 #include <errno.h>
@@ -15,6 +25,7 @@
 #include <unistd.h>
 
 static int read_i32_lines(const char *path, int32_t *dst, size_t count) {
+  /* Read one signed 32-bit scalar per line from MATLAB/exported fixtures. */
   FILE *fp = fopen(path, "r");
   size_t i;
   if (!fp) {
@@ -33,6 +44,7 @@ static int read_i32_lines(const char *path, int32_t *dst, size_t count) {
 }
 
 static int read_packed_i8_words(const char *path, uint32_t *dst, size_t word_count) {
+  /* Pack four signed INT8 text values into one little-endian 32-bit MMIO word. */
   FILE *fp = fopen(path, "r");
   size_t i;
   if (!fp) {
@@ -59,6 +71,7 @@ static int read_packed_i8_words(const char *path, uint32_t *dst, size_t word_cou
 }
 
 static int load_manifest_expected_class(const char *path, int *expected_class) {
+  /* The manifest is mainly for validation and CPU reference bookkeeping. */
   FILE *fp = fopen(path, "r");
   char line[256];
   if (!fp) {
@@ -115,6 +128,7 @@ static uint32_t mmio_read_cfg_reg(volatile uint32_t *base, uint32_t reg_idx) {
 
 static void write_word_image(volatile uint32_t *base, uint32_t start_word,
                              const uint32_t *words, size_t word_count) {
+  /* Each store becomes one Avalon-MM write into the wrapper scratchpad. */
   size_t i;
 
   for (i = 0; i < word_count; ++i) {
@@ -123,6 +137,7 @@ static void write_word_image(volatile uint32_t *base, uint32_t start_word,
 }
 
 int cnn_mmio_load_preload_bundle(const char *preload_root, struct cnn_mmio_preload_bundle *bundle) {
+  /* Support both final preload file names and shorter development aliases. */
   static const char *const conv_cfg_candidates[] = {
       "preload_conv_cfg_45w.txt",
       "conv_cfg_words.txt",
@@ -178,6 +193,7 @@ int cnn_mmio_load_inference_case(const char *case_root, struct cnn_mmio_inferenc
 }
 
 int cnn_mmio_open(struct cnn_mmio_device *dev, uintptr_t csr_base, const char *devmem_path) {
+  /* Map the physical lightweight-bridge address chosen in Platform Designer. */
   memset(dev, 0, sizeof(*dev));
   dev->fd = open(devmem_path, O_RDWR | O_SYNC);
   if (dev->fd < 0) {
@@ -213,6 +229,7 @@ void cnn_mmio_close(struct cnn_mmio_device *dev) {
 }
 
 void cnn_mmio_program_default_registers(volatile uint32_t *mmio_base) {
+  /* Tell the RTL replay FSM where each logical segment starts and how long it is. */
   mmio_write_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_CFG_BASE, CNN_MMIO_DEFAULT_CONV_CFG_BASE_W);
   mmio_write_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_CFG_LEN, CNN_MMIO_DEFAULT_CONV_CFG_WORDS);
   mmio_write_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_WT_BASE, CNN_MMIO_DEFAULT_CONV_WT_BASE_W);
@@ -226,6 +243,7 @@ void cnn_mmio_program_default_registers(volatile uint32_t *mmio_base) {
 }
 
 void cnn_mmio_write_preload_bundle(volatile uint32_t *mmio_base, const struct cnn_mmio_preload_bundle *bundle) {
+  /* Copy configuration, convolution weights, FC bias, and FC weights into scratchpad. */
   uint32_t conv_cfg_base = mmio_read_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_CFG_BASE);
   uint32_t conv_wt_base = mmio_read_cfg_reg(mmio_base, CNN_MMIO_REG_CONV_WT_BASE);
   uint32_t fc_bias_base = mmio_read_cfg_reg(mmio_base, CNN_MMIO_REG_FC_BIAS_BASE);
@@ -242,6 +260,7 @@ void cnn_mmio_write_preload_bundle(volatile uint32_t *mmio_base, const struct cn
 }
 
 void cnn_mmio_write_inference_case(volatile uint32_t *mmio_base, const struct cnn_mmio_inference_case *tc) {
+  /* Image data is written after the model segments and replayed on CONTROL[1]. */
   uint32_t image_base = mmio_read_cfg_reg(mmio_base, CNN_MMIO_REG_IMAGE_BASE);
 
   write_word_image(mmio_base, image_base, tc->image,
@@ -261,6 +280,7 @@ uint16_t cnn_mmio_read_predict(volatile uint32_t *mmio_base) {
 }
 
 void cnn_mmio_read_profile(volatile uint32_t *mmio_base, struct cnn_mmio_profile *profile) {
+  /* The RTL mirrors each 32-bit counter into the HI slot of each LO/HI pair. */
   if (!profile)
     return;
 
@@ -292,6 +312,7 @@ int cnn_mmio_wait_for_status_bit(
     unsigned expected_value,
     int timeout_ms,
     uint16_t *last_status) {
+  /* Polling is simple and robust for this demo because inference latency is short. */
   struct timespec req;
   int elapsed_ms = 0;
   if (bit_idx >= 16)

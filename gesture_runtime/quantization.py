@@ -4,6 +4,11 @@ The current RTL datapath is INT8 activation/weight with INT32 accumulation.
 The reference Gesture design used a simple Q7.8-style short transport for some
 paths; we keep those helpers here for interoperability, but the project-wide
 default remains the RTL-native INT8/INT32 format.
+
+For uploaded grayscale images, the important conversion is unsigned pixel
+`0..255` to signed activation `-128..127`. That mapping is intentionally simple
+so the host preview, HPS C loader, and RTL input scratchpad all agree on the
+same byte values.
 """
 
 from typing import Iterable, List
@@ -13,6 +18,7 @@ Q7_8_SCALE = 128.0
 
 
 def saturate_int8(value: int) -> int:
+    """Clamp a Python integer to the signed INT8 range used by the RTL."""
     return max(-128, min(127, int(value)))
 
 
@@ -33,6 +39,7 @@ def fixed_q7_8_to_float(value: int) -> float:
 
 
 def quantize_u8_to_i8(samples: Iterable[int], zero_point: int = -128) -> List[int]:
+    """Map unsigned grayscale samples to signed INT8 activation samples."""
     return [saturate_int8(int(v) + zero_point) for v in samples]
 
 

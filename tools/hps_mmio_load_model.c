@@ -4,6 +4,14 @@
 
 #include "../include/cnn_mmio_host.h"
 
+/*
+ * Board-side model preload command.
+ *
+ * The host web service runs this command once before inference. It loads the
+ * exported model bundle from text files, writes the bundle into the MMIO
+ * scratchpad, clears stale status bits, and pulses CONTROL[0] so the RTL replay
+ * FSM streams the model segments into the accelerator.
+ */
 int main(int argc, char **argv) {
   const char *devmem_path = "/dev/mem";
   const char *preload_root;
@@ -24,6 +32,7 @@ int main(int argc, char **argv) {
   if (argc > 3)
     devmem_path = argv[3];
 
+  /* Read files first so a missing preload bundle fails before touching MMIO. */
   if (cnn_mmio_load_preload_bundle(preload_root, &preload) != 0)
     return 1;
   if (cnn_mmio_open(&dev, csr_base, devmem_path) != 0)
@@ -32,6 +41,7 @@ int main(int argc, char **argv) {
   cnn_mmio_program_default_registers(dev.mmio_base);
   cnn_mmio_write_preload_bundle(dev.mmio_base, &preload);
   cnn_mmio_clear_status(dev.mmio_base);
+  /* CONTROL[0] is a command pulse; completion is observed through model_loaded. */
   cnn_mmio_start_model_load(dev.mmio_base);
 
   if (cnn_mmio_wait_for_status_bit(

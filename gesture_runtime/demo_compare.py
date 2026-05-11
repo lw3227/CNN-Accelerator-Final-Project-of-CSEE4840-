@@ -1,4 +1,12 @@
-"""Unified CPU-vs-FPGA comparison flow for the web demo."""
+"""Unified CPU-vs-FPGA comparison flow for the web demo.
+
+`ComparisonDemoService` is the main coordinator behind `/api/infer`. It takes
+raw upload bytes, builds one or more preprocessing variants, selects the most
+reliable variant, exports a hardware-aligned case directory, asks the HPS CPU
+reference and FPGA accelerator to process that same case, and returns one
+browser-friendly dictionary containing predictions, timing, profile counters,
+and confidence diagnostics.
+"""
 
 from __future__ import annotations
 
@@ -17,6 +25,8 @@ from .preprocess_selection import choose_best_variant
 
 @dataclass
 class DemoLabels:
+    """Small label helper so numeric classes can be displayed as UI strings."""
+
     labels: List[str]
 
     @classmethod
@@ -45,11 +55,13 @@ class ComparisonDemoService:
         self.fabric_mhz = fabric_mhz
 
     def _cycles_to_us(self, cycles: int) -> float:
+        """Convert RTL cycle counters into microseconds using fabric frequency."""
         if self.fabric_mhz <= 0:
             return 0.0
         return float(cycles) / self.fabric_mhz
 
     def _score_variants(self, variants):
+        """Run the host TFLite model on every preprocessing branch."""
         scored = []
         for variant in variants:
             cpu_result = self.cpu_classifier.predict_int8_image(variant.values)
@@ -57,6 +69,7 @@ class ComparisonDemoService:
         return scored
 
     def _softmax_probabilities(self, scores: List[float]) -> List[float]:
+        """Turn raw CPU scores into stable display probabilities."""
         if not scores:
             return []
         max_score = max(scores)
@@ -67,6 +80,7 @@ class ComparisonDemoService:
         return [value / total for value in exp_scores]
 
     def _build_cpu_score_report(self, cpu_result) -> Dict[str, object]:
+        """Build per-class confidence data for the browser diagnostics panel."""
         probabilities = self._softmax_probabilities(cpu_result.scores)
         channels = []
         for idx, (score, probability) in enumerate(zip(cpu_result.scores, probabilities)):
@@ -100,6 +114,7 @@ class ComparisonDemoService:
         }
 
     def _build_branch_diagnostics(self, scored) -> List[Dict[str, object]]:
+        """Expose how each preprocessing branch scored before the final choice."""
         diagnostics = []
         for variant, cpu_result in scored:
             top_channels = self._build_cpu_score_report(cpu_result)["top_channels"]
@@ -116,6 +131,7 @@ class ComparisonDemoService:
         return diagnostics
 
     def _build_fpga_profile(self, fpga_result: Dict[str, object]) -> Dict[str, object]:
+        """Translate raw FPGA cycle counters into labeled timing rows."""
         raw_profile = fpga_result.get("profile", {})
         stage_specs = [
             ("L1", "l1_cycles"),
@@ -146,8 +162,12 @@ class ComparisonDemoService:
         }
 
     def _compare_preprocessed_image(self, image_values: List[int], preview_b64: str) -> Dict[str, object]:
+        """Compare one already-selected INT8 image on HPS CPU and FPGA."""
         cpu_result = self.cpu_classifier.predict_int8_image(image_values)
 
+        # The board tools consume a directory, not a Python object. A temporary
+        # case folder mirrors the hardware testbench file names so the same C
+        # loaders can be reused for uploaded images and stored test cases.
         with tempfile.TemporaryDirectory(prefix="cnn_acc_case_") as tmp_dir:
             case_root = Path(tmp_dir) / "gesture_upload_case"
             write_inference_case(case_root, image_values, case_name="gesture_upload", expected_class=-1)
@@ -187,9 +207,13 @@ class ComparisonDemoService:
         }
 
     def compare_image_bytes(self, image_bytes: bytes, preferred_mode: str = "auto") -> Dict[str, object]:
+        """Run the full upload path from raw bytes to browser-ready JSON."""
         variants = preprocess_image_bytes_variants(image_bytes)
         scored = self._score_variants(variants)
 
+        # Auto mode lets the CPU-side model choose between the literal resize
+        # and the foreground-cropped image. Manual mode is useful during demos
+        # when we want to show how preprocessing affects the result.
         if preferred_mode != "auto":
             matches = [(variant, cpu_result) for variant, cpu_result in scored if variant.mode == preferred_mode]
             if not matches:

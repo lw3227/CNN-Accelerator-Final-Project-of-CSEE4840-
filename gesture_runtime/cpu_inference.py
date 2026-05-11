@@ -1,4 +1,10 @@
-"""CPU-side TFLite inference helpers for the web comparison demo."""
+"""CPU-side TFLite inference helpers for the web comparison demo.
+
+The FPGA result is easier to explain when the browser also shows a host-side
+model score. This module loads the exported INT8 TFLite model, adapts the
+preprocessed INT8 image into the interpreter's expected input dtype, and returns
+the class scores used for confidence and preprocessing-mode selection.
+"""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -7,6 +13,7 @@ from typing import List, Optional
 
 
 def _load_interpreter(model_path: Path):
+    """Load either the small tflite-runtime package or full TensorFlow."""
     try:
         from tflite_runtime.interpreter import Interpreter  # type: ignore
     except ImportError:
@@ -24,6 +31,8 @@ def _load_interpreter(model_path: Path):
 
 @dataclass
 class CPUInferenceResult:
+    """Result bundle returned by the host-side classifier."""
+
     predicted_class: int
     elapsed_ms: float
     scores: List[float]
@@ -32,6 +41,8 @@ class CPUInferenceResult:
 
 
 class TFLiteCPUClassifier:
+    """Thin wrapper around a TFLite interpreter for 64x64 INT8 images."""
+
     def __init__(self, model_path: Path):
         self.model_path = Path(model_path)
         self.interpreter = _load_interpreter(self.model_path)
@@ -44,6 +55,7 @@ class TFLiteCPUClassifier:
         self.np = np
 
     def _prepare_input(self, image_values: List[int]):
+        """Convert RTL-style signed INT8 pixels into the model input dtype."""
         np = self.np
         input_shape = self.input_details["shape"]
         input_dtype = self.input_details["dtype"]
@@ -64,6 +76,7 @@ class TFLiteCPUClassifier:
         return arr.astype(input_dtype)
 
     def predict_int8_image(self, image_values: List[int]) -> CPUInferenceResult:
+        """Run one inference and summarize top score plus confidence margin."""
         np = self.np
         input_tensor = self._prepare_input(image_values)
 

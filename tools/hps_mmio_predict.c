@@ -7,6 +7,14 @@
 
 #include "../include/cnn_mmio_host.h"
 
+/*
+ * Board-side FPGA prediction command used by the web demo.
+ *
+ * Python copies one exported case directory to the board and runs this program.
+ * The program maps the FPGA MMIO region, writes the image into the scratchpad,
+ * pulses CONTROL[1], waits for predict_done, and prints key=value output for
+ * the host service.
+ */
 static double monotonic_ms(void) {
   struct timespec ts;
   clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -42,6 +50,7 @@ int main(int argc, char **argv) {
 
   total_started_ms = monotonic_ms();
   case_load_started_ms = monotonic_ms();
+  /* Convert the exported text image into packed 32-bit scratchpad words. */
   if (cnn_mmio_load_inference_case(case_root, &tc) != 0)
     return 1;
   case_load_ended_ms = monotonic_ms();
@@ -50,10 +59,12 @@ int main(int argc, char **argv) {
 
   mmio_program_started_ms = monotonic_ms();
   cnn_mmio_program_default_registers(dev.mmio_base);
+  /* Only the image segment changes between requests; the model is preloaded. */
   cnn_mmio_write_inference_case(dev.mmio_base, &tc);
   mmio_program_ended_ms = monotonic_ms();
 
   infer_started_ms = monotonic_ms();
+  /* CONTROL[1] asks the wrapper to replay the image and start inference. */
   cnn_mmio_start_infer(dev.mmio_base);
 
   if (cnn_mmio_wait_for_status_bit(
@@ -70,6 +81,7 @@ int main(int argc, char **argv) {
 
   error_reg = cnn_mmio_read_error(dev.mmio_base);
   cnn_mmio_read_profile(dev.mmio_base, &profile);
+  /* Every line is intentionally machine-readable for parse_key_value_output(). */
   printf("predict_class=%u\n", (unsigned)cnn_mmio_pack_status_predict(status));
   printf("status=0x%04x\n", status);
   printf("error=0x%04x\n", error_reg);

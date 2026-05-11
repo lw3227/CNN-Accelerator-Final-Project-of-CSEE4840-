@@ -6,6 +6,10 @@
 /*
  * Shared register/memory map for cnn_mmio_interface.
  *
+ * This header is the ABI contract between the HPS C programs and the FPGA RTL.
+ * If a register index, bit field, or scratchpad address changes here, the
+ * matching decode logic in cnn_mmio_interface.v must change in the same way.
+ *
  * The RTL uses address[18] to split the space:
  *   0x00000..0x3FFFF : 32-bit scratchpad memory space
  *   0x40000..0x4001F : 32-bit config/status register space
@@ -99,14 +103,17 @@
 #define CNN_MMIO_DEFAULT_IMAGE_WORDS      1024u
 
 static inline uint32_t cnn_mmio_cfg_addr(uint32_t reg_idx) {
+  /* Config/status registers live in the address[18] == 1 half of the window. */
   return CNN_MMIO_CFG_SPACE_BIT | (reg_idx & 0x1Fu);
 }
 
 static inline uint32_t cnn_mmio_mem_addr(uint32_t word_addr) {
+  /* Scratchpad addresses are 32-bit word indices written by the HPS. */
   return CNN_MMIO_MEM_SPACE_BIT | (word_addr & 0x3FFFFu);
 }
 
 static inline uint32_t cnn_mmio_pack_status_predict(uint16_t status_word) {
+  /* The prediction class is mirrored in the upper bits of the STATUS word. */
   return (status_word >> CNN_MMIO_STATUS_PREDICT_SHIFT) & 0xFu;
 }
 

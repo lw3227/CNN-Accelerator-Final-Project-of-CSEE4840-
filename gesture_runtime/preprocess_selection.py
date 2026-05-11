@@ -1,4 +1,10 @@
-"""Heuristics for choosing between preprocessing variants."""
+"""Heuristics for choosing between preprocessing variants.
+
+The web UI exposes both a literal resize and a foreground-cropped branch. This
+module decides which branch should feed the board when the user selects "auto".
+The policy is conservative because a visually cleaner crop can still remove
+context that the model relied on during training.
+"""
 
 from __future__ import annotations
 
@@ -30,11 +36,13 @@ def choose_best_variant(scored: Iterable[Tuple[Any, Any]]) -> Tuple[Any, Any]:
     second_variant, second_result = ordered[1]
 
     if best_result.predicted_class == second_result.predicted_class:
+        # If both views predict the same class, use the more confident one.
         return best_variant, best_result
 
     plain_pair = next(((v, r) for v, r in scored if getattr(v, "mode", "") == "plain"), None)
     crop_pair = next(((v, r) for v, r in scored if getattr(v, "mode", "") == "crop"), None)
     if plain_pair is None or crop_pair is None:
+        # Future preprocessing modes fall back to the generic score ordering.
         return best_variant, best_result
 
     plain_variant, plain_result = plain_pair

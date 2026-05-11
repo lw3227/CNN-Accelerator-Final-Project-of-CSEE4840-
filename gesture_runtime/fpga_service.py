@@ -1,4 +1,11 @@
-"""Board-side FPGA inference service wrappers."""
+"""Board-side FPGA inference service wrappers.
+
+The web server never writes MMIO registers directly. Instead, it copies the
+exported case directory to HPS Linux over SCP and then runs small C commands on
+the board. Those C commands perform `/dev/mem` mapping, scratchpad writes,
+control-register writes, polling, and profile readback. This module is the
+Python orchestration layer around those board-side commands.
+"""
 
 from __future__ import annotations
 
@@ -13,6 +20,7 @@ from .board_transport import BoardTransport
 
 
 def parse_key_value_output(text: str) -> Dict[str, str]:
+    """Parse the `key=value` protocol printed by the HPS C utilities."""
     result: Dict[str, str] = {}
     for raw_line in text.splitlines():
         line = raw_line.strip()
@@ -25,6 +33,8 @@ def parse_key_value_output(text: str) -> Dict[str, str]:
 
 @dataclass
 class FPGAServiceConfig:
+    """Paths and addresses used when invoking commands on the remote board."""
+
     remote_repo: str = "/root/cnn_acc_hps"
     csr_base: str = "0xff200000"
     remote_preload_root: str = "Golden-Module/matlab/hardware_aligned/debug/sram_preload/digit_0_test"
@@ -33,12 +43,15 @@ class FPGAServiceConfig:
 
 
 class FPGABoardService:
+    """High-level service for running the FPGA accelerator from the host."""
+
     def __init__(self, transport: BoardTransport, config: FPGAServiceConfig):
         self.transport = transport
         self.config = config
         self._model_loaded = False
 
     def _read_status(self) -> Dict[str, str]:
+        """Ask the board whether the model is already loaded into FPGA memory."""
         cmd = (
             f"cd {shlex.quote(self.config.remote_repo)} && "
             f"./tools/hps_mmio_status {shlex.quote(self.config.csr_base)}"
@@ -47,6 +60,7 @@ class FPGABoardService:
         return parse_key_value_output(output)
 
     def ensure_model_loaded(self, force: bool = False) -> None:
+        """Load model weights/configuration once, unless a forced reload is needed."""
         if not force and self._model_loaded:
             try:
                 status = self._read_status()
@@ -64,6 +78,7 @@ class FPGABoardService:
         self._model_loaded = True
 
     def predict_case_dir(self, local_case_dir: Path) -> Dict[str, object]:
+        """Copy one exported case to the board and run FPGA inference."""
         self.ensure_model_loaded()
         self.transport.put_dir(local_case_dir, self.config.remote_case_parent, timeout_s=60.0)
 
@@ -81,6 +96,9 @@ class FPGABoardService:
             message = str(exc)
             if "timeout waiting for predict_done" not in message:
                 raise
+            # A timeout can happen after an FPGA reset or stale model state.
+            # Reloading the model gives the web request one automatic recovery
+            # attempt before the error is reported to the browser.
             self.ensure_model_loaded(force=True)
             output = self.transport.run(cmd, timeout_s=60.0)
         elapsed_ms = (perf_counter() - started) * 1000.0
@@ -110,11 +128,14 @@ class FPGABoardService:
 
 
 class BoardCPUReferenceService:
+    """Runs the board-side ARM CPU reference on the same exported case."""
+
     def __init__(self, transport: BoardTransport, config: FPGAServiceConfig):
         self.transport = transport
         self.config = config
 
     def predict_case_dir(self, local_case_dir: Path) -> Dict[str, object]:
+        """Copy a case to HPS Linux and execute the software baseline."""
         self.transport.put_dir(local_case_dir, self.config.remote_case_parent, timeout_s=60.0)
 
         remote_case_dir = f"{self.config.remote_case_parent}/{local_case_dir.name}"

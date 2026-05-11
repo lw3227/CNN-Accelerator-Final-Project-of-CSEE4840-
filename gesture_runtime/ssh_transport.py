@@ -1,4 +1,10 @@
-"""SSH transport for host-to-board execution."""
+"""SSH transport for host-to-board execution.
+
+This module is deliberately small: the rest of the runtime only needs a way to
+run a command and copy a directory. Keeping SSH/SCP behind `BoardTransport`
+makes the demo code independent from the specific transport and makes command
+failures easier to report with stdout/stderr included.
+"""
 
 from __future__ import annotations
 
@@ -10,6 +16,8 @@ from .board_transport import BoardTransport, TransportError
 
 
 class SshBoardTransport(BoardTransport):
+    """Concrete board transport implemented with the system `ssh` and `scp`."""
+
     def __init__(
         self,
         host: str,
@@ -31,6 +39,7 @@ class SshBoardTransport(BoardTransport):
         return f"{self.user}@{self.host}"
 
     def _base_args(self) -> List[str]:
+        """Build SSH options shared by command execution and file transfer."""
         args = [
             "-p",
             str(self.port),
@@ -46,6 +55,7 @@ class SshBoardTransport(BoardTransport):
         return args
 
     def run(self, command: str, timeout_s: float = 30.0) -> str:
+        """Run one shell command on HPS Linux and return stdout."""
         proc = subprocess.run(
             ["ssh", *self._base_args(), self.target, command],
             capture_output=True,
@@ -64,6 +74,7 @@ class SshBoardTransport(BoardTransport):
         return proc.stdout
 
     def put_dir(self, local_dir: Path, remote_parent: str, timeout_s: float = 30.0) -> None:
+        """Recursively copy a generated case directory to the remote board."""
         proc = subprocess.run(
             [
                 "scp",

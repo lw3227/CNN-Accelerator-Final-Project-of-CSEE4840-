@@ -3,6 +3,14 @@
 The current RTL expects a quantized 64x64x1 INT8 tensor. For hardware-aligned
 tests we support direct TXT loading; for image files we expose Pillow-based
 helpers that work both from on-disk paths and in-memory upload bytes.
+
+Two image branches are produced for the web demo:
+  * `plain` keeps the whole image and only normalizes/resize it.
+  * `crop` estimates the foreground hand/digit, crops it to a square, and then
+    resizes to the hardware input shape.
+
+The CPU-side model scores both branches and the demo chooses the safer branch
+before exporting the case to the board.
 """
 
 import base64
@@ -16,12 +24,15 @@ from .quantization import quantize_u8_to_i8
 
 @dataclass
 class PreprocessedImage:
+    """One candidate image tensor plus a preview for the browser."""
+
     mode: str
     values: List[int]
     preview_b64: str
 
 
 def load_txt_int8_image(path: Path) -> List[int]:
+    """Load an already-quantized testbench image file."""
     with path.open("r", encoding="utf-8") as fp:
         return [int(line.strip()) for line in fp if line.strip()]
 
@@ -33,6 +44,7 @@ def _encode_image_b64(image) -> str:
 
 
 def _otsu_threshold(arr) -> int:
+    """Compute an automatic grayscale threshold for foreground separation."""
     import numpy as np
 
     hist = np.bincount(arr.reshape(-1), minlength=256).astype(np.float64)
@@ -50,6 +62,7 @@ def _otsu_threshold(arr) -> int:
 
 
 def _select_foreground_mask(arr):
+    """Choose whether dark or light pixels are more likely to be foreground."""
     import numpy as np
 
     threshold = _otsu_threshold(arr)
@@ -94,6 +107,7 @@ def _canonical_background_level(bg_level: int) -> int:
 
 
 def _largest_connected_component(mask):
+    """Keep the largest connected foreground region and drop small speckles."""
     import numpy as np
 
     height, width = mask.shape
@@ -145,6 +159,7 @@ def _refine_foreground_mask(mask):
 
 
 def _crop_and_square_image(image, width: int, height: int):
+    """Extract the foreground object and resize it to the RTL input shape."""
     import numpy as np
     from PIL import Image, ImageOps
 
@@ -181,16 +196,19 @@ def _crop_and_square_image(image, width: int, height: int):
 
 
 def _plain_resize_image(image, width: int, height: int):
+    """Create the literal resize branch used as a conservative fallback."""
     from PIL import ImageOps
 
     return ImageOps.autocontrast(image.convert("L")).resize((width, height))
 
 
 def _image_to_int8(image) -> List[int]:
+    """Quantize unsigned grayscale pixels into signed INT8 activations."""
     return quantize_u8_to_i8(list(image.getdata()), zero_point=-128)
 
 
 def _preprocess_image(image, width: int, height: int, mode: str) -> PreprocessedImage:
+    """Run one preprocessing branch and package tensor plus preview."""
     if mode == "plain":
         processed = _plain_resize_image(image, width, height)
     elif mode == "crop":
@@ -201,6 +219,7 @@ def _preprocess_image(image, width: int, height: int, mode: str) -> Preprocessed
 
 
 def preprocess_image_bytes_variants(image_bytes: bytes, width: int = 64, height: int = 64) -> List[PreprocessedImage]:
+    """Decode upload bytes and return every candidate preprocessing branch."""
     try:
         from PIL import Image
     except ImportError as exc:  # pragma: no cover - optional dependency
@@ -232,6 +251,7 @@ def load_image_to_int8(path: Path, width: int = 64, height: int = 64) -> List[in
 
 
 def write_txt_int8_image(path: Path, values: Iterable[int]) -> None:
+    """Write one signed INT8 value per line for the HPS C loader."""
     with path.open("w", encoding="utf-8") as fp:
         for value in values:
             fp.write(f"{int(value)}\n")
