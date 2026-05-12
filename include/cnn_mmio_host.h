@@ -10,11 +10,12 @@ extern "C" {
 #endif
 
 /*
- * The HPS maps one small page-aligned lightweight-bridge window. The RTL only
- * needs 16 KiB of scratchpad plus a tiny config/status range, so 64 KiB leaves
- * comfortable room while avoiding the previous 4 MiB mapping.
+ * The HPS maps one small page-aligned lightweight-bridge window. The RTL uses
+ * 16 KiB of scratchpad, and the highest 32-bit config/status register ends at
+ * byte offset 0x407F. A 20 KiB span is the smallest 4 KiB page-aligned mapping
+ * that covers the implemented scratchpad and register window.
  */
-#define CNN_MMIO_MAP_SPAN_BYTES (64 * 1024)
+#define CNN_MMIO_MAP_SPAN_BYTES (20 * 1024)
 #define CNN_MMIO_DEFAULT_TIMEOUT_MS 1000
 #define CNN_MMIO_DEFAULT_FABRIC_MHZ 50.0
 
