@@ -1,6 +1,6 @@
 module Quantization_Top(
     input clk, rst_n,
-
+    
     // triggered by its owm layer's finish signal by 2 cycles delay.
     input start1, start2, start3, start4,
     input in_valid1, in_valid2, in_valid3, in_valid4,

@@ -3,9 +3,9 @@
 // Line_Buffer: runtime-compatible version.
 // Fixed 124-byte shift register (992 bits).
 // layer_sel selects effective depth and stride:
-//   L1 (2'b00): stride=1 byte,  depth=64 → tap at byte 63
-//   L2 (2'b01): stride=4 bytes, depth=31 → tap at byte 120..123
-//   L3 (2'b10): stride=8 bytes, depth=14 → tap at byte 104..111
+//   L1 (2'b00): stride=1 byte,  depth=64 -> tap at byte 63
+//   L2 (2'b01): stride=4 bytes, depth=31 -> tap at byte 120..123
+//   L3 (2'b10): stride=8 bytes, depth=14 -> tap at byte 104..111
 module Line_Buffer #(
     parameter integer W  = 64,
     parameter integer DW = 64   // max pixel bit-width
@@ -13,11 +13,11 @@ module Line_Buffer #(
     input  wire        [1:0]  layer_sel,
     input  wire               clk,
     input  wire               rst_n,
-    input  wire               frame_rearm,//frame_rearm 的作用是清零移位寄存器和填充计数器
+    input  wire               frame_rearm,// clears the shift register and fill counter
     input  wire               in_valid,
     input  wire signed [DW-1:0] in_data,
     output wire               out_valid,
-    output wire signed [DW-1:0] out_data//输出数据根据 layer_sel 从移位寄存器的不同位置提取
+    output wire signed [DW-1:0] out_data// selected shift-register tap for layer_sel
 );
 
     localparam integer N = 124;  // total bytes
@@ -30,7 +30,7 @@ module Line_Buffer #(
     always @* begin
       case (layer_sel)
         2'b01:   begin eff_w = 7'd31; eff_stride = 4'd4; end//L2
-        2'b10:   begin eff_w = 7'd14; eff_stride = 4'd8; end//L3
+        2'b10:   begin eff_w = 7'd14; eff_stride = 4'd8; end//L3  
         default: begin eff_w = 7'd64; eff_stride = 4'd1; end//L1
       endcase
     end

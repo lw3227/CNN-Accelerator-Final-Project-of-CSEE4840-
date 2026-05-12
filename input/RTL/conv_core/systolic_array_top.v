@@ -1,8 +1,8 @@
 // ============================================================
-// 16x4 Systolic Array 顶层
-// - 保持当前工程使用的 flat 输入 / flat 输出 / 列流接口
-// - 内部计算逻辑替换为 mode_cfg + runtime cur_k 版本
-// - 当前 Conv1_top 先固定驱动 mode_cfg=2'b00，以保证现有 L1 TB 兼容
+// 16x4 systolic array top.
+// - Keeps the flat input, flat output, and column-stream interface.
+// - Uses mode_cfg and runtime cur_k for layer-dependent MAC length.
+// - Conv1-compatible mode is selected with mode_cfg=2'b00.
 // ============================================================
 
 module systolic_array_top #(
@@ -18,19 +18,19 @@ module systolic_array_top #(
   input  wire [1:0] mode_cfg,
   input  wire [4:0] valid_rows_cfg,
 
-  // 扁平输入：
-  // a_in_flat[(r+1)*DATA_W-1 : r*DATA_W] 对应第 r 行左边界输入
+  // Flat inputs:
+  // a_in_flat[(r+1)*DATA_W-1 : r*DATA_W] is the left-edge input for row r.
   input  wire signed [ROWS*DATA_W-1:0] a_in_flat,
-  // b_in_flat[(c+1)*DATA_W-1 : c*DATA_W] 对应第 c 列上边界输入
+  // b_in_flat[(c+1)*DATA_W-1 : c*DATA_W] is the top-edge input for column c.
   input  wire signed [COLS*DATA_W-1:0] b_in_flat,
 
-  // 扁平输出：
+  // Flat outputs:
   // idx = r*COLS + c
-  // c_out_flat[(idx+1)*ACC_W-1 : idx*ACC_W] 对应 c_out[r][c]
+  // c_out_flat[(idx+1)*ACC_W-1 : idx*ACC_W] maps to c_out[r][c].
   output wire signed [ROWS*COLS*ACC_W-1:0] c_out_flat,
   output wire done,
 
-  // 每列实时串流输出（保持当前 Conv1_top 输出协议）
+  // Per-column real-time stream output.
   output reg  signed [COLS*ACC_W-1:0] col_stream_data_flat,
   output reg         [COLS-1:0]       col_stream_valid,
   output reg         [COLS-1:0]       col_stream_last
@@ -95,7 +95,7 @@ module systolic_array_top #(
     end
   end
 
-  // FC mode 只使用第一行前三个 PE；conv 模式按当前 block 的真实 valid_rows 收尾。
+  // FC mode uses row 0 PEs; convolution mode completes on the active block rows.
   always @* begin
     case (valid_rows_cfg)
       5'd0:    conv_done_r = 1'b0;

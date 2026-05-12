@@ -1,13 +1,5 @@
 #define _POSIX_C_SOURCE 200809L
 
-/*
- * HPS ARM CPU reference used by the browser demo.
- *
- * This program runs the same quantized network on the board CPU using the same
- * exported case files that feed the FPGA. It gives the web UI a same-board
- * software baseline and makes FPGA speedup numbers easier to interpret.
- */
-
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -115,7 +107,6 @@ static int32_t requantize_single(int32_t mac,
                                  int32_t mult,
                                  int32_t shift,
                                  int32_t zp_out) {
-  /* Match the integer multiplier/shift sequence used by the RTL quantizer. */
   int64_t acc = (int64_t)mac + (int64_t)eff_bias;
   int64_t prod = acc * (int64_t)mult;
   int64_t scaled;
@@ -139,7 +130,6 @@ static void conv1_forward(const int8_t *input,
                           const int32_t *mult,
                           const int32_t *shift,
                           int8_t *pool_out) {
-  /* First layer is specialized because it has one input channel. */
   int8_t requant[C1_H * C1_W * C1_OUT];
   int h, w, oc, kh, kw;
 
@@ -191,7 +181,6 @@ static void conv_generic_forward(const int8_t *input,
                                  int pool_h,
                                  int pool_w,
                                  int8_t *pool_out) {
-  /* Shared convolution + requantization + 2x2 max-pool for layers 2 and 3. */
   int8_t *requant = (int8_t *)malloc((size_t)out_h * (size_t)out_w * (size_t)out_c);
   int h, w, oc, ic, kh, kw;
   if (!requant) {
@@ -238,7 +227,6 @@ static void conv_generic_forward(const int8_t *input,
 }
 
 static int fc_argmax(const int8_t *input, const int8_t *weights, const int32_t *bias) {
-  /* Final classifier: 288 INT8 inputs multiplied against 10 FC weight rows. */
   int oc, k;
   int best_idx = 0;
   int32_t best_val = 0;
@@ -283,9 +271,6 @@ int main(int argc, char **argv) {
   image_case_root = argv[1];
   reference_case_root = argv[2];
 
-  /* The uploaded image comes from the temporary case; model parameters come
-   * from the fixed hardware-aligned reference case used for the deployed model.
-   */
   build_path(path, sizeof(path), image_case_root, "tb_conv1_in_i8_64x64x1.txt");
   if (read_i8_lines(path, input, IMG_H * IMG_W) != 0)
     return 1;
@@ -337,7 +322,6 @@ int main(int argc, char **argv) {
     return 1;
 
   started_ms = monotonic_ms();
-  /* Execute the same layer order as the RTL accelerator for fair comparison. */
   conv1_forward(input, conv1_w, conv1_bias, conv1_m, conv1_sh, pool1);
   conv_generic_forward(pool1, P1_H, P1_W, C1_OUT, conv2_w, C2_OUT, conv2_bias, conv2_m, conv2_sh,
                        C2_H, C2_W, P2_H, P2_W, pool2);

@@ -1,11 +1,4 @@
-"""Configuration loading for the web comparison demo.
-
-The demo can run on different networks and boards, so the host-side runtime
-does not hard-code SSH addresses, model paths, or the FPGA CSR base address.
-This module merges JSON configuration with environment variables and returns a
-single `DemoConfig` object used by `web_demo/app.py` when it builds the service
-graph.
-"""
+"""Configuration loading for the web comparison demo."""
 
 from __future__ import annotations
 
@@ -25,8 +18,6 @@ DEFAULT_CONFIG_PATH = Path(
 
 @dataclass
 class DemoConfig:
-    """All runtime settings needed to connect the browser flow to the board."""
-
     cpu_model: Path
     labels: List[str]
     board_host: str
@@ -46,7 +37,6 @@ class DemoConfig:
 
     @property
     def model_lane(self) -> str:
-        """Infer which model family the current preload/config appears to use."""
         preload = self.remote_preload_root.lower()
         labels_are_numeric = self.labels and all(label.isdigit() for label in self.labels)
         if "digit_" in preload or labels_are_numeric:
@@ -57,7 +47,6 @@ class DemoConfig:
 
     @property
     def model_warning(self) -> Optional[str]:
-        """Return a UI warning when the configured model path looks ambiguous."""
         if self.model_lane == "unknown":
             return (
                 "Current demo config does not clearly map to a gesture-specific deployed model. "
@@ -81,14 +70,12 @@ class DemoConfig:
 
 
 def _read_json_config(path: Path) -> dict:
-    """Read the optional JSON config file; missing files simply mean defaults."""
     if not path.is_file():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _resolve_repo_path(value: Optional[str]) -> Optional[Path]:
-    """Resolve relative paths from the repository root for stable launching."""
     if not value:
         return None
     raw = Path(value)
@@ -98,13 +85,9 @@ def _resolve_repo_path(value: Optional[str]) -> Optional[Path]:
 
 
 def load_demo_config(path: Optional[Path] = None) -> DemoConfig:
-    """Load the demo configuration with JSON values overriding defaults."""
     cfg_path = path or DEFAULT_CONFIG_PATH
     raw = _read_json_config(cfg_path)
 
-    # Labels may be supplied either as a JSON list or a comma-separated
-    # environment variable. If neither is present, the deployed demo defaults
-    # to the ten digit/gesture classes used by the hardware-aligned tests.
     labels = raw.get("labels") or os.environ.get("CNN_ACC_LABELS", "")
     label_list = labels if isinstance(labels, list) else [x.strip() for x in labels.split(",") if x.strip()]
     if not label_list:

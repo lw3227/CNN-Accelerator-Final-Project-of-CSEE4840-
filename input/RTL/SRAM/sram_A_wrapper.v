@@ -33,7 +33,7 @@ module sram_A_wrapper # (
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n)
             read_valid <= 1'b0;
-        else
+        else 
             read_valid <= do_read;
     end
 

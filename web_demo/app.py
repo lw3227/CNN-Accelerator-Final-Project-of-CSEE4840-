@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
-"""Flask app for the upload-first CPU-vs-FPGA comparison demo.
-
-This file is the browser-facing entry point of the web-to-board flow. The web
-page sends an uploaded image to `/api/infer`; the route preprocesses the image,
-exports a temporary hardware case, asks the DE1-SoC board to run both the HPS
-CPU reference and the FPGA accelerator, and returns a JSON object that the UI
-can render as labels, timing numbers, profile counters, and diagnostics.
-"""
+"""Flask app for the upload-first CPU-vs-FPGA comparison demo."""
 
 from __future__ import annotations
 
@@ -31,18 +24,9 @@ from gesture_runtime.ssh_transport import SshBoardTransport
 
 
 def build_service() -> ComparisonDemoService:
-    """Construct the long-lived service graph used by all request handlers.
-
-    The Flask routes stay intentionally thin: configuration loading, TFLite CPU
-    setup, SSH transport creation, and FPGA/HPS service wiring are centralized
-    here so each HTTP endpoint only has to validate inputs and format outputs.
-    """
     cfg = load_demo_config()
     labels = DemoLabels(cfg.labels) if cfg.labels else DemoLabels.default_digits()
     cpu_classifier = TFLiteCPUClassifier(cfg.cpu_model)
-    # All board access is done through SSH/SCP because the web server runs on
-    # the host laptop/desktop while the accelerator and C commands run on HPS
-    # Linux inside the DE1-SoC board.
     transport = SshBoardTransport(
         host=cfg.board_host,
         user=cfg.board_user,
@@ -85,7 +69,6 @@ FEEDBACK_DIR = REPO_ROOT / "web_demo" / "feedback_samples"
 
 
 def get_service() -> ComparisonDemoService:
-    """Lazily create the service so importing this module is cheap and safe."""
     global SERVICE
     if SERVICE is None:
         SERVICE = build_service()
@@ -99,7 +82,6 @@ def index():
 
 @app.get("/api/health")
 def health():
-    """Report configuration visible to the browser without touching the FPGA."""
     cfg = load_demo_config()
     return jsonify(
         {
@@ -125,7 +107,6 @@ def health():
 
 @app.post("/api/infer")
 def infer():
-    """Handle one uploaded image and return CPU-vs-FPGA comparison results."""
     uploaded = request.files.get("image")
     if uploaded is None or not uploaded.filename:
         return jsonify({"error": "image upload is required"}), 400
@@ -133,9 +114,6 @@ def infer():
     preprocess_mode = request.form.get("preprocess_mode", "auto").strip() or "auto"
     try:
         cfg = load_demo_config()
-        # The service owns the end-to-end path: preprocessing variants,
-        # temporary case export, board transfer, C command execution, and result
-        # parsing. The route only passes raw bytes and the requested mode.
         result = get_service().compare_image_bytes(uploaded.read(), preferred_mode=preprocess_mode)
     except Exception as exc:  # pragma: no cover - integration path
         return jsonify({"error": str(exc)}), 500
@@ -149,7 +127,6 @@ def infer():
 
 @app.post("/api/feedback")
 def save_feedback():
-    """Save a misprediction sample for later retraining/debugging."""
     uploaded = request.files.get("image")
     corrected_label = request.form.get("corrected_label", "").strip()
     predicted_label = request.form.get("predicted_label", "").strip()
@@ -196,7 +173,6 @@ def save_feedback():
 
 @app.get("/api/sample-suite")
 def sample_suite():
-    """Run the built-in digit sample images through the same board path."""
     try:
         cfg = load_demo_config()
         sample_paths = sorted(SAMPLE_IMAGE_DIR.glob("digit_*_test.png"))

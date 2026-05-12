@@ -41,12 +41,12 @@ module system_top #(
   // Internal wires
   // =============================================================
 
-  // --- TopFSM ↔ LayerRunnerFSM ---
+  // --- TopFSM <-> LayerRunnerFSM ---
   wire        runner_start, runner_done;
   wire [1:0]  runner_layer_sel;
   wire        runner_pass_id, runner_is_fc;
 
-  // --- TopFSM → SRAM_A preload control ---
+  // --- TopFSM -> SRAM_A preload control ---
   wire        top_sram_a_start;
   wire [2:0]  top_sram_a_layer_sel;
   wire [1:0]  top_sram_a_data_sel;
@@ -54,13 +54,13 @@ module system_top #(
   wire        preload_wr_valid;
   wire [31:0] preload_wr_data;
 
-  // --- LayerRunnerFSM → SRAM_A inference control ---
+  // --- LayerRunnerFSM -> SRAM_A inference control ---
   wire        run_sram_a_start;
   wire [2:0]  run_sram_a_layer_sel;
   wire [1:0]  run_sram_a_data_sel;
   wire        run_sram_a_pass_id;
 
-  // --- LayerRunnerFSM → SRAM_B control ---
+  // --- LayerRunnerFSM -> SRAM_B control ---
   wire        run_sram_b_start;
   wire [2:0]  run_sram_b_layer_sel;
   wire [1:0]  run_sram_b_data_sel;
@@ -184,12 +184,12 @@ module system_top #(
   localparam [1:0] SEL_CFG = 2'd0, SEL_WT = 2'd1, SEL_DATA = 2'd2;
 
   // Route SRAM_A read to correct consumer:
-  //   CFG + conv → conv_quant_pool.cfg
-  //   CFG + FC   → FC.cfg
-  //   WT  + conv → wt_prepad_inserter → conv_quant_pool.wt
-  //   WT  + FC   → fc_data_adapter.wt (no prepad for FC)
-  //   DATA + conv (L1/L3) → conv_quant_pool.in
-  //   DATA + FC   → never (FC data comes from SRAM_B)
+  //   CFG + conv -> conv_quant_pool.cfg
+  //   CFG + FC   -> FC.cfg
+  //   WT  + conv -> wt_prepad_inserter -> conv_quant_pool.wt
+  //   WT  + FC   -> fc_data_adapter.wt (no prepad for FC)
+  //   DATA + conv (L1/L3) -> conv_quant_pool.in
+  //   DATA + FC   -> never (FC data comes from SRAM_B)
 
   wire route_conv_cfg = !active_is_fc && (active_data_sel == SEL_CFG);
   wire route_conv_wt  = !active_is_fc && (active_data_sel == SEL_WT);
@@ -226,8 +226,8 @@ module system_top #(
   // =============================================================
   // SRAM_B read stream routing
   // =============================================================
-  // L2: SRAM_B → conv in port
-  // FC: SRAM_B → fc_data_adapter data port
+  // L2: SRAM_B -> conv in port
+  // FC: SRAM_B -> fc_data_adapter data port
   // L1/L3 must not see SRAM_B read-side signals while SRAM_B is the pool sink.
   wire route_conv_in_b = !active_is_fc && (runner_layer_sel == 2'b01);
   wire route_fc_data_b =  active_is_fc;
@@ -258,7 +258,7 @@ module system_top #(
                                 | conv_in_from_a_last
                                 | conv_in_from_b_last;
 
-  // conv_data_adapter: L1 byte unpack (1 word → 4 beats), L2/L3 pass-through
+  // conv_data_adapter: L1 byte unpack (1 word -> 4 beats), L2/L3 pass-through
   wire        conv_in_valid;
   wire [31:0] conv_in_data;
   wire [3:0]  conv_in_byte_en;
@@ -274,9 +274,9 @@ module system_top #(
   wire        sram_b_pool_last  = conv_pool_last;
 
   // Conv pool_ready: from whichever SRAM is the write sink
-  // L1 (00) / L3 (10): SRAM_B is sink → pool_ready from SRAM_B
-  // L2 (01): SRAM_A is sink → pool_ready from SRAM_A (when not in preload)
-  wire        pool_sink_is_b  = (runner_layer_sel != 2'b01);  // L1/L3 → B; L2 → A
+  // L1 (00) / L3 (10): SRAM_B is sink -> pool_ready from SRAM_B
+  // L2 (01): SRAM_A is sink -> pool_ready from SRAM_A (when not in preload)
+  wire        pool_sink_is_b  = (runner_layer_sel != 2'b01);  // L1/L3 -> B; L2 -> A
   wire        conv_pool_ready = preload_mode ? 1'b0 :
                                 (pool_sink_is_b ? sram_b_pool_ready
                                                 : sram_a_pool_ready);

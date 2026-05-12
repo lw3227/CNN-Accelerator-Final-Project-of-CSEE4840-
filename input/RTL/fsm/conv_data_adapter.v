@@ -1,7 +1,7 @@
 // conv_data_adapter: unpack 32-bit SRAM words into Conv input beats.
 //
-// L1 (layer_sel=00): 1 SRAM word → 4 byte beats (1-word holding register)
-//   SRAM outputs 1024 words, Conv receives 4096 beats × 8-bit, in_byte_en=0001
+// L1 (layer_sel=00): 1 SRAM word -> 4 byte beats (1-word holding register)
+//   SRAM outputs 1024 words, Conv receives 4096 beats x 8-bit, in_byte_en=0001
 // L2/L3 also use a 1-word holding register so the adapter can safely absorb
 // the SRAM wrapper's 1-cycle read pipeline under downstream backpressure.
 
@@ -51,12 +51,12 @@ module conv_data_adapter (
   wire l1_dn_last  = l1_dn_valid && cur_is_last_l1 && (cur_byte_sel == 2'd3);
 
   // L1 up_ready: assert only when adapter WILL BE free next cycle.
-  // SRAM wrapper has 1-cycle read pipeline (read_en → data_valid next cycle),
+  // SRAM wrapper has 1-cycle read pipeline (read_en -> data_valid next cycle),
   // so up_ready must predict availability 1 cycle ahead.
-  //   Case A: hold_valid=1, last byte being consumed → free next cycle
-  //   Case B: hold_valid=0 AND no data arriving → already free
+  //   Case A: hold_valid=1, last byte being consumed -> free next cycle
+  //   Case B: hold_valid=0 AND no data arriving -> already free
   // When data is arriving (up_valid=1, hold_valid=0), the adapter is latching
-  // this cycle — NOT free for another read next cycle.
+  // this cycle - NOT free for another read next cycle.
   wire l1_will_be_free = (hold_valid && dn_ready && byte_sel == 2'd3)
                        || (!hold_valid && !up_valid);
   wire l1_up_ready = l1_will_be_free;

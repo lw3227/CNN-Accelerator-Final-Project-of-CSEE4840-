@@ -4,8 +4,8 @@ module Addr_Gen #(
     input  clk,
     input  rst_n,
 
-    input  start,
-    input  enable,
+    input  start,                     
+    input  enable,    
     input  [ADDR_WIDTH-1:0] base_addr,
     input  [ADDR_WIDTH-1:0] length,
 

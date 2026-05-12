@@ -13,14 +13,14 @@ module conv_top #(
   input  wire clk,
   input  wire rst_n,
 
-  // 像素流输入（ready/valid 握手）
+  // Pixel stream input (ready/valid handshake)
   input  wire                      in_valid,
   input  wire        [31:0]        in_data,
   input  wire        [3:0]         in_byte_en,
   input  wire                      in_last,
   output wire                      in_ready,
 
-  // 权重装载通道
+  // Weight load channel
   input  wire                      wt_valid,
   output wire                      wt_ready,
   input  wire                      wt_last,
@@ -29,10 +29,10 @@ module conv_top #(
   // Weight load done (1-cycle pulse on weights_loaded rising edge)
   output wire                        wt_load_done,
 
-  // SA 输出
+  // Systolic-array output
   output wire                        sa_done,
-  // 每列实时串流输出
-  output wire signed [COLS*ACC_W-1:0] c_out_col_stream_flat,//4*23bits,输出一行
+  // Per-column real-time stream output
+  output wire signed [COLS*ACC_W-1:0] c_out_col_stream_flat,// 4*23 bits, one output row
   output wire        [COLS-1:0]        c_out_col_valid,
   output wire        [COLS-1:0]        c_out_col_last,
 
@@ -138,7 +138,7 @@ module conv_top #(
       rd_en_r ? {wb_col3, wb_col2, wb_col1, wb_col0} : {(COLS*DATA_W){1'b0}};
   // in_last is consumed by frame_done logic below (no longer unused).
 
-  // 空闲状态下用 0 门控 A 输入，避免 SA 在非发射期积分垃圾值
+  // Gate A inputs to zero while idle to avoid accumulating stale values.
   assign a_in_flat = sa_a_gate ? a_in_from_bank : {ROWS*DATA_W{1'b0}};
 
   // One-cycle input pipeline into the systolic array. This cuts the long
@@ -289,8 +289,8 @@ module conv_top #(
       backend_idle_d <= backend_idle;
   end
 
-  // 帧结束：beat 计数达到 eff_img_pixels 或上游断言 in_last 均视为帧结束。
-  // frame_rearm 在后端排空后自动清零，允许 back-to-back transaction。
+  // Frame ends when the beat count reaches eff_img_pixels or in_last is asserted.
+  // frame_rearm clears frame state after the backend drains, allowing back-to-back transactions.
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       pix_cnt <= 32'd0;

@@ -1,12 +1,12 @@
 // TopFSM: network-level sequencer.
 //
-// MODEL_LOAD (one-time): host sends cfg → weight → image via load_data bus
-// INFER (repeatable): L1 → L2p0 → L2p1 → L3p0 → L3p1 → FC → ARGMAX → READY
+// MODEL_LOAD (one-time): host sends cfg -> weight -> image via load_data bus
+// INFER (repeatable): L1 -> L2p0 -> L2p1 -> L3p0 -> L3p1 -> FC -> ARGMAX -> READY
 //
 // Preload follows SRAM_CONNECTION_NOTES layer0 convention:
-//   PL_CFG   → sram_a_start(layer0, CFG_READ)
-//   PL_WT    → sram_a_start(layer0, WT_READ)
-//   PL_PIXEL → sram_a_start(layer0, DATA_READ)
+//   PL_CFG   -> sram_a_start(layer0, CFG_READ)
+//   PL_WT    -> sram_a_start(layer0, WT_READ)
+//   PL_PIXEL -> sram_a_start(layer0, DATA_READ)
 // Each segment ends when host asserts load_last on the valid&&ready beat.
 
 module top_fsm #(
@@ -196,13 +196,13 @@ module top_fsm #(
         ST_IDLE: begin
           preload_active <= 1'b0;
           if (load_valid && load_sel == 1'b0) begin
-            // Host wants to load model → start MODEL_LOAD
+            // Host wants to load model -> start MODEL_LOAD
             state <= ST_PL_CFG;
           end
         end
 
         // ---------------------------------------------------------
-        // MODEL_LOAD: 3 sub-states (PL_CFG → PL_WT → PL_PIXEL)
+        // MODEL_LOAD: 3 sub-states (PL_CFG -> PL_WT -> PL_PIXEL)
         // ---------------------------------------------------------
         ST_PL_CFG: begin
           sram_a_start      <= 1'b1;
@@ -293,7 +293,7 @@ module top_fsm #(
           end
         end
 
-        // ST_PL_PIXEL / ST_PL_PIXEL_W: removed — pixels now stream directly
+        // ST_PL_PIXEL / ST_PL_PIXEL_W: removed - pixels now stream directly
         // to conv_data_adapter via system_top during ST_L1.
 
         // ---------------------------------------------------------
@@ -308,7 +308,7 @@ module top_fsm #(
             profile_fc_cycles <= 32'd0;
             profile_argmax_cycles <= 32'd0;
             profile_total_cycles <= 32'd0;
-            // Host wants to send image → enter L1 (pixels stream directly)
+            // Host wants to send image -> enter L1 (pixels stream directly)
             state <= ST_L1;
           end else if (load_valid && !load_last && load_sel == 1'b0) begin
             // Host wants to reload model
@@ -318,7 +318,7 @@ module top_fsm #(
         end
 
         // ---------------------------------------------------------
-        // Inference: L1 → L2p0 → L2p1 → L3p0 → L3p1 → FC → ARGMAX
+        // Inference: L1 -> L2p0 -> L2p1 -> L3p0 -> L3p1 -> FC -> ARGMAX
         // Each state: pulse runner_start once, then wait for runner_done.
         // runner_started prevents repeated start pulses while waiting.
         // ---------------------------------------------------------

@@ -14,11 +14,11 @@ module Quantization_PE(
 reg load_delay; // created by load_sh by one cycle delay to activate round_term calculation
 reg [3:0] valid_sr;
 reg signed [31:0] bias;
-reg signed [31:0] next_bias;
+reg signed [31:0] next_bias; 
 reg signed [31:0] M;
-reg signed [31:0] next_M;
+reg signed [31:0] next_M; 
 reg [7:0] sh;
-reg [7:0] next_sh;
+reg [7:0] next_sh; 
 reg signed [63:0] round_term;
 reg signed [63:0] next_round_term;
 reg signed [31:0] acc;
@@ -64,7 +64,7 @@ always @* begin
 end
 
 always @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
+    if (!rst_n) begin 
         bias <= 32'sd0;
     end
     else begin
@@ -81,7 +81,7 @@ always @* begin
 end
 
 always @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
+    if (!rst_n) begin 
         M <= 32'sd0;
     end
     else begin
@@ -100,7 +100,7 @@ always @* begin
 end
 
 always @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
+    if (!rst_n) begin 
         sh <= 8'd0;
     end
     else begin

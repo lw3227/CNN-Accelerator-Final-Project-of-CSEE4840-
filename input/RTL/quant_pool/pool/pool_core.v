@@ -96,7 +96,7 @@ module pool_core_lane #(
         if (col_in_row == eff_in_w - 6'd1) begin
           col_in_row <= 6'd0;
           if (row_cnt == eff_in_h - 6'd1)
-            row_cnt <= 6'd0;          // frame complete → ready for next
+            row_cnt <= 6'd0;          // frame complete -> ready for next
           else
             row_cnt <= row_cnt + 6'd1;
         end else begin
@@ -123,7 +123,7 @@ module pool_core_lane #(
             cnt3             <= cnt3_next;
           end
         end
-        // !pixel_ok → orphan pixel, only counters advanced, accum/cnt untouched
+        // !pixel_ok -> orphan pixel, only counters advanced, accum/cnt untouched
       end
     end
   end

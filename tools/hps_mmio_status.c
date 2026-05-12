@@ -4,13 +4,6 @@
 
 #include "../include/cnn_mmio_host.h"
 
-/*
- * Lightweight status probe used by the web service before requests.
- *
- * It does not modify FPGA state. The program only maps the MMIO window, reads
- * the status/prediction/error registers, and prints key=value lines that the
- * Python service can parse.
- */
 int main(int argc, char **argv) {
   const char *devmem_path = "/dev/mem";
   uintptr_t csr_base;
@@ -28,7 +21,6 @@ int main(int argc, char **argv) {
   if (argc > 2)
     devmem_path = argv[2];
 
-  /* csr_base is the physical address of the Platform Designer slave window. */
   if (cnn_mmio_open(&dev, csr_base, devmem_path) != 0)
     return 1;
 

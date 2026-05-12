@@ -1,13 +1,13 @@
-// Conv_Buffer — dual-bank stripe buffer for conv_top.
+// Conv_Buffer - dual-bank stripe buffer for conv_top.
 //
-// Storage: flat 8-bit regs (2 × 432 entries) — cheap write-enable per register.
-// Read path: hardwired concat into 24 × 144-bit "group" wires (zero gate cost),
+// Storage: flat 8-bit regs (2 x 432 entries) - cheap write-enable per register.
+// Read path: hardwired concat into 24 x 144-bit "group" wires (zero gate cost),
 //   then a single 24:1 MUX + 3:1 barrel shift extract 16 consecutive bytes.
-// Address decode: counter-based (ch_r, dx_r, dy_r) advances with rd_col — no
+// Address decode: counter-based (ch_r, dx_r, dy_r) advances with rd_col - no
 //   runtime division/modulo.
 // zero_fill_tail: eliminated; read path masks out unfilled columns via fill_cols.
 //
-// Synthesis: ~84K um² (vs ~114K baseline with 16× 432:1 MUX + div/mod).
+// Synthesis: ~84K um^2 (vs ~114K baseline with 16x 432:1 MUX + div/mod).
 
 module Conv_Buffer #(
   parameter integer DATA_W = 8,
@@ -50,7 +50,7 @@ module Conv_Buffer #(
   localparam integer MAX_WORDS    = STRIPE_ROWS * C_IN;    // 24
 
   // ----------------------------------------------------------------
-  // Flat 8-bit storage (same as Conv_Buffer — cheap writes)
+  // Flat 8-bit storage (same as Conv_Buffer - cheap writes)
   // ----------------------------------------------------------------
   reg signed [7:0] bank_A [0:STRIPE_BYTES-1];
   reg signed [7:0] bank_B [0:STRIPE_BYTES-1];
@@ -145,7 +145,7 @@ module Conv_Buffer #(
   endfunction
 
   // ----------------------------------------------------------------
-  // Write tasks (from Conv_Buffer — simple flat-reg writes)
+  // Write tasks (from Conv_Buffer - simple flat-reg writes)
   // ----------------------------------------------------------------
   integer col_off_i;
   reg [4:0] new_valid_rows;
@@ -200,7 +200,7 @@ module Conv_Buffer #(
     end
   endtask
 
-  // zero_fill_tail: ELIMINATED — read-side fill_cols mask handles this
+  // zero_fill_tail: ELIMINATED - read-side fill_cols mask handles this
 
   task mark_ready_bank;
     input dst_bank;
@@ -230,7 +230,7 @@ module Conv_Buffer #(
   assign partial_pending  = seed_pending_r || (fill_cols_r != 5'd0);
 
   // ================================================================
-  // READ PATH — counter-based decode + hardwired concatenation
+  // READ PATH - counter-based decode + hardwired concatenation
   // ================================================================
 
   // Hardwired 144-bit group wires: zero gate cost, pure wiring.
@@ -320,7 +320,7 @@ module Conv_Buffer #(
   end
 
   // ----------------------------------------------------------------
-  // Read MUX: 24:1 group select → shift extract → fill_cols mask
+  // Read MUX: 24:1 group select -> shift extract -> fill_cols mask
   // ----------------------------------------------------------------
   reg [WORD_W-1:0] rd_word;
   reg [4:0] selected_valid_rows;
@@ -328,7 +328,7 @@ module Conv_Buffer #(
   reg signed [ROWS*DATA_W-1:0] raw_col_r;
   integer ri;
 
-  // Word address — always use C_IN stride to match generate block indexing
+  // Word address - always use C_IN stride to match generate block indexing
   reg [4:0] rd_word_addr;
   always @* begin
     rd_word_addr = {cur_dy, 3'b000} + {1'b0, cur_ch};  // dy * 8 + ch
@@ -352,7 +352,7 @@ module Conv_Buffer #(
   assign raw_firstcol_flat = raw_col_r;
 
   // ----------------------------------------------------------------
-  // Main sequential block — stripe fill FSM
+  // Main sequential block - stripe fill FSM
   // ----------------------------------------------------------------
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -409,7 +409,7 @@ module Conv_Buffer #(
         if (x_pos_r == eff_w - 7'd1) begin
           if (fill_base_x_r < eff_out_w) begin
             real_cols_i = x_pos_r - fill_base_x_r + 1;
-            // zero_fill_tail REMOVED — read-side fill_cols mask handles it
+            // zero_fill_tail REMOVED - read-side fill_cols mask handles it
             new_valid_rows = calc_valid_rows(fill_base_x_r, eff_out_w);
             mark_ready_bank(wr_bank_r, new_valid_rows, real_cols_i[4:0]);
             wr_bank_r <= ~wr_bank_r;

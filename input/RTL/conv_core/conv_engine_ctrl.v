@@ -79,10 +79,10 @@ module conv_engine_ctrl #(
       ((state_r == ST_WAITDONE) && sa_done && have_launchable_block);
   assign consume_bank_sel   = launch_from_A ? 1'b0 : 1'b1;
 
-  // 权重装载协议：
-  // 1) wt_valid/wt_ready 握手后，weight_buffer 接收一拍新权重；
-  // 2) wt_last 标识当前权重组的最后一拍；
-  // 3) 只有 weights_loaded=1 时，SA 才允许从 ready bank 发射。
+  // Weight load protocol:
+  // 1) After wt_valid/wt_ready, weight_buffer accepts one new weight beat.
+  // 2) wt_last marks the last beat in the current weight group.
+  // 3) SA launch is allowed from a ready bank only after weights_loaded=1.
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       weights_loaded_r <= 1'b0;
@@ -108,10 +108,11 @@ module conv_engine_ctrl #(
     end
   end
 
-  // SA 发射控制：
-  // ST_IDLE、ST_FEED 尾拍或 ST_WAITDONE 发现 ready block 后，先进入 ST_PRERING 发 ring；
-  // 下一拍 ST_PRERING 同时拉高 start_pulse 和 rd_en；
-  // ST_FEED 按 rd_col 送 0..DOT_K-1 列，再送越界列做冲刷。
+  // SA launch control:
+  // ST_IDLE, the ST_FEED tail beat, or ST_WAITDONE can enter ST_PRERING
+  // when a ready block is available.
+  // The next ST_PRERING cycle asserts start_pulse and rd_en together.
+  // ST_FEED sends columns 0..DOT_K-1, then sends out-of-range columns to flush.
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       state_r       <= ST_IDLE;
@@ -167,7 +168,7 @@ module conv_engine_ctrl #(
           if (feed_cnt_r < eff_dot_k) begin
             rd_col_r <= feed_cnt_r;
           end else begin
-            rd_col_r <= 9'd511;  // out-of-range → get_byte returns 0 (flush)
+            rd_col_r <= 9'd511;  // out-of-range -> get_byte returns 0 (flush)
           end
 
           if (feed_cnt_r == active_feed_last_r) begin
