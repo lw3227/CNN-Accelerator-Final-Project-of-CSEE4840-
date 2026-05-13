@@ -1,6 +1,6 @@
-# CNN Accelerator on DE1-SoC: Source Handoff and Reproduction Guide
+# CNN Accelerator on DE1-SoC: Project Source and Reproduction Guide
 
-This branch is the source-oriented handoff for the CSEE4840 final project
+This document describes the source package for the CSEE4840 final project
 implementing a compact INT8 CNN accelerator on the DE1-SoC platform. It is
 intended to support an independent rebuild of the FPGA project, the HPS board
 runtime, and the host web-to-board demonstration path from source files and
@@ -16,12 +16,12 @@ Design team:
 
 Date: May 12, 2026
 
-## 1. Scope of This Branch
+## 1. Project Source Scope
 
-The `pre` branch is a tightened source handoff. It keeps the files needed to
-recreate the final project state while intentionally omitting generated build
-output, local debug captures, raw training data, and git history from the
-course submission archive.
+The source package is organized as a reproducible project handoff. It keeps the
+files needed to recreate the final project state while intentionally omitting
+generated build output, local debug captures, raw training data, and git history
+from the course submission archive.
 
 The expected reproduction path is:
 
@@ -34,10 +34,10 @@ source tree
   -> optional host Flask web demo
 ```
 
-This branch contains the deployed model, the exported hardware parameters, and
-the compact per-case reference/preload artifacts needed for the final board
-flow. It does not contain the raw external training dataset or generated
-Quartus databases.
+This project source package contains the deployed model, the exported hardware
+parameters, and the compact per-case reference/preload artifacts needed for the
+final board flow. It does not contain the raw external training dataset or
+generated Quartus databases.
 
 ## 2. Repository Layout
 
@@ -86,7 +86,7 @@ The roles of these directories are:
 
 ## 3. What Is Included
 
-The branch includes the source and compact data artifacts required for the
+The source package includes the source and compact data artifacts required for the
 final web-to-board accelerator path.
 
 ### FPGA and Platform Designer Sources
@@ -170,7 +170,7 @@ Exclude:
 - notebooks, alternate models, unused media, and other files from development
   experiments that are not needed for the final board/web path
 
-A normal source archive for this branch should be only a few megabytes.
+A normal source archive for this project should be only a few megabytes.
 
 ## 5. Required Tools
 
@@ -247,7 +247,7 @@ final board flow:
 - expected tensors and image cases:
   `Golden-Module/matlab/hardware_aligned/debug/txt_cases/digit_*_test/`
 
-The raw training dataset is external and is not part of this branch. The
+The raw training dataset is external and is not part of this source package. The
 training script expects a local dataset root named `dataset_wlx/` with this
 layout:
 
@@ -364,7 +364,7 @@ Copy the source tree to the DE1-SoC Linux environment. A common destination is:
 For example, from the host:
 
 ```bash
-scp -r CNN-Accelerator-pre-repro root@192.168.0.2:/root/cnn_acc_hps
+scp -r cnn_accelerator_source root@192.168.0.2:/root/cnn_acc_hps
 ```
 
 Adjust the source directory, board user, and board IP address to match the
@@ -638,10 +638,10 @@ unless the full training environment is controlled.
 ## 19. Creating the Course Source Archive
 
 The preferred archive is generated from tracked source files rather than by
-compressing an existing build directory. From a clean checkout of this branch:
+compressing an existing build directory. From a clean source checkout:
 
 ```bash
-git archive --format=tar.gz -o cnn_accelerator_source.tar.gz pre
+git archive --format=tar.gz -o cnn_accelerator_source.tar.gz HEAD
 ```
 
 If creating an archive from an extracted folder without git metadata, first
@@ -686,9 +686,9 @@ Confirm that:
 - `platform_designer/cnn_mmio_interface_hw.tcl` exists
 - the custom component path is visible to the project script
 - generated `de1_soc/soc_system/` output from old builds has not been mixed
-  with a different branch
+  with a different source revision
 
-When in doubt, remove generated build folders and rebuild from source.
+When in doubt, remove generated build folders and rebuild from the saved source files.
 
 ### HPS command cannot open `/dev/mem`
 
@@ -731,7 +731,7 @@ Reload the model, rerun `hps_mmio_status`, and compare the FPGA output against
 
 ## 21. Minimal Completion Checklist
 
-Before submitting or handing off this branch, confirm:
+Before submitting or handing off the project source package, confirm:
 
 - `README.md` is present at the repository root
 - no additional README files are needed elsewhere
@@ -748,5 +748,5 @@ Before submitting or handing off this branch, confirm:
 - generated Quartus/Platform Designer outputs are absent from the source
   archive
 
-This checklist is intended to keep the branch reproducible while preserving the
+This checklist is intended to keep the project reproducible while preserving the
 small source-only archive required for the final submission.
